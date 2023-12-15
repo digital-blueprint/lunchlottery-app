@@ -99,7 +99,7 @@ For more information about the structure look at: [Components](https://handbook.
 
 The activity metadata should be also based in the assets folder. The file ``dbp-template-activity.metadata.json`` is an example for an activity. It is contains basic description of an activity.
 
-- Copy or rename the file ``dbp-template-activity.metadata.json`` to ``dbp-first-activity.metadata.json``
+- Copy or rename the file ``dbp-template-app.metadata.json`` to ``dbp-first-app.metadata.json``
 - Change ```element``` to your element name.
 - Change the ``module_src`` - this is the file where the code of your activity is based.
 - Change the ``routing_name``(has to be unique and url safe), ``name``, ``short_name`` and add a ``description`` 

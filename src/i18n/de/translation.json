@@ -1,5 +1,23 @@
 {
     "click-me": "Klick mich",
     "hello": "Hallo {{name}}!",
-    "please-log-in": "Bitte melde dich an"
+    "please-log-in": "Bitte melde dich an",
+    "name": {
+        "first": "*Vorname",
+        "last": "*Nachname"
+    },
+    "organization": "*Organisationseinheit",
+    "email": "*E-Mail",
+    "languages": {
+        "label": "*Gewünschte Sprache des Austausches",
+        "german": "Deutsch",
+        "english": "Englisch",
+        "both": "Beides möglich"
+    },
+    "day":  "*Gewünschter Tag (Bitte geben Sie alle für Sie mögliche Optionen an.)",
+    "agreement": {
+        "label": "*Ich bin damit einverstanden, dass Fotos zum Zweck der Bewerbung und Dokumentation der Veranstaltung gemacht werden. Die Fotos können auf Präsentationen oder Websites der TU Graz veröffentlicht werden.",
+        "yes": "Ja",
+        "no": "Nein"
+    }
 }

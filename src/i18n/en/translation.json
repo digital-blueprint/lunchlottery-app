@@ -1,5 +1,23 @@
 {
     "click-me": "Click me",
     "hello": "Hello {{name}}!",
-    "please-log-in": "Please log in"
+    "please-log-in": "Please log in",
+    "name": {
+        "first": "*First Name",
+        "last": "*Last Name"
+    },
+    "organization": "*Organisational unit",
+    "email": "*Email",
+    "languages": {
+        "label": "*Preferred language at lunch",
+        "german": "German",
+        "english": "English",
+        "both": "Both possible"
+    },
+    "day": "*Preferred day (Please select all possible options.)",
+    "agreement": {
+        "label": "*I agree that photots will be taken in order to promote and document the event. The photos will be published on presentations or websites of TU Graz",
+        "yes": "Yes",
+        "no": "No"
+    }
 }
