@@ -1,6 +1,4 @@
 {
-    "click-me": "Click me",
-    "hello": "Hello {{name}}!",
     "please-log-in": "Please log in",
     "name": {
         "first": "*First Name",

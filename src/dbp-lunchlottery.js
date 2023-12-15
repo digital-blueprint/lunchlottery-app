@@ -87,15 +87,6 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             <p>${this.activity.getDescription(this.lang)}</p>
 
             <div class="${loggedIn ? '' : 'hidden'}">
-                <!--<input type="button" value="${i18n.t('click-me')}" @click="${this.onClick}"></input>
-                <p>${
-                    this.name
-                        ? html`
-                              <dbp-icon name="world"></dbp-icon>
-                              ${i18n.t('hello', {name: this.name})}
-                          `
-                        : ``
-                }</p>-->
                 <div>
                     <label class="label">${i18n.t('name.first')}</label><br>
                     <input type="text"/>

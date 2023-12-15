@@ -1,6 +1,4 @@
 {
-    "click-me": "Klick mich",
-    "hello": "Hallo {{name}}!",
     "please-log-in": "Bitte melde dich an",
     "name": {
         "first": "*Vorname",
