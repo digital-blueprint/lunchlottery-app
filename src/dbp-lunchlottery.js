@@ -2,7 +2,7 @@ import {createInstance} from './i18n.js';
 import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import * as commonUtils from '@dbp-toolkit/common/utils';
-import {Icon} from '@dbp-toolkit/common';
+import {Icon, Button} from '@dbp-toolkit/common';
 import {ResourceSelect} from '@dbp-toolkit/resource-select';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import DBPLitElement from '@dbp-toolkit/common/dbp-lit-element';
@@ -23,6 +23,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
     static get scopedElements() {
         return {
             'dbp-icon': Icon,
+            'dbp-button': Button,
             'dbp-resource-select': ResourceSelect,
         };
     }
@@ -84,7 +85,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
 
         return html`
             <h3>${this.activity.getName(this.lang)}</h3>
-            <p>${this.activity.getDescription(this.lang)}</p>
+            <p>${this.activity.getDescription(this.lang)} <a href="">${this.activity.getHere(this.lang)}</a></p>
 
             <div class="${loggedIn ? '' : 'hidden'}">
                 <div>
@@ -144,6 +145,11 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             <div class="${!loggedIn ? '' : 'hidden'}">
                 <p>${i18n.t('please-log-in')}</p>
             </div>
+            
+            <dbp-button 
+            value="Primary"
+            @click="${this.buttonClickHandler}"
+            type="is-primary">${i18n.t('submit')}</dbp-button>
         `;
     }
 }

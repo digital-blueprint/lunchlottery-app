@@ -11,8 +11,12 @@
         "en": "The Lunch Lottery - Meet your Colleagues"
     },
     "description": {
-        "de": "Informationen zu den Teilnahmebedingungen bei Initiativen der Personal-/Kompetenzentwicklung finden Sie hier.",
-        "en": "Information on the conditions of participation and data protection for initiatives of The Human Development Department can be found here."
+        "de": "Informationen zu den Teilnahmebedingungen bei Initiativen der Personal-/Kompetenzentwicklung finden Sie",
+        "en": "Information on the conditions of participation and data protection for initiatives of The Human Development Department can be found"
     },
-    "subscribe": "lang,auth,entry-point-url"
+    "subscribe": "lang,auth,entry-point-url",
+    "here": {
+        "de": "hier.",
+        "en": "here."
+    }
 }

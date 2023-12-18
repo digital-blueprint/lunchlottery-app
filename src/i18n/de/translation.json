@@ -17,5 +17,6 @@
         "label": "*Ich bin damit einverstanden, dass Fotos zum Zweck der Bewerbung und Dokumentation der Veranstaltung gemacht werden. Die Fotos können auf Präsentationen oder Websites der TU Graz veröffentlicht werden.",
         "yes": "Ja",
         "no": "Nein"
-    }
+    },
+    "submit": "Absenden"
 }

@@ -12,4 +12,9 @@ export class Activity {
         let desc = this._data['description'];
         return desc[lang] ?? desc['en'];
     }
+
+    getHere(lang) {
+        let desc = this._data['here'];
+        return desc[lang] ?? desc['en'];
+    }
 }
