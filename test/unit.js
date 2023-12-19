@@ -1,13 +1,13 @@
 import {assert} from 'chai';
 
-import '../src/dbp-template-activity';
-import '../src/dbp-frontend-template-app.js';
+import '../src/dbp-lunchlottery';
+import '../src/dbp-lunchlottery-app.js';
 
-suite('dbp-template-activity basics', () => {
+suite('dbp-lunchlottery basics', () => {
     let node;
 
     suiteSetup(async () => {
-        node = document.createElement('dbp-template-activity');
+        node = document.createElement('dbp-lunchlottery');
         document.body.appendChild(node);
         await node.updateComplete;
     });
