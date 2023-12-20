@@ -139,6 +139,11 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                     <input type="radio" id="no" name="no" value="no">
                     <label for="no">${i18n.t('agreement.no')}</label>
                 </div>
+
+                <dbp-button
+                    value="Primary"
+                    @click="${this.buttonClickHandler}"
+                    type="is-primary">${i18n.t('submit')}</dbp-button>
                 
             </div>
 
@@ -146,10 +151,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <p>${i18n.t('please-log-in')}</p>
             </div>
             
-            <dbp-button 
-            value="Primary"
-            @click="${this.buttonClickHandler}"
-            type="is-primary">${i18n.t('submit')}</dbp-button>
+            
         `;
     }
 }
