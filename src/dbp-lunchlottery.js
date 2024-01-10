@@ -56,6 +56,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
     static get styles() {
         return [
             commonStyles.getThemeCSS(),
+            commonStyles.getGeneralCSS(),
             css`
                 .hidden {
                     display: none;
@@ -84,60 +85,78 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         let i18n = this._i18n;
 
         return html`
-            <h3>${this.activity.getName(this.lang)}</h3>
+            <!--<h3>${this.activity.getName(this.lang)}</h3>-->
             <p>${this.activity.getDescription(this.lang)} <a href="">${this.activity.getHere(this.lang)}</a></p>
 
             <div class="${loggedIn ? '' : 'hidden'}">
-                <div>
-                    <label class="label">${i18n.t('name.first')}</label><br>
-                    <input type="text"/>
+                <div class="field">
+                    <label class="label">${i18n.t('name.first')}</label>
+                    <div class="control">
+                        <input type="text"/>
+                    </div>
                 </div>
 
-                <div>
-                    <label class="label">${i18n.t('name.last')}</label><br>
-                    <input type="text"/>
+                <div class="field">
+                    <label class="label">${i18n.t('name.last')}</label>
+                    <div class="control">
+                        <input type="text"/>
+                    </div>
                 </div>
                     
-                <div>
+                <div class="field">
                     <label class="label">${i18n.t('organization')}</label>
-                    <dbp-resource-select />
+                    <div class="control">
+                        <dbp-resource-select />
+                    </div>
+                    
                 </div>
                 
-                <div>
-                    <label class="label">${i18n.t('email')}</label><br>
-                    <input type="email"/>
+                <div class="field">
+                    <label class="label">${i18n.t('email')}</label>
+                    <div class="control">
+                        <input type="email"/>
+                    </div>
+                    
                 </div>
                 
-                <div>
-                    <label>${i18n.t('languages.label')}</label><br>
-                    <input type="radio" id="german" name="language" value="german">
-                    <label for="german">${i18n.t('languages.german')}</label><br>
-                    <input type="radio" id="english" name="language" value="english">
-                    <label for="english">${i18n.t('languages.english')}</label><br>
-                    <input type="radio" id="both" name="language" value="both">
-                    <label for="both">${i18n.t('languages.both')}</label>
+                <div class="field">
+                    <label class="label">${i18n.t('languages.label')}</label>
+                    <div class="control">
+                        <input type="radio" id="german" name="language" value="german">
+                        <label for="german">${i18n.t('languages.german')}</label><br>
+                        <input type="radio" id="english" name="language" value="english">
+                        <label for="english">${i18n.t('languages.english')}</label><br>
+                        <input type="radio" id="both" name="language" value="both">
+                        <label for="both">${i18n.t('languages.both')}</label>
+                    </div>
+                    
                 </div>
                 <!-- Should I add the provided dates, or make a webcomponent that lets the customers choose the dates themselves? -->
-                <div>
-                    <label>${i18n.t('day')}</label><br>
-                    <input type="checkbox" id="wednesday" name="wednesday" value="wednesday">
-                    <label for="wednesday"> wednesday</label><br>
-                    <input type="checkbox" id="thursday" name="thursday" value="thursday">
-                    <label for="thursday"> thursday</label><br>
-                    <input type="checkbox" id="friday" name="friday" value="friday">
-                    <label for="friday"> friday</label><br>
-                    <input type="checkbox" id="monday" name="monday" value="monday">
-                    <label for="monday"> monday</label><br>
-                    <input type="checkbox" id="tuesday" name="tuesday" value="tuesday">
-                    <label for="tuesday"> tuesday</label>
+                <div class="field">
+                    <label class="label">${i18n.t('day')}</label>
+                    <div class="control">
+                        <input type="checkbox" id="wednesday" name="wednesday" value="wednesday">
+                        <label for="wednesday"> wednesday</label><br>
+                        <input type="checkbox" id="thursday" name="thursday" value="thursday">
+                        <label for="thursday"> thursday</label><br>
+                        <input type="checkbox" id="friday" name="friday" value="friday">
+                        <label for="friday"> friday</label><br>
+                        <input type="checkbox" id="monday" name="monday" value="monday">
+                        <label for="monday"> monday</label><br>
+                        <input type="checkbox" id="tuesday" name="tuesday" value="tuesday">
+                        <label for="tuesday"> tuesday</label>
+                    </div>
                 </div>
                 
-                <div>
-                    <label>${i18n.t('agreement.label')}</label><br>
-                    <input type="radio" id="yes" name="yes" value="yes">
-                    <label for="yes">${i18n.t('agreement.yes')}</label>
-                    <input type="radio" id="no" name="no" value="no">
-                    <label for="no">${i18n.t('agreement.no')}</label>
+                <div class="field">
+                    <label class="label">${i18n.t('agreement.label')}</label>
+                    <div class="control">
+                        <input type="radio" id="yes" name="yes" value="yes">
+                        <label for="yes">${i18n.t('agreement.yes')}</label>
+                        <input type="radio" id="no" name="no" value="no">
+                        <label for="no">${i18n.t('agreement.no')}</label>
+                    </div>
+                    
                 </div>
 
                 <dbp-button

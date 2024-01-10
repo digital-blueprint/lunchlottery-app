@@ -1,5 +1,9 @@
 # Lunch Lottery App
 
+#TODO: childtask: auf dev enironment setzen
+#TDO: childtask: mit ZID koordinieren: Sachdomän undZerifikat
+#Lunch Lottery übersetzen
+
 ## Overview
 
 ```bash
