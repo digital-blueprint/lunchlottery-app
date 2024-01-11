@@ -65,6 +65,9 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 .textField{
                     width: 100%;
                 }
+                
+                #rightSide {
+                float:right;
             `,
         ];
     }
@@ -162,11 +165,13 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                     </div>
                     
                 </div>
-
-                <dbp-button
-                    value="Primary"
-                    @click="${this.buttonClickHandler}"
-                    type="is-primary">${i18n.t('submit')}</dbp-button>
+                <div id="rightSide">
+                    <dbp-button 
+                       value="Primary"
+                       @click="${this.buttonClickHandler}"
+                       type="is-primary">${i18n.t('submit')}</dbp-button>
+                </div>
+                
                 
             </div>
 
