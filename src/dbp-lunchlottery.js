@@ -61,6 +61,10 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 .hidden {
                     display: none;
                 }
+                
+                .textField{
+                    width: 100%;
+                }
             `,
         ];
     }
@@ -92,14 +96,14 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('name.first')}</label>
                     <div class="control">
-                        <input type="text"/>
+                        <input type="text" class="textField"/>
                     </div>
                 </div>
 
                 <div class="field">
                     <label class="label">${i18n.t('name.last')}</label>
                     <div class="control">
-                        <input type="text"/>
+                        <input type="text"  class="textField"/>
                     </div>
                 </div>
                     
@@ -114,7 +118,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('email')}</label>
                     <div class="control">
-                        <input type="email"/>
+                        <input type="email"  class="textField"/>
                     </div>
                     
                 </div>
