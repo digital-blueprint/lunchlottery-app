@@ -60,6 +60,18 @@ jobs:
           node-version: 18
           cache: 'npm'
 
+      - name: Publish to NPM
+        if: github.ref == 'refs/heads/main'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          # https://www.npmjs.com/settings/dbp-deploy/tokens
+          # NPM_TOKEN needs to be a "Publish" token with 2FA disabled!
+          echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc
+          npm ci
+          npm run build
+          npm run publish
+
       - name: Deploy and wait for completion
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/demo'
         uses: digital-blueprint/gitlab-pipeline-trigger-action@v1
@@ -69,4 +81,4 @@ jobs:
           access_token: ${{ secrets.DEPLOY_ACCESS_TOKEN }}
           id: '21238'
           ref: 'main'
-          variables: '{"UPSTREAM_PROJECT_PATH":"dbp/web-components/dbp-template-app","UPSTREAM_COMMIT_BRANCH":"${{ github.ref_name }}","UPSTREAM_COMMIT_SHA":"${{ github.ref_name }}"}'
+          variables: '{"UPSTREAM_PROJECT_PATH":"dbp/lunchlottery/lunchlottery","UPSTREAM_COMMIT_BRANCH":"${{ github.ref_name }}","UPSTREAM_COMMIT_SHA":"${{ github.ref_name }}"}'
