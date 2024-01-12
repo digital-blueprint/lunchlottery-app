@@ -27,7 +27,7 @@
     "matomoSiteId": 131
   },
   "development": {
-    "basePath": "/apps/lunchlottery-app/",
+    "basePath": "/apps/lunchlottery/",
     "entryPointURL": "https://api-dev.tugraz.at",
     "keyCloakBaseURL": "https://auth-dev.tugraz.at/auth",
     "keyCloakRealm": "tugraz-vpu",
@@ -36,7 +36,7 @@
     "matomoSiteId": 131
   },
   "developmentCustom": {
-    "basePath": "/tugapps/lunchlottery-app/",
+    "basePath": "/tugapps/lunchlottery/",
     "entryPointURL": "https://api-dev.tugraz.at",
     "keyCloakBaseURL": "https://auth-dev.tugraz.at/auth",
     "keyCloakRealm": "tugraz-vpu",
@@ -45,7 +45,7 @@
     "matomoSiteId": 131
   },
   "demo": {
-    "basePath": "/apps/lunchlottery-app/",
+    "basePath": "/apps/lunchlottery/",
     "entryPointURL": "https://api-demo.tugraz.at",
     "keyCloakBaseURL": "https://auth-demo.tugraz.at/auth",
     "keyCloakRealm": "tugraz-vpu",
@@ -54,7 +54,7 @@
     "matomoSiteId": 131
   },
   "demoCustom": {
-    "basePath": "/tugapps/lunchlottery-app/",
+    "basePath": "/tugapps/lunchlottery/",
     "entryPointURL": "https://api-demo.tugraz.at",
     "keyCloakBaseURL": "https://auth-demo.tugraz.at/auth",
     "keyCloakRealm": "tugraz-vpu",
