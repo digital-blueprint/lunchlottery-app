@@ -1,8 +1,12 @@
 # Lunch Lottery App
 
-#TODO: childtask: auf dev enironment setzen
-#TDO: childtask: mit ZID koordinieren: Sachdomän undZerifikat
-#Lunch Lottery übersetzen
+[GitHub Repository](https://github.com/digital-blueprint/lunchlottery-app) |
+[npmjs package](https://www.npmjs.com/package/@digital-blueprint/lunchlottery-app) |
+[Unpkg CDN](https://unpkg.com/browse/@digital-blueprint/lunchlottery-app/)
+
+[![Build and Test](https://github.com/digital-blueprint/lunchlottery-app/actions/workflows/build-test-publish.yml/badge.svg)](https://github.com/digital-blueprint/lunchlottery-app/actions/workflows/build-test-publish.yml)
+
+This is an application for users to apply to the lunch-lottery.
 
 ## Overview
 
@@ -31,4 +35,4 @@ npm test
 npm build
 ```
 
-Jump to <https://localhost:8001> and you should get a Single Sign On login page.
+Jump to <https://localhost:8001>, and you should get a Single Sign On login page.
