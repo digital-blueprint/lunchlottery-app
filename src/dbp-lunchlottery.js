@@ -108,6 +108,9 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         return html`
             <!--<h3>${this.activity.getName(this.lang)}</h3>-->
             <p>${this.activity.getDescription(this.lang)} <a href="">${this.activity.getHere(this.lang)}</a></p>
+            <!-- test to get name and id
+            <p>${this.auth['user-full-name']}</p>
+            <p>${this.auth['user-id']}</p>-->
 
             <div class="${loggedIn ? '' : 'hidden'}">
                 <div class="field">
@@ -154,18 +157,18 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 </div>
                 <!-- Should I add the provided dates, or make a webcomponent that lets the customers choose the dates themselves? -->
                 <div class="field">
-                    <label class="label">${i18n.t('day')}</label>
+                    <label class="label">${i18n.t('day.label')}</label>
                     <div class="control">
                         <input type="checkbox" id="wednesday" name="wednesday" value="wednesday">
-                        <label for="wednesday"> wednesday</label><br>
+                        <label for="wednesday">${i18n.t('day.wednesday')}</label><br>
                         <input type="checkbox" id="thursday" name="thursday" value="thursday">
-                        <label for="thursday"> thursday</label><br>
+                        <label for="thursday">${i18n.t('day.thursday')}</label><br>
                         <input type="checkbox" id="friday" name="friday" value="friday">
-                        <label for="friday"> friday</label><br>
+                        <label for="friday">${i18n.t('day.friday')}</label><br>
                         <input type="checkbox" id="monday" name="monday" value="monday">
-                        <label for="monday"> monday</label><br>
+                        <label for="monday">${i18n.t('day.monday')}</label><br>
                         <input type="checkbox" id="tuesday" name="tuesday" value="tuesday">
-                        <label for="tuesday"> tuesday</label>
+                        <label for="tuesday">${i18n.t('day.tuesday')}</label>
                     </div>
                 </div>
                 
@@ -180,7 +183,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                     
                 </div>
 
-                <div class="control">
+                <!--<div class="control">
                     <input
                             type="email"
                             class="input"
@@ -192,7 +195,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                                 this.processEmailInput(event);
                                 this._atChangeInput(event);
                             }}" />
-                </div>
+                </div>-->
                 <div id="rightSide">
                     <dbp-button 
                        value="Primary"

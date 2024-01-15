@@ -12,7 +12,14 @@
         "english": "English",
         "both": "Both possible"
     },
-    "day": "*Preferred day (Please select all possible options.)",
+    "day": {
+        "label": "*Preferred day (Please select all possible options.)",
+        "monday": "Monday, 8 May - 12:45 p.m.",
+        "tuesday": "Tuesday, 9 May - 12:45 p.m.",
+        "wednesday": "Wednesday, 3 May - 12:45 p.m.",
+        "thursday": "Thursday, 4 May - 12:45 p.m.",
+        "friday": "Friday, 5 May - 12:45 p.m."
+    },
     "agreement": {
         "label": "*I agree that photots will be taken in order to promote and document the event. The photos will be published on presentations or websites of TU Graz",
         "yes": "Yes",

@@ -12,7 +12,14 @@
         "english": "Englisch",
         "both": "Beides möglich"
     },
-    "day":  "*Gewünschter Tag (Bitte geben Sie alle für Sie mögliche Optionen an.)",
+    "day":  {
+        "label": "*Gewünschter Tag (Bitte geben Sie alle für Sie mögliche Optionen an.)",
+        "monday": "Montag, 8 Mai - 12:45 Uhr",
+        "tuesday": "Dienstag, 9 Mai - 12:45 Uhr",
+        "wednesday": "Mittwoch, 3 Mai - 12:45 Uhr",
+        "thursday": "Donnerstag, 4 Mai - 12:45 Uhr",
+        "friday": "Freitag, 5 Mai - 12:45 Uhr"
+    },
     "agreement": {
         "label": "*Ich bin damit einverstanden, dass Fotos zum Zweck der Bewerbung und Dokumentation der Veranstaltung gemacht werden. Die Fotos können auf Präsentationen oder Websites der TU Graz veröffentlicht werden.",
         "yes": "Ja",
