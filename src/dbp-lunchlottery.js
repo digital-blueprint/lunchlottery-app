@@ -18,6 +18,8 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         this.auth = null;
         this.name = null;
         this.entryPointUrl = null;
+        this.guestEmail = '';
+        this.isEmailSet = false;
     }
 
     static get scopedElements() {
@@ -34,6 +36,8 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             auth: {type: Object},
             name: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
+            guestEmail: {type: String, attribute: false},
+            isEmailSet: {type: Boolean, attribute: false},
         };
     }
 
@@ -85,6 +89,16 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
 
         let data = await response.json();
         this.name = `${data['givenName']} ${data['familyName']}`;
+    }
+
+    processEmailInput(event) {
+        if (this._('#email-field').value != '') {
+            this.guestEmail = this._('#email-field').value;
+            this.isEmailSet = true;
+        } else {
+            this.isEmailSet = false;
+            this.guestEmail = '';
+        }
     }
 
     render() {
@@ -164,6 +178,20 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                         <label for="no">${i18n.t('agreement.no')}</label>
                     </div>
                     
+                </div>
+
+                <div class="control">
+                    <input
+                            type="email"
+                            class="input"
+                            id="email-field"
+                            placeholder="mail@email.at"
+                            name="email"
+                            .value="${this.guestEmail}"
+                            @input="${(event) => {
+                                this.processEmailInput(event);
+                                this._atChangeInput(event);
+                            }}" />
                 </div>
                 <div id="rightSide">
                     <dbp-button 
