@@ -67,6 +67,10 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                     display: none;
                 }
                 
+                a {
+                    color: blue;
+                }
+                
                 .textField{
                     width: 100%;
                 }
@@ -84,7 +88,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         let i18n = this._i18n;
 
         return html`
-            <p>${this.activity.getDescription(this.lang)} <a href="">${this.activity.getHere(this.lang)}</a></p>
+            <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
 
             <div class="${loggedIn ? '' : 'hidden'}">
                 <div class="field">
