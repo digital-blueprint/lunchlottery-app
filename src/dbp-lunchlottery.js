@@ -20,6 +20,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         this.entryPointUrl = null;
         this.guestEmail = '';
         this.isEmailSet = false;
+        this._resources = [];
     }
 
     static get scopedElements() {
@@ -66,6 +67,10 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                     display: none;
                 }
                 
+                a {
+                    color: blue;
+                }
+                
                 .textField{
                     width: 100%;
                 }
@@ -76,38 +81,14 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         ];
     }
 
-    async onClick(event) {
-        let response = await fetch(this.entryPointUrl + '/base/people/' + this.auth['user-id'], {
-            headers: {
-                'Content-Type': 'application/ld+json',
-                Authorization: 'Bearer ' + this.auth.token,
-            },
-        });
-        if (!response.ok) {
-            throw new Error(response);
-        }
 
-        let data = await response.json();
-        this.name = `${data['givenName']} ${data['familyName']}`;
-    }
-
-    processEmailInput(event) {
-        if (this._('#email-field').value != '') {
-            this.guestEmail = this._('#email-field').value;
-            this.isEmailSet = true;
-        } else {
-            this.isEmailSet = false;
-            this.guestEmail = '';
-        }
-    }
 
     render() {
         let loggedIn = this.auth && this.auth.token;
         let i18n = this._i18n;
 
         return html`
-            <!--<h3>${this.activity.getName(this.lang)}</h3>-->
-            <p>${this.activity.getDescription(this.lang)} <a href="">${this.activity.getHere(this.lang)}</a></p>
+            <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
 
             <div class="${loggedIn ? '' : 'hidden'}">
                 <div class="field">
@@ -179,20 +160,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                     </div>
                     
                 </div>
-
-                <!--<div class="control">
-                    <input
-                            type="email"
-                            class="input"
-                            id="email-field"
-                            placeholder="mail@email.at"
-                            name="email"
-                            .value="${this.guestEmail}"
-                            @input="${(event) => {
-                                this.processEmailInput(event);
-                                this._atChangeInput(event);
-                            }}" />
-                </div>-->
+                
                 <div id="rightSide">
                     <dbp-button 
                        value="Primary"
