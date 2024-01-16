@@ -108,9 +108,6 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         return html`
             <!--<h3>${this.activity.getName(this.lang)}</h3>-->
             <p>${this.activity.getDescription(this.lang)} <a href="">${this.activity.getHere(this.lang)}</a></p>
-            <!-- test to get name and id
-            <p>${this.auth['user-full-name'] ? this.auth['user-full-name'] : 'Unknown User'}</p>
-            <p>${this.auth['user-id'] ? this.auth['user-id'] : 'Unknown ID'}</p>-->
 
             <div class="${loggedIn ? '' : 'hidden'}">
                 <div class="field">
