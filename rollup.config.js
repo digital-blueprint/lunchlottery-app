@@ -34,7 +34,7 @@ let whitelabel;
 // path to non whitelabel assets and configs
 let customAssetsPath;
 // development path
-let devPath = 'assets_local/';
+let devPath = 'assets_custom/';
 // deployment path
 let deploymentPath = '../';
 
@@ -118,7 +118,10 @@ export default (async () => {
         input:
             appEnv != 'test'
                 ? (appEnv.length > 6 && appEnv.substring(appEnv.length - 6) == "Custom") ?
-                    ['src/' + appName + '.js', 'src/dbp-lunchlottery.js']
+                    [
+                        'src/' + appName + '.js', 'src/dbp-lunchlottery.js',
+                        await getPackagePath('@tugraz/web-components', 'src/logo.js')
+                    ]
                     :
                     ['src/' + appName + '.js', 'src/dbp-lunchlottery.js']
                 : globSync('test/**/*.js'),
@@ -190,6 +193,8 @@ export default (async () => {
                     matomoUrl: config.matomoUrl,
                     matomoSiteId: config.matomoSiteId,
                     buildInfo: getBuildInfo(appEnv),
+                    shortName: config.shortName,
+                    appDomain: config.appDomain,
                 },
             }),
             resolve({
@@ -268,6 +273,10 @@ export default (async () => {
                     {
                         src: await getPackagePath('@tugraz/font-source-sans-pro', 'files/*'),
                         dest: 'dist/local/' + pkg.name + '/fonts/source-sans-pro',
+                    },
+                    {
+                        src: await getPackagePath('@tugraz/web-components', 'src/spinner.js'),
+                        dest: 'dist/' + (await getDistPath(pkg.name)), rename: 'tug_spinner.js'
                     },
                     {
                         src: await getPackagePath('@dbp-toolkit/common', 'src/spinner.js'),

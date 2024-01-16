@@ -54,6 +54,7 @@
         "@fontsource/nunito-sans": "^5.0.0",
         "@open-wc/scoped-elements": "^2.0.0",
         "@tugraz/font-source-sans-pro": "^0.2.4",
+        "@tugraz/web-components": "^0.3.6",
         "i18next": "^23.0.0",
         "lit": "^2.7.0 || ^3.0.0"
     },
@@ -66,6 +67,7 @@
         "format:prettier": "prettier \"**/*.{js,json,ts}\" --write",
         "watch": "rollup --bundleConfigAsCjs -c --watch",
         "watch-local": "rollup --bundleConfigAsCjs -c --watch --environment APP_ENV:localCustom",
+        "watch-custom": "rollup --bundleConfigAsCjs -c --watch --environment APP_ENV:localCustom",
         "watch-full": "rollup --bundleConfigAsCjs -c --watch --environment FORCE_FULL",
         "test": "rollup --bundleConfigAsCjs -c --environment APP_ENV:test && karma start --singleRun",
         "test-full": "rollup --bundleConfigAsCjs -c --environment FORCE_FULL,APP_ENV:test && karma start --singleRun",
