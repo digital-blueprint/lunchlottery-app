@@ -8,6 +8,7 @@ import * as commonStyles from '@dbp-toolkit/common/styles';
 import DBPLitElement from '@dbp-toolkit/common/dbp-lit-element';
 import metadata from './dbp-lunchlottery.metadata.json';
 import {Activity} from './activity.js';
+import {AuthKeycloak} from '@dbp-toolkit/auth';
 
 class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
     constructor() {
@@ -28,6 +29,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             'dbp-icon': Icon,
             'dbp-button': Button,
             'dbp-resource-select': ResourceSelect,
+            'dbp-auth-keycloak': AuthKeycloak,
         };
     }
 
@@ -56,6 +58,47 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         });
 
         super.update(changedProperties);
+    }
+
+    async _onUserInfoClick() {
+        const input = this._('#person-info');
+        if (!this.auth.token) {
+            console.error('not logged in');
+            input.innerHTML = 'You are not logged in!';
+            return;
+        }
+
+        let userInfoURL =
+            'https://auth-dev.tugraz.at/auth/realms/tugraz-vpu/protocol/openid-connect/userinfo';
+
+        // NOTE: the URL and realm need to match the keycloak config above
+        const response = await fetch(userInfoURL, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + this.auth.token,
+            },
+        });
+        const person = await response.json();
+        console.log(person);
+        //div.innerHTML = JSON.stringify(person);
+        input.value = JSON.stringify(person);
+    }
+
+    getAuthComponentHtml() {
+        return this.noAuth
+            ? html`
+                  <dbp-login-button subscribe="auth" lang="${this.lang}"></dbp-login-button>
+              `
+            : html`
+                  <div class="container">
+                      <dbp-auth-keycloak
+                          subscribe="requested-login-status,silent-check-sso-redirect-uri,url,realm,client-id"
+                          lang="${this.lang}"
+                          entry-point-url="${this.entryPointUrl}"
+                          try-login></dbp-auth-keycloak>
+                      <dbp-login-button subscribe="auth" lang="${this.lang}"></dbp-login-button>
+                  </div>
+              `;
     }
 
     static get styles() {
@@ -89,14 +132,16 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
 
         return html`
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
-
+            ${this.getAuthComponentHtml()}
+            <!--<div id="person-info"></div>-->
             <div class="${loggedIn ? '' : 'hidden'}">
                 <div class="field">
                     <label class="label">${i18n.t('name.first')}</label>
                     <div class="control">
-                        <input type="text" class="textField"/>
+                        <input type="text" class="textField" id="person-info"/>
                     </div>
                 </div>
+                
 
                 <div class="field">
                     <label class="label">${i18n.t('name.last')}</label>
@@ -167,7 +212,13 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                        @click="${this.buttonClickHandler}"
                        type="is-primary">${i18n.t('submit')}</dbp-button>
                 </div>
+
                 
+                <div class="container">
+                    <input type="button" value="Fetch userinfo" @click="${this._onUserInfoClick}" />
+                    <!--<h4>Person info:</h4>
+                    <div id="person-info"></div>-->
+                </div>
                 
             </div>
 
