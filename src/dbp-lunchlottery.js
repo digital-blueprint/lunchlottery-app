@@ -61,10 +61,12 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
     }
 
     async _onUserInfoClick() {
-        const input = this._('#person-info');
+        const first_name = this._('#first-name');
+        const family_name = this._('#family-name');
+        const email = this._('#email');
         if (!this.auth.token) {
             console.error('not logged in');
-            input.innerHTML = 'You are not logged in!';
+            first_name.innerHTML = 'You are not logged in!';
             return;
         }
 
@@ -79,9 +81,12 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             },
         });
         const person = await response.json();
-        console.log(person);
+        console.log(JSON.stringify(person));
         //div.innerHTML = JSON.stringify(person);
-        input.value = JSON.stringify(person);
+        //input.value = JSON.stringify(person);
+        first_name.value = person['given_name'];
+        family_name.value = person['family_name'];
+        email.value = person['email'];
     }
 
     getAuthComponentHtml() {
@@ -138,7 +143,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('name.first')}</label>
                     <div class="control">
-                        <input type="text" class="textField" id="person-info"/>
+                        <input type="text" class="textField" id="first-name"/>
                     </div>
                 </div>
                 
@@ -146,7 +151,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('name.last')}</label>
                     <div class="control">
-                        <input type="text"  class="textField"/>
+                        <input type="text" class="textField" id="family-name"/>
                     </div>
                 </div>
                     
@@ -161,7 +166,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('email')}</label>
                     <div class="control">
-                        <input type="email"  class="textField"/>
+                        <input type="email"  class="textField" id = "email"/>
                     </div>
                     
                 </div>
