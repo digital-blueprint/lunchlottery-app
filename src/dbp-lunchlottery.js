@@ -158,7 +158,18 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization')}</label>
                     <div class="control">
-                        <dbp-resource-select />
+                        <dbp-resource-select
+                                id="show-resource-select"
+                                subscribe="lang,entry-point-url,auth"
+                                lang="${this.lang}"
+                                resource-path="dispatch/groups"
+                                value="${this.groupValue}"
+                                @change=${(event) => {
+                                    this.processSelectedOrganization(event);
+                                    // console.log("read: ", this.mayRead);
+                                    // console.log("write: ", this.mayWrite);
+                                }}
+                        ></dbp-resource-select>
                     </div>
                     
                 </div>
@@ -219,11 +230,11 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 </div>
 
                 
-                <div class="container">
+                <!--<div class="container">
                     <input type="button" value="Fetch userinfo" @click="${this._onUserInfoClick}" />
-                    <!--<h4>Person info:</h4>
-                    <div id="person-info"></div>-->
-                </div>
+                    <h4>Person info:</h4>
+                    <div id="person-info"></div>
+                </div>-->
                 
             </div>
 
