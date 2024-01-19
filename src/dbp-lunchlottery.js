@@ -76,6 +76,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
     }
 
     update(changedProperties) {
+
         changedProperties.forEach((oldValue, propName) => {
             switch (propName) {
                 case 'lang':
@@ -83,7 +84,6 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                     break;
             }
         });
-        window.onload = this._autoFill();
         super.update(changedProperties);
     }
 
@@ -132,7 +132,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
     render() {
         let loggedIn = this.auth && this.auth.token;
         let i18n = this._i18n;
-
+        this._autoFill();
         return html`
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
             ${this.getAuthComponentHtml()}
@@ -141,7 +141,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('name.first')}</label>
                     <div class="control">
-                        <input type="text" class="textField" id="first-name"/>
+                        <input type="text" class="textField" id="first-name"  readonly/>
                     </div>
                 </div>
                 
@@ -149,7 +149,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('name.last')}</label>
                     <div class="control">
-                        <input type="text" class="textField" id="family-name"/>
+                        <input type="text" class="textField" id="family-name"  readonly/>
                     </div>
                 </div>
                     
@@ -162,11 +162,6 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                                 lang="${this.lang}"
                                 resource-path="dispatch/groups"
                                 value="${this.groupValue}"
-                                @change=${(event) => {
-                                    this.processSelectedOrganization(event);
-                                    // console.log("read: ", this.mayRead);
-                                    // console.log("write: ", this.mayWrite);
-                                }}
                         ></dbp-resource-select>
                     </div>
                     
@@ -175,7 +170,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('email')}</label>
                     <div class="control">
-                        <input type="email"  class="textField" id = "email"/>
+                        <input type="email"  class="textField" id = "email" readonly/>
                     </div>
                     
                 </div>
