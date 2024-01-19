@@ -19,8 +19,6 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         this.auth = null;
         this.name = null;
         this.entryPointUrl = null;
-        this.guestEmail = '';
-        this.isEmailSet = false;
         this._resources = [];
     }
 
@@ -39,8 +37,6 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             auth: {type: Object},
             name: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
-            guestEmail: {type: String, attribute: false},
-            isEmailSet: {type: Boolean, attribute: false},
         };
     }
 
@@ -48,19 +44,9 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         super.connectedCallback();
     }
 
-    update(changedProperties) {
-        changedProperties.forEach((oldValue, propName) => {
-            switch (propName) {
-                case 'lang':
-                    this._i18n.changeLanguage(this.lang);
-                    break;
-            }
-        });
 
-        super.update(changedProperties);
-    }
 
-    async _onUserInfoClick() {
+    async _autoFill() {
         const first_name = this._('#first-name');
         const family_name = this._('#family-name');
         const email = this._('#email');
@@ -87,6 +73,18 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         first_name.value = person['given_name'];
         family_name.value = person['family_name'];
         email.value = person['email'];
+    }
+
+    update(changedProperties) {
+        changedProperties.forEach((oldValue, propName) => {
+            switch (propName) {
+                case 'lang':
+                    this._i18n.changeLanguage(this.lang);
+                    break;
+            }
+        });
+        window.onload = this._autoFill();
+        super.update(changedProperties);
     }
 
     getAuthComponentHtml() {
@@ -228,13 +226,6 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                        @click="${this.buttonClickHandler}"
                        type="is-primary">${i18n.t('submit')}</dbp-button>
                 </div>
-
-                
-                <!--<div class="container">
-                    <input type="button" value="Fetch userinfo" @click="${this._onUserInfoClick}" />
-                    <h4>Person info:</h4>
-                    <div id="person-info"></div>
-                </div>-->
                 
             </div>
 
