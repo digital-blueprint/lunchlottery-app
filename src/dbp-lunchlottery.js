@@ -132,10 +132,11 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
     render() {
         let loggedIn = this.auth && this.auth.token;
         let i18n = this._i18n;
-        this._autoFill();
+
         return html`
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
             ${this.getAuthComponentHtml()}
+            ${this._autoFill()}
             <!--<div id="person-info"></div>-->
             <div class="${loggedIn ? '' : 'hidden'}">
                 <div class="field">
