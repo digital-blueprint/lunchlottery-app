@@ -21,7 +21,7 @@
         "matomoSiteId": 131,
         "hiddenActivities": [],
         "shortName": "TU Graz",
-        "appDomain": "https://lunchlottery.tugraz.at/"
+        "appDomain": "https://lunch-lottery.tugraz.at/"
     },
     "bs": {
         "basePath": "/dist/",
@@ -57,7 +57,7 @@
         "matomoSiteId": 131,
         "hiddenActivities": [],
         "shortName": "TU Graz",
-        "appDomain": "https://lunchlottery.tugraz.at/"
+        "appDomain": "https://lunch-lottery.tugraz.at/"
     },
     "demo": {
         "basePath": "/apps/lunchlottery/",
@@ -81,7 +81,7 @@
         "matomoSiteId": 131,
         "hiddenActivities": [],
         "shortName": "TU Graz",
-        "appDomain": "https://lunchlottery.tugraz.at/"
+        "appDomain": "https://lunch-lottery.tugraz.at/"
     },
     "production": {
         "basePath": "/",
@@ -93,6 +93,6 @@
         "matomoSiteId": 131,
         "hiddenActivities": [],
         "shortName": "TU Graz",
-        "appDomain": "https://lunchlottery.tugraz.at/"
+        "appDomain": "https://lunch-lottery.tugraz.at/"
     }
 }
