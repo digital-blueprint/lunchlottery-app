@@ -8,7 +8,6 @@ import * as commonStyles from '@dbp-toolkit/common/styles';
 import DBPLitElement from '@dbp-toolkit/common/dbp-lit-element';
 import metadata from './dbp-lunchlottery.metadata.json';
 import {Activity} from './activity.js';
-import {AuthKeycloak} from '@dbp-toolkit/auth';
 
 class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
     constructor() {
@@ -17,9 +16,10 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         this.lang = this._i18n.language;
         this.activity = new Activity(metadata);
         this.auth = null;
-        this.name = null;
+        this.first_name = null;
+        this.last_name = null;
+        this.email = null;
         this.entryPointUrl = null;
-        this._resources = [];
     }
 
     static get scopedElements() {
@@ -27,7 +27,6 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             'dbp-icon': Icon,
             'dbp-button': Button,
             'dbp-resource-select': ResourceSelect,
-            'dbp-auth-keycloak': AuthKeycloak,
         };
     }
 
@@ -35,44 +34,42 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         return {
             lang: {type: String},
             auth: {type: Object},
-            name: {type: String},
+            first_name: {type: String},
+            last_name: {type: String},
+            email: {type: Object},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
         };
     }
-
+    // hier autFill
     connectedCallback() {
         super.connectedCallback();
     }
 
-
-
-    async _autoFill() {
-        const first_name = this._('#first-name');
-        const family_name = this._('#family-name');
-        const email = this._('#email');
-        if (!this.auth.token) {
-            console.error('not logged in');
-            first_name.innerHTML = 'You are not logged in!';
-            return;
-        }
-
-        let userInfoURL =
-            'https://auth-dev.tugraz.at/auth/realms/tugraz-vpu/protocol/openid-connect/userinfo';
-
-        // NOTE: the URL and realm need to match the keycloak config above
-        const response = await fetch(userInfoURL, {
+    async autoFill() {
+        let response = await fetch(this.entryPointUrl + '/base/people/' + this.auth['user-id'] + '?includeLocal=email,staffAt', {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/ld+json',
                 Authorization: 'Bearer ' + this.auth.token,
             },
         });
-        const person = await response.json();
-        console.log(JSON.stringify(person));
-        //div.innerHTML = JSON.stringify(person);
-        //input.value = JSON.stringify(person);
-        first_name.value = person['given_name'];
-        family_name.value = person['family_name'];
-        email.value = person['email'];
+        if (!response.ok) {
+            throw new Error(response);
+        }
+
+        const first_name = this._('#first-name');
+        const last_name = this._('#last-name');
+        const email = this._('#email');
+
+        let data = await response.json();
+        this.first_name = `${data['givenName']}`;
+        this.last_name = `${data['familyName']}`;
+        this.email = `${data['localData']['email']}`;
+
+        first_name.value = this.first_name;
+        last_name.value = this.last_name;
+        email.value = this.email;
+
+        console.log(data);
     }
 
     update(changedProperties) {
@@ -85,23 +82,6 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             }
         });
         super.update(changedProperties);
-    }
-
-    getAuthComponentHtml() {
-        return this.noAuth
-            ? html`
-                  <dbp-login-button subscribe="auth" lang="${this.lang}"></dbp-login-button>
-              `
-            : html`
-                  <div class="container">
-                      <dbp-auth-keycloak
-                          subscribe="requested-login-status,silent-check-sso-redirect-uri,url,realm,client-id"
-                          lang="${this.lang}"
-                          entry-point-url="${this.entryPointUrl}"
-                          try-login></dbp-auth-keycloak>
-                      <dbp-login-button subscribe="auth" lang="${this.lang}"></dbp-login-button>
-                  </div>
-              `;
     }
 
     static get styles() {
@@ -132,13 +112,13 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
     render() {
         let loggedIn = this.auth && this.auth.token;
         let i18n = this._i18n;
+        this.autoFill();
 
         return html`
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
-            ${this.getAuthComponentHtml()}
-            ${this._autoFill()}
             <!--<div id="person-info"></div>-->
             <div class="${loggedIn ? '' : 'hidden'}">
+                
                 <div class="field">
                     <label class="label">${i18n.t('name.first')}</label>
                     <div class="control">
@@ -150,7 +130,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('name.last')}</label>
                     <div class="control">
-                        <input type="text" class="textField" id="family-name"  readonly/>
+                        <input type="text" class="textField" id="last-name"  readonly/>
                     </div>
                 </div>
                     
