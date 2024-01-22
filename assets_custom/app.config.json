@@ -7,9 +7,6 @@
         "keyCloakClientId": "auth-dev-mw-frontend-local",
         "matomoUrl": "https://analytics.tugraz.at/",
         "matomoSiteId": 131,
-        "nextcloudBaseURL": "http://localhost:8081",
-        "nextcloudName": "dbp cloud",
-        "pdfAsQualifiedlySigningServer": "https://sig-dev.tugraz.at",
         "hiddenActivities": [],
         "shortName": "dbp",
         "appDomain": "https://dbp-demo.tugraz.at/apps/lunchlottery/"
@@ -22,9 +19,6 @@
         "keyCloakClientId": "auth-dev-mw-frontend-local",
         "matomoUrl": "https://analytics.tugraz.at/",
         "matomoSiteId": 131,
-        "nextcloudBaseURL": "http://localhost:8081",
-        "nextcloudName": "TU Graz cloud",
-        "pdfAsQualifiedlySigningServer": "https://sig-dev.tugraz.at",
         "hiddenActivities": [],
         "shortName": "TU Graz",
         "appDomain": "https://lunchlottery.tugraz.at/"
@@ -37,9 +31,6 @@
         "keyCloakClientId": "auth-dev-mw-frontend-local",
         "matomoUrl": "https://analytics.tugraz.at/",
         "matomoSiteId": 131,
-        "nextcloudBaseURL": "http://bs-local.com:8081",
-        "nextcloudName": "dbp cloud",
-        "pdfAsQualifiedlySigningServer": "https://sig-dev.tugraz.at",
         "hiddenActivities": [],
         "shortName": "dbp",
         "appDomain": ""
@@ -52,9 +43,6 @@
         "keyCloakClientId": "dbp-lunchlottery",
         "matomoUrl": "https://analytics.tugraz.at/",
         "matomoSiteId": 131,
-        "nextcloudBaseURL": "https://cloud-dev.tugraz.at",
-        "nextcloudName": "dbp cloud",
-        "pdfAsQualifiedlySigningServer": "https://sig-dev.tugraz.at",
         "hiddenActivities": [],
         "shortName": "dbp",
         "appDomain": "https://dbp-demo.tugraz.at/apps/lunchlottery/"
@@ -67,9 +55,6 @@
         "keyCloakClientId": "dbp-lunchlottery",
         "matomoUrl": "https://analytics.tugraz.at/",
         "matomoSiteId": 131,
-        "nextcloudBaseURL": "https://cloud-dev.tugraz.at",
-        "nextcloudName": "TU Graz cloud",
-        "pdfAsQualifiedlySigningServer": "https://sig-dev.tugraz.at",
         "hiddenActivities": [],
         "shortName": "TU Graz",
         "appDomain": "https://lunchlottery.tugraz.at/"
@@ -82,9 +67,6 @@
         "keyCloakClientId": "dbp-lunchlottery",
         "matomoUrl": "https://analytics.tugraz.at/",
         "matomoSiteId": 131,
-        "nextcloudBaseURL": "https://cloud-demo.tugraz.at",
-        "nextcloudName": "dbp cloud",
-        "pdfAsQualifiedlySigningServer": "https://sig-test.tugraz.at",
         "hiddenActivities": [],
         "shortName": "dbp",
         "appDomain": "https://dbp-demo.tugraz.at/apps/lunchlottery/"
@@ -97,9 +79,6 @@
         "keyCloakClientId": "dbp-lunchlottery",
         "matomoUrl": "https://analytics.tugraz.at/",
         "matomoSiteId": 131,
-        "nextcloudBaseURL": "https://cloud-demo.tugraz.at",
-        "nextcloudName": "TU Graz cloud",
-        "pdfAsQualifiedlySigningServer": "https://sig-test.tugraz.at",
         "hiddenActivities": [],
         "shortName": "TU Graz",
         "appDomain": "https://lunchlottery.tugraz.at/"
@@ -112,9 +91,6 @@
         "keyCloakClientId": "lunchlottery_tugraz_at",
         "matomoUrl": "https://analytics.tugraz.at/",
         "matomoSiteId": 131,
-        "nextcloudBaseURL": "",
-        "nextcloudName": "",
-        "pdfAsQualifiedlySigningServer": "https://sig.tugraz.at",
         "hiddenActivities": [],
         "shortName": "TU Graz",
         "appDomain": "https://lunchlottery.tugraz.at/"
