@@ -73,7 +73,7 @@ jobs:
           npm run publish
 
       - name: Deploy and wait for completion
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/demo'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/demo' || github.ref == 'refs/heads/production'
         uses: digital-blueprint/gitlab-pipeline-trigger-action@v1
         with:
           host: 'gitlab.tugraz.at'
