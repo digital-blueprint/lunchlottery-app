@@ -38,7 +38,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             first_name: {type: String},
             last_name: {type: String},
             email: {type: String},
-            organizations_ids: {type: Object},
+            organizations_ids: {type: Array},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
         };
     }
@@ -72,13 +72,13 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         last_name.value = this.last_name;
         email.value = this.email;
 
-        //console.log(this.organizations_ids);
+        console.log(this.organizations_ids[0]);
 
         //console.log(data);
     }
 
     async getOrganizations() {
-        let response = await fetch(this.entryPointUrl + '/base/organizations/' + this.organizations_ids + {
+        let response = await fetch(this.entryPointUrl + '/base/organizations/' + this.organizations_ids[0] + {
             headers: {
                 'Content-Type': 'application/ld+json',
                 Authorization: 'Bearer ' + this.auth.token,
