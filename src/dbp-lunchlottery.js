@@ -78,7 +78,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
     }
 
     async getOrganizations() {
-        let response = await fetch(this.entryPointUrl + '/base/people/' + this.organizations_ids + {
+        let response = await fetch(this.entryPointUrl + '/base/organizations/' + this.organizations_ids + {
             headers: {
                 'Content-Type': 'application/ld+json',
                 Authorization: 'Bearer ' + this.auth.token,
