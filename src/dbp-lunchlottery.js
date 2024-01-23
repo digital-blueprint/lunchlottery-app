@@ -78,7 +78,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
     }
 
     async getOrganizations() {
-        let response = await fetch(this.entryPointUrl + '/base/people/' + this.organizations_ids + '?includeLocal=email,staffAt', {
+        let response = await fetch(this.entryPointUrl + '/base/people/' + this.organizations_ids + {
             headers: {
                 'Content-Type': 'application/ld+json',
                 Authorization: 'Bearer ' + this.auth.token,
@@ -135,6 +135,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         let loggedIn = this.auth && this.auth.token;
         let i18n = this._i18n;
         this.autoFill();
+        this.getOrganizations();
 
         return html`
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
