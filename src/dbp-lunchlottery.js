@@ -20,6 +20,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         this.last_name = null;
         this.email = null;
         this.organizations_ids = null;
+        this.organizations;
         this.entryPointUrl = null;
     }
 
@@ -39,6 +40,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             last_name: {type: String},
             email: {type: String},
             organizations_ids: {type: Array},
+            organizations: {type: Array},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
         };
     }
@@ -66,31 +68,39 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         this.first_name = `${data['givenName']}`;
         this.last_name = `${data['familyName']}`;
         this.email = `${data['localData']['email']}`;
-        this.organizations_ids = `${data['localData']['staffAt']}`;
+        this.organizations_ids = data['localData']['staffAt'];
 
         first_name.value = this.first_name;
         last_name.value = this.last_name;
         email.value = this.email;
 
-        console.log(this.organizations_ids[0]);
+        //console.log(this.organizations_ids[0]);
 
         //console.log(data);
     }
 
     async getOrganizations() {
-        let response = await fetch(this.entryPointUrl + '/base/organizations/' + this.organizations_ids[0] + {
-            headers: {
-                'Content-Type': 'application/ld+json',
-                Authorization: 'Bearer ' + this.auth.token,
-            },
-        });
-        if (!response.ok) {
-            throw new Error(response);
+
+        for (let i = 0; i < this.organizations_ids.length; i++)
+        {
+            let response = await fetch(this.entryPointUrl + '/base/organizations/' + this.organizations_ids[i], {
+                headers: {
+                    'Content-Type': 'application/ld+json',
+                    Authorization: 'Bearer ' + this.auth.token,
+                },
+            });
+            if (!response.ok) {
+                throw new Error(response);
+            }
+
+            let data = await response.json();
+            let org_name = `${data['name']}`;
+            console.log(data);
+
+            //this.organizations.push(data['name']);
         }
-
-        let data = await response.json();
-
-        console.log(data);
+        //console.log(this.organizations);
+        //console.log(data);
     }
 
 
@@ -119,6 +129,11 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                     color: blue;
                 }
                 
+                textarea {
+                    width: 100%;
+                    resize: none;
+                }
+                
                 .textField{
                     width: 100%;
                 }
@@ -141,6 +156,8 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
             <!--<div id="person-info"></div>-->
             <div class="${loggedIn ? '' : 'hidden'}">
+
+                
                 
                 <div class="field">
                     <label class="label">${i18n.t('name.first')}</label>
@@ -156,20 +173,15 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                         <input type="text" class="textField" id="last-name"  readonly/>
                     </div>
                 </div>
-                    
+                
                 <div class="field">
                     <label class="label">${i18n.t('organization')}</label>
                     <div class="control">
-                        <dbp-resource-select
-                                id="show-resource-select"
-                                subscribe="lang,entry-point-url,auth"
-                                lang="${this.lang}"
-                                resource-path="dispatch/groups"
-                                value="${this.groupValue}"
-                        ></dbp-resource-select>
-                    </div>
-                    
+                        <textarea readonly>
+                        </textarea>
+                    </div>    
                 </div>
+
                 
                 <div class="field">
                     <label class="label">${i18n.t('email')}</label>
