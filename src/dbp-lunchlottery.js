@@ -19,6 +19,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         this.first_name = null;
         this.last_name = null;
         this.email = null;
+        this.organizations_ids = null;
         this.entryPointUrl = null;
     }
 
@@ -36,7 +37,8 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             auth: {type: Object},
             first_name: {type: String},
             last_name: {type: String},
-            email: {type: Object},
+            email: {type: String},
+            organizations_ids: {type: Object},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
         };
     }
@@ -64,13 +66,33 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         this.first_name = `${data['givenName']}`;
         this.last_name = `${data['familyName']}`;
         this.email = `${data['localData']['email']}`;
+        this.organizations_ids = `${data['localData']['staffAt']}`;
 
         first_name.value = this.first_name;
         last_name.value = this.last_name;
         email.value = this.email;
 
+        //console.log(this.organizations_ids);
+
+        //console.log(data);
+    }
+
+    async getOrganizations() {
+        let response = await fetch(this.entryPointUrl + '/base/people/' + this.organizations_ids + '?includeLocal=email,staffAt', {
+            headers: {
+                'Content-Type': 'application/ld+json',
+                Authorization: 'Bearer ' + this.auth.token,
+            },
+        });
+        if (!response.ok) {
+            throw new Error(response);
+        }
+
+        let data = await response.json();
+
         console.log(data);
     }
+
 
     update(changedProperties) {
 
