@@ -268,7 +268,7 @@ export default (async () => {
                     {src: customAssetsPath + '*.css', dest: 'dist/' + (await getDistPath(pkg.name))},
                     {src: customAssetsPath + '*.ico', dest: 'dist/' + (await getDistPath(pkg.name))},
                     {src: customAssetsPath + '*.svg', dest: 'dist/' + (await getDistPath(pkg.name))},
-                    {src: customAssetsPath +' icon/*', dest: 'dist/' + (await getDistPath(pkg.name, 'icon'))},
+                    {src: customAssetsPath + 'icon/*', dest: 'dist/' + (await getDistPath(pkg.name, 'icon'))},
                     {src: customAssetsPath + 'site.webmanifest', dest: 'dist', rename: pkg.internalName + '.webmanifest'},
                     {
                         src: await getPackagePath('@tugraz/font-source-sans-pro', 'files/*'),
