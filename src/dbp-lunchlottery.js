@@ -94,7 +94,6 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             }
 
             let data = await response.json();
-            // let org_name = `${data['name']}`;
             console.log(data);
 
             //this.organizations.push(data['name']);
@@ -177,8 +176,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization')}</label>
                     <div class="control">
-                        <textarea readonly>
-                        </textarea>
+                        <input type="text" class="textField" readonly/>
                     </div>    
                 </div>
 
