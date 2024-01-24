@@ -94,7 +94,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             }
 
             let data = await response.json();
-            let org_name = `${data['name']}`;
+            // let org_name = `${data['name']}`;
             console.log(data);
 
             //this.organizations.push(data['name']);
