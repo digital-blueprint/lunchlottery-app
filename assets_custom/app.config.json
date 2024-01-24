@@ -90,7 +90,7 @@
         "keyCloakRealm": "tugraz",
         "keyCloakClientId": "lunchlottery_tugraz_at",
         "matomoUrl": "https://analytics.tugraz.at/",
-        "matomoSiteId": 131,
+        "matomoSiteId": 206,
         "hiddenActivities": [],
         "shortName": "TU Graz",
         "appDomain": "https://lunch-lottery.tugraz.at/"
