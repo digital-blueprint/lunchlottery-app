@@ -22,7 +22,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         this.email = null;
         this.organizationId = null;
         this.organizationName = null;
-        this.language = null;
+        this.preferredLanguage = null;
     }
 
     static get scopedElements() {
@@ -98,11 +98,13 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                     this._i18n.changeLanguage(this.lang);
                     break;
                 case 'auth':
-                    if (this.auth && this.auth['login-status'] === 'logged-in') {
+                    // If we are logged in, but don't have the person data yet, fetch it
+                    if (this.auth && this.auth['login-status'] === 'logged-in' && !this.firstName) {
                         this.fetchPerson();
                     }
                     break;
                 case 'organizationId':
+                    // If the organizationId changes, fetch the organization data
                     this.fetchOrganization();
                     break;
             }
@@ -139,14 +141,12 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
     }
 
     languageClick(e) {
-        this.language = e.target.value;
+        this.preferredLanguage = e.target.value;
     }
 
     render() {
         let loggedIn = this.auth && this.auth.token;
         let i18n = this._i18n;
-
-        //this.getOrganizations();
 
         return html`
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
