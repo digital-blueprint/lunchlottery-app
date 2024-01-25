@@ -9,19 +9,19 @@ import DBPLitElement from '@dbp-toolkit/common/dbp-lit-element';
 import metadata from './dbp-lunchlottery.metadata.json';
 import {Activity} from './activity.js';
 
-class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
+class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
     constructor() {
         super();
         this._i18n = createInstance();
         this.lang = this._i18n.language;
-        this.activity = new Activity(metadata);
         this.auth = null;
+        this.entryPointUrl = null;
+        this.activity = new Activity(metadata);
         this.firstName = null;
         this.lastName = null;
         this.email = null;
         this.organizationId = null;
         this.organizationName = null;
-        this.entryPointUrl = null;
         this.language = null;
     }
 
@@ -35,14 +35,14 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
 
     static get properties() {
         return {
-            lang: {type: String},
             auth: {type: Object},
-            firstName: {type: String},
-            lastName: {type: String},
-            email: {type: String},
-            organizationId: {type: Number},
-            organizationName: {type: String},
+            lang: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
+            firstName: {type: String, attribute: false},
+            lastName: {type: String, attribute: false},
+            email: {type: String, attribute: false},
+            organizationId: {type: Number, attribute: false},
+            organizationName: {type: String, attribute: false},
         };
     }
     async fetchPerson() {
@@ -255,4 +255,4 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
     }
 }
 
-commonUtils.defineCustomElement('dbp-lunchlottery', StarterActivity);
+commonUtils.defineCustomElement('dbp-lunchlottery', LunchLottery);
