@@ -80,11 +80,6 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
     // hier autFill
     connectedCallback() {
         super.connectedCallback();
-
-        this.updateComplete.then(() => {
-            this.autoFill().then(() => {});
-        });
-
     }
 
 
@@ -124,6 +119,11 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             switch (propName) {
                 case 'lang':
                     this._i18n.changeLanguage(this.lang);
+                    break;
+                case 'auth':
+                    if (this.auth && this.auth['login-status'] === 'logged-in') {
+                        this.autoFill();
+                    }
                     break;
             }
         });
