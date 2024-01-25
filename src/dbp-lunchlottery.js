@@ -158,7 +158,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('name.first')}</label>
                     <div class="control">
-                        <input type="text" class="textField" id="first-name" value="${this.firstName}" readonly/>
+                        <input type="text" class="textField" value="${this.firstName}" readonly/>
                     </div>
                 </div>
                 
@@ -166,14 +166,14 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('name.last')}</label>
                     <div class="control">
-                        <input type="text" class="textField" id="last-name" value="${this.lastName}" readonly/>
+                        <input type="text" class="textField" value="${this.lastName}" readonly/>
                     </div>
                 </div>
                 
                 <div class="field">
                     <label class="label">${i18n.t('organization')}</label>
                     <div class="control">
-                        <input type="text" class="textField" id="organization" readonly/>
+                        <input type="text" class="textField" readonly/>
                     </div>    
                 </div>
 
@@ -181,7 +181,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('email')}</label>
                     <div class="control">
-                        <input type="email" class="textField" id="email" value="${this.email}" readonly/>
+                        <input type="email" class="textField" value="${this.email}" readonly/>
                     </div>
                     
                 </div>
