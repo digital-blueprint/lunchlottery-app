@@ -20,7 +20,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         this.last_name = null;
         this.email = null;
         this.organizations_ids = null;
-        this.organizations;
+        this.organization = null;
         this.entryPointUrl = null;
     }
 
@@ -40,15 +40,10 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             last_name: {type: String},
             email: {type: String},
             organizations_ids: {type: Array},
-            organizations: {type: Array},
+            organization: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
         };
     }
-    // hier autFill
-    connectedCallback() {
-        super.connectedCallback();
-    }
-
     async autoFill() {
         let response = await fetch(this.entryPointUrl + '/base/people/' + this.auth['user-id'] + '?includeLocal=email,staffAt', {
             headers: {
@@ -68,36 +63,51 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         this.first_name = `${data['givenName']}`;
         this.last_name = `${data['familyName']}`;
         this.email = `${data['localData']['email']}`;
-        this.organizations_ids = data['localData']['staffAt'];
+        //this.organizations_ids = data['localData']['staffAt'];
+
+        console.log(data);
 
         first_name.value = this.first_name;
         last_name.value = this.last_name;
         email.value = this.email;
 
+        return true;
+
         //console.log(this.organizations_ids[0]);
 
         //console.log(data);
     }
+    // hier autFill
+    connectedCallback() {
+        super.connectedCallback();
+    }
+
+
 
     async getOrganizations() {
 
-        for (let i = 0; i < this.organizations_ids.length; i++)
-        {
-            let response = await fetch(this.entryPointUrl + '/base/organizations/' + this.organizations_ids[i], {
-                headers: {
-                    'Content-Type': 'application/ld+json',
-                    Authorization: 'Bearer ' + this.auth.token,
-                },
-            });
-            if (!response.ok) {
-                throw new Error(response);
-            }
 
-            let data = await response.json();
-            console.log(data);
+        let response = await fetch(this.entryPointUrl + '/base/organizations/' + this.organizations_ids[0], {
+            headers: {
+                'Content-Type': 'application/ld+json',
+                Authorization: 'Bearer ' + this.auth.token,
+            },
+        });
+        if (!response.ok) {
+            throw new Error(response);
+        }
+
+        let data = await response.json();
+        console.log(data);
+
+        const organization = this._('#organization');
+
+        this.organization = `${data['name']}`;
+
+        organization.value = this.organization;
 
             //this.organizations.push(data['name']);
-        }
+
         //console.log(this.organizations);
         //console.log(data);
     }
@@ -109,6 +119,11 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
             switch (propName) {
                 case 'lang':
                     this._i18n.changeLanguage(this.lang);
+                    break;
+                case 'auth':
+                    if (this.auth && this.auth['login-status'] === 'logged-in') {
+                        this.autoFill();
+                    }
                     break;
             }
         });
@@ -148,15 +163,13 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
     render() {
         let loggedIn = this.auth && this.auth.token;
         let i18n = this._i18n;
-        this.autoFill();
-        this.getOrganizations();
+
+        //this.getOrganizations();
 
         return html`
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
             <!--<div id="person-info"></div>-->
             <div class="${loggedIn ? '' : 'hidden'}">
-
-                
                 
                 <div class="field">
                     <label class="label">${i18n.t('name.first')}</label>
@@ -176,7 +189,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization')}</label>
                     <div class="control">
-                        <input type="text" class="textField" readonly/>
+                        <input type="text" class="textField" id="organization" readonly/>
                     </div>    
                 </div>
 
