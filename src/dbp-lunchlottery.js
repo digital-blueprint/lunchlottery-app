@@ -16,10 +16,10 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         this.lang = this._i18n.language;
         this.activity = new Activity(metadata);
         this.auth = null;
-        this.first_name = null;
-        this.last_name = null;
+        this.firstName = null;
+        this.lastName = null;
         this.email = null;
-        this.organizations_ids = null;
+        this.organizationIds = null;
         this.organization = null;
         this.entryPointUrl = null;
     }
@@ -36,10 +36,10 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
         return {
             lang: {type: String},
             auth: {type: Object},
-            first_name: {type: String},
-            last_name: {type: String},
+            firstName: {type: String},
+            lastName: {type: String},
             email: {type: String},
-            organizations_ids: {type: Array},
+            organizationIds: {type: Array},
             organization: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
         };
@@ -51,43 +51,27 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 Authorization: 'Bearer ' + this.auth.token,
             },
         });
+
         if (!response.ok) {
             throw new Error(response);
         }
 
-        const first_name = this._('#first-name');
-        const last_name = this._('#last-name');
-        const email = this._('#email');
+        const data = await response.json();
 
-        let data = await response.json();
-        this.first_name = `${data['givenName']}`;
-        this.last_name = `${data['familyName']}`;
-        this.email = `${data['localData']['email']}`;
-        //this.organizations_ids = data['localData']['staffAt'];
+        this.firstName = data['givenName'];
+        this.lastName = data['familyName'];
+        this.email = data['localData']['email'];
+        //this.organizationIds = data['localData']['staffAt'];
 
         console.log(data);
-
-        first_name.value = this.first_name;
-        last_name.value = this.last_name;
-        email.value = this.email;
-
-        return true;
-
-        //console.log(this.organizations_ids[0]);
-
-        //console.log(data);
     }
-    // hier autFill
+
     connectedCallback() {
         super.connectedCallback();
     }
 
-
-
     async getOrganizations() {
-
-
-        let response = await fetch(this.entryPointUrl + '/base/organizations/' + this.organizations_ids[0], {
+        let response = await fetch(this.entryPointUrl + '/base/organizations/' + this.organizationIds[0], {
             headers: {
                 'Content-Type': 'application/ld+json',
                 Authorization: 'Bearer ' + this.auth.token,
@@ -174,7 +158,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('name.first')}</label>
                     <div class="control">
-                        <input type="text" class="textField" id="first-name"  readonly/>
+                        <input type="text" class="textField" id="first-name" value="${this.firstName}" readonly/>
                     </div>
                 </div>
                 
@@ -182,7 +166,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('name.last')}</label>
                     <div class="control">
-                        <input type="text" class="textField" id="last-name"  readonly/>
+                        <input type="text" class="textField" id="last-name" value="${this.lastName}" readonly/>
                     </div>
                 </div>
                 
@@ -197,7 +181,7 @@ class StarterActivity extends ScopedElementsMixin(DBPLitElement) {
                 <div class="field">
                     <label class="label">${i18n.t('email')}</label>
                     <div class="control">
-                        <input type="email"  class="textField" id = "email" readonly/>
+                        <input type="email" class="textField" id="email" value="${this.email}" readonly/>
                     </div>
                     
                 </div>
