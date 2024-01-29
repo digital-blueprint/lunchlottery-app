@@ -3,7 +3,6 @@ import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import {Icon, Button} from '@dbp-toolkit/common';
-import {ResourceSelect} from '@dbp-toolkit/resource-select';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import DBPLitElement from '@dbp-toolkit/common/dbp-lit-element';
 import metadata from './dbp-lunchlottery.metadata.json';
@@ -29,7 +28,6 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         return {
             'dbp-icon': Icon,
             'dbp-button': Button,
-            'dbp-resource-select': ResourceSelect,
         };
     }
 
@@ -90,6 +88,17 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         this.organizationName = data.name ?? '';
     }
 
+    async fetchDates() {
+        let response = await fetch(this.entryPointUrl + '/formalize/forms', {
+            headers: {
+                'Content-Type': 'application/ld+json',
+                Authorization: 'Bearer ' + this.auth.token,
+            },
+        });
+        const data = await response.json();
+        console.log(data);
+    }
+
 
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
@@ -101,6 +110,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                     // If we are logged in, but don't have the person data yet, fetch it
                     if (this.auth && this.auth['login-status'] === 'logged-in' && !this.firstName) {
                         this.fetchPerson();
+                        this.fetchDates();
                     }
                     break;
                 case 'organizationId':
