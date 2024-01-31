@@ -111,12 +111,30 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             const date = new Date(date_string);
             console.log(date);
             let option = document.createElement('input');
+
+            //create checkbox
             option.type = "checkbox";
             option.value = date;
 
+            //create checkbox label
             let label = document.createElement('label');
 
-            label.appendChild(document.createTextNode(date_string));
+            const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+            let week_day = week[date.getDay()];
+            let day = date.getDate();
+
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+            let month = monthNames[date.getMonth()];
+
+            let hour = String(date.getHours()) + ':' + String(date.getMinutes());
+
+            let complete_date = week_day + ', ' + day + ' ' + month + ' - '+ hour;
+
+            label.appendChild(document.createTextNode(complete_date));
 
             let container = document.createElement('div');
 
