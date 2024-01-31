@@ -8,6 +8,31 @@
 
 This is an application for users to apply to the lunch-lottery.
 
+## Prerequisites
+
+- You need the [API server](https://github.com/digital-blueprint/relay-server-template) running
+- You need the [DbpRelayFormalizeBundle](https://github.com/digital-blueprint/relay-formalize-bundle) to store the submissions
+  - You need a form created with the identifier `7432af11-6f1c-45ee-8aa3-e90b3395e29c` (see below)
+- For more information please visit the [Formalize project documentation](https://handbook.digital-blueprint.org/components/api/formalize/)
+
+### Form creation
+
+You may use this SQL command to create the form:
+
+```sql
+INSERT INTO formalize_forms (
+  identifier, name, date_created, data_feed_schema, 
+  availability_starts, availability_ends
+) 
+VALUES 
+  (
+    "7432af11-6f1c-45ee-8aa3-e90b3395e29c", 
+    "LunchLotteryParticipants", CURRENT_TIMESTAMP, 
+    "{\"type\": \"object\",\"properties\": {\"identifier\": {\"type\": \"string\"},\"givenName\": {\"type\": \"string\"},\"familyName\": {\"type\": \"string\"},\"email\": {\"type\": \"string\"},\"organizationIds\": {\"type\": \"array\",\"items\": {\"type\": \"string\"}},\"organizationNames\": {\"type\": \"array\",\"items\": {\"type\": \"string\"}},\"preferredLanguage\": {\"type\": \"string\",\"enum\": [\"de\", \"en\", \"both\"]},\"possibleDates\": {\"type\": \"array\",\"items\": {\"type\": \"string\"}},\"privacyConsent\": {\"type\": \"boolean\"}},\"required\": [\"identifier\", \"givenName\", \"familyName\", \"email\", \"organizationIds\", \"organizationNames\", \"preferredLanguage\", \"possibleDates\", \"privacyConsent\"]}", 
+    "2024-01-01 00:00:00", "2024-02-01 00:00:00"
+  )
+```
+
 ## Overview
 
 ```bash
