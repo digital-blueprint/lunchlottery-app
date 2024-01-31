@@ -7,6 +7,7 @@ import * as commonStyles from '@dbp-toolkit/common/styles';
 import DBPLitElement from '@dbp-toolkit/common/dbp-lit-element';
 import metadata from './dbp-lunchlottery.metadata.json';
 import {Activity} from './activity.js';
+import {FORM_IDENTIFIER} from './constants.js';
 
 class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
     constructor() {
@@ -89,6 +90,9 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
     }
 
     async fetchDates() {
+        // TODO: Use FORM_IDENTIFIER
+        console.log('FORM_IDENTIFIER', FORM_IDENTIFIER);
+
         let response = await fetch(this.entryPointUrl + '/formalize/forms', {
             headers: {
                 'Content-Type': 'application/ld+json',
