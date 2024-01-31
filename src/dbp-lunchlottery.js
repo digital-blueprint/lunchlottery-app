@@ -101,7 +101,12 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         });
         const forms_data = await response.json();
         const decodedDataFeedSchema = JSON.parse(forms_data['dataFeedSchema']);
-        console.log(decodedDataFeedSchema['properties']['possibleDates']['items']['enum']);
+        const dates = decodedDataFeedSchema['properties']['possibleDates']['items']['enum'];
+
+        dates.forEach((date_string) => {
+            const date = new Date(date_string);
+            console.log(date);
+        });
     }
 
 
