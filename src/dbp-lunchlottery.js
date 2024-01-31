@@ -23,6 +23,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         this.organizationId = null;
         this.organizationName = null;
         this.preferredLanguage = null;
+        this.dates = null;
     }
 
     static get scopedElements() {
@@ -42,6 +43,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             email: {type: String, attribute: false},
             organizationId: {type: Number, attribute: false},
             organizationName: {type: String, attribute: false},
+            dates: {type: Array, attribute: false},
         };
     }
     async fetchPerson() {
@@ -101,12 +103,29 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         });
         const forms_data = await response.json();
         const decodedDataFeedSchema = JSON.parse(forms_data['dataFeedSchema']);
-        const dates = decodedDataFeedSchema['properties']['possibleDates']['items']['enum'];
+        this.dates = decodedDataFeedSchema['properties']['possibleDates']['items']['enum'];
 
-        dates.forEach((date_string) => {
+        let select_date = this._('#date');
+
+        this.dates.forEach((date_string) => {
             const date = new Date(date_string);
             console.log(date);
+            let option = document.createElement('input');
+            option.type = "checkbox";
+            option.value = date;
+
+            let label = document.createElement('label');
+
+            label.appendChild(document.createTextNode(date_string));
+
+            let container = document.createElement('div');
+
+            container.appendChild(option);
+            container.appendChild(label);
+
+            select_date.appendChild(container);
         });
+
     }
 
 
@@ -221,28 +240,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                 <!-- Should I add the provided dates, or make a webcomponent that lets the customers choose the dates themselves? -->
                 <div class="field">
                     <label class="label">${i18n.t('day.label')}</label>
-                    <div class="control">
-                        <div>
-                            <input type="checkbox" id="wednesday" name="wednesday" value="wednesday">
-                            <label for="wednesday">${i18n.t('day.wednesday')}</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="thursday" name="thursday" value="thursday">
-                            <label for="thursday">${i18n.t('day.thursday')}</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="friday" name="friday" value="friday">
-                            <label for="friday">${i18n.t('day.friday')}</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="monday" name="monday" value="monday">
-                            <label for="monday">${i18n.t('day.monday')}</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="tuesday" name="tuesday" value="tuesday">
-                            <label for="tuesday">${i18n.t('day.tuesday')}</label>
-                        </div>
-                    </div>
+                    <div class="control" id="date"></div>
                 </div>
 
                 <div class="field">
@@ -258,6 +256,8 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                         </div>
                     </div>
                 </div>
+                
+               
 
                 <div id="rightSide">
                     <dbp-button 
