@@ -93,14 +93,15 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         // TODO: Use FORM_IDENTIFIER
         console.log('FORM_IDENTIFIER', FORM_IDENTIFIER);
 
-        let response = await fetch(this.entryPointUrl + '/formalize/forms', {
+        let response = await fetch(this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER, {
             headers: {
                 'Content-Type': 'application/ld+json',
                 Authorization: 'Bearer ' + this.auth.token,
             },
         });
-        const data = await response.json();
-        console.log(data);
+        const forms_data = await response.json();
+        const decodedDataFeedSchema = JSON.parse(forms_data['dataFeedSchema']);
+        console.log(decodedDataFeedSchema['properties']['possibleDates']['items']['enum']);
     }
 
 
