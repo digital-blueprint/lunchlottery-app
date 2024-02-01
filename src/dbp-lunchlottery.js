@@ -94,6 +94,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
     async fetchDates() {
         // TODO: Use FORM_IDENTIFIER
         console.log('FORM_IDENTIFIER', FORM_IDENTIFIER);
+        let i18n = this._i18n;
 
         let response = await fetch(this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER, {
             headers: {
@@ -101,6 +102,11 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                 Authorization: 'Bearer ' + this.auth.token,
             },
         });
+
+        if (!response.ok) {
+            throw new Error(response);
+        }
+
         const forms_data = await response.json();
         const decodedDataFeedSchema = JSON.parse(forms_data['dataFeedSchema']);
         this.dates = decodedDataFeedSchema['properties']['possibleDates']['items']['enum'];
@@ -124,15 +130,15 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             let week_day = week[date.getDay()];
             let day = date.getDate();
 
-            const monthNames = ["January", "February", "March", "April", "May", "June",
+            /*const monthNames = ["January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"
-            ];
+            ];*/
 
-            let month = monthNames[date.getMonth()];
+            //let month_index = monthNames[date.getMonth()];
 
             let hour = String(date.getHours()) + ':' + String(date.getMinutes());
-
-            let complete_date = week_day + ', ' + day + ' ' + month + ' - '+ hour;
+            //TODO: save month, day, time period and weekday in variables, then print them in render
+            let complete_date = week_day + ', ' + day + ' ' + i18n.t('month.first') + ' - '+ hour + ' ' + i18n.t('date.day-part');
 
             label.appendChild(document.createTextNode(complete_date));
 
@@ -257,7 +263,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                 </div>
                 <!-- Should I add the provided dates, or make a webcomponent that lets the customers choose the dates themselves? -->
                 <div class="field">
-                    <label class="label">${i18n.t('day.label')}</label>
+                    <label class="label">${i18n.t('date.label')}</label>
                     <div class="control" id="date"></div>
                 </div>
 
