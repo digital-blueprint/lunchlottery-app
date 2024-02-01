@@ -14,12 +14,31 @@
     },
     "date": {
         "label": "*Preferred day (Please select all possible options.)",
+        "day-part": "p.m.",
+        "month": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "September",
+            "October",
+            "November",
+            "Dezember"
+        ],
+        "week" : [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+        ]
+    },
 
-        "day-part": "p.m."
-    },
-    "month": {
-        "first": "January"
-    },
     "agreement": {
         "label": "*I agree that photots will be taken in order to promote and document the event. The photos will be published on presentations or websites of TU Graz",
         "yes": "Yes",

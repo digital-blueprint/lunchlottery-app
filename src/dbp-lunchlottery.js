@@ -94,7 +94,6 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
     async fetchDates() {
         // TODO: Use FORM_IDENTIFIER
         console.log('FORM_IDENTIFIER', FORM_IDENTIFIER);
-        let i18n = this._i18n;
 
         let response = await fetch(this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER, {
             headers: {
@@ -110,46 +109,53 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         const forms_data = await response.json();
         const decodedDataFeedSchema = JSON.parse(forms_data['dataFeedSchema']);
         this.dates = decodedDataFeedSchema['properties']['possibleDates']['items']['enum'];
+        console.log(this.dates);
+    }
 
-        let select_date = this._('#date');
-
+    showDates() {
+        let i18n = this._i18n;
+        let container = document.createElement('div');
         this.dates.forEach((date_string) => {
             const date = new Date(date_string);
-            console.log(date);
-            let option = document.createElement('input');
+            let box = document.createElement('input');
 
             //create checkbox
-            option.type = "checkbox";
-            option.value = date;
+            box.type = "checkbox";
+            box.value = date;
 
             //create checkbox label
             let label = document.createElement('label');
 
-            const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            //get month
+            let month = date.getMonth();
+            let month_convert = i18n.t('date.month.' + String(month));
 
-            let week_day = week[date.getDay()];
+            //get week day
+            let week_day = date.getDay();
+            let week_day_convert = i18n.t('date.week.' + String(week_day));
+
+            //get month day
             let day = date.getDate();
 
-            /*const monthNames = ["January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"
-            ];*/
-
-            //let month_index = monthNames[date.getMonth()];
-
+            //get hour
             let hour = String(date.getHours()) + ':' + String(date.getMinutes());
-            //TODO: save month, day, time period and weekday in variables, then print them in render
-            let complete_date = week_day + ', ' + day + ' ' + i18n.t('month.first') + ' - '+ hour + ' ' + i18n.t('date.day-part');
 
+            //get complete date
+            let complete_date = week_day_convert + ', ' + day + ' ' + month_convert + ' - '+ hour + ' ' + i18n.t('date.day-part');
+            //let complete_date = week_day;
+
+            //append data to DOM
             label.appendChild(document.createTextNode(complete_date));
 
-            let container = document.createElement('div');
+            let option = document.createElement('div');
+
+            option.appendChild(box);
+            option.appendChild(label);
 
             container.appendChild(option);
-            container.appendChild(label);
 
-            select_date.appendChild(container);
         });
-
+        return container;
     }
 
 
@@ -210,6 +216,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
     render() {
         let loggedIn = this.auth && this.auth.token;
         let i18n = this._i18n;
+        //this.showDates();
 
         return html`
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
@@ -264,7 +271,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                 <!-- Should I add the provided dates, or make a webcomponent that lets the customers choose the dates themselves? -->
                 <div class="field">
                     <label class="label">${i18n.t('date.label')}</label>
-                    <div class="control" id="date"></div>
+                    <div class="control">${this.showDates()}</div>
                 </div>
 
                 <div class="field">
