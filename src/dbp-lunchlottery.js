@@ -107,10 +107,12 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         const forms_data = await response.json();
         const decodedDataFeedSchema = JSON.parse(forms_data['dataFeedSchema']);
         this.dates = decodedDataFeedSchema['properties']['possibleDates']['items']['enum'];
-        console.log(this.dates);
     }
 
     showDates() {
+        if (!this.dates) {
+            return;
+        };
         let i18n = this._i18n;
         let container = document.createElement('div');
         this.dates.forEach((date_string) => {
@@ -154,6 +156,11 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
 
         });
         return container;
+    }
+
+    send()
+    {
+        console.log("Send data");
     }
 
 
@@ -289,7 +296,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                 <div id="rightSide">
                     <dbp-button 
                        value="Primary"
-                       @click="${this.buttonClickHandler}"
+                       @click="${this.send}"
                        type="is-primary">${i18n.t('submit')}</dbp-button>
                 </div>
 
