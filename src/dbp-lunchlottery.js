@@ -214,11 +214,9 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
     render() {
         let loggedIn = this.auth && this.auth.token;
         let i18n = this._i18n;
-        //this.showDates();
 
         return html`
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
-            <!--<div id="person-info"></div>-->
             <div class="${loggedIn ? '' : 'hidden'}">
                 <div class="field">
                     <label class="label">${i18n.t('name.first')}</label>
