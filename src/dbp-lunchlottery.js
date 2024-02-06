@@ -20,7 +20,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         this.firstName = null;
         this.lastName = null;
         this.email = null;
-        this.organizationId = null;
+        this.organizationIds = null;
         this.organizationName = null;
         this.preferredLanguage = null;
         this.dates = null;
@@ -41,8 +41,8 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             firstName: {type: String, attribute: false},
             lastName: {type: String, attribute: false},
             email: {type: String, attribute: false},
-            organizationId: {type: Number, attribute: false},
-            organizationName: {type: String, attribute: false},
+            organizationIds: {type: Array, attribute: false},
+            //organizationName: {type: String, attribute: false},
             dates: {type: Array, attribute: false},
         };
     }
@@ -63,20 +63,20 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         this.firstName = data.givenName;
         this.lastName = data.familyName;
         this.email = data.localData.email ?? '';
-        this.organizationId = data.localData.staffAt[0] ?? null;
+        this.organizationIds = data.localData.staffAt ?? null;
     }
 
     connectedCallback() {
         super.connectedCallback();
     }
 
-    async fetchOrganization() {
+    async fetchOrganization(id) {
         if (!this.organizationId) {
             this.organizationName = '';
             return;
         }
 
-        let response = await fetch(this.entryPointUrl + '/base/organizations/' + this.organizationId, {
+        let response = await fetch(this.entryPointUrl + '/base/organizations/' + id, {
             headers: {
                 'Content-Type': 'application/ld+json',
                 Authorization: 'Bearer ' + this.auth.token,
@@ -88,9 +88,34 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         }
 
         let data = await response.json();
-        this.organizationName = data.name ?? '';
+        let organizationName = data.name ?? '';
+        console.log(organizationName);
+        //this.organizationName = data.name ?? '';
     }
 
+    async fetchOrganizations(){
+
+        if (!this.organizationIds) {
+            return;
+        }
+
+        for (let index = 0; index < this.organizationIds.length; index++){
+            let response = await fetch(this.entryPointUrl + '/base/organizations/' + this.organizationIds[index], {
+                headers: {
+                    'Content-Type': 'application/ld+json',
+                    Authorization: 'Bearer ' + this.auth.token,
+                },
+            });
+            if (!response.ok) {
+                throw new Error(response);
+            }
+
+            let data = await response.json();
+            let organizationName = data.name ?? '';
+            console.log(organizationName);
+
+        }
+    }
     async fetchDates() {
 
         let response = await fetch(this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER, {
@@ -177,9 +202,9 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                         this.fetchDates();
                     }
                     break;
-                case 'organizationId':
+                case 'organizationIds':
                     // If the organizationId changes, fetch the organization data
-                    this.fetchOrganization();
+                    this.fetchOrganizations();
                     break;
             }
         });
@@ -239,12 +264,12 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                     </div>
                 </div>
 
-                <div class="field">
+                <!--<div class="field">
                     <label class="label">${i18n.t('organization')}</label>
                     <div class="control">
                         <input type="text" class="textField" value="${this.organizationName}" readonly/>
                     </div>
-                </div>
+                </div>-->
 
                 <div class="field">
                     <label class="label">${i18n.t('email')}</label>
