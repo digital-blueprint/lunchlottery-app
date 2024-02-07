@@ -17,11 +17,12 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         this.auth = null;
         this.entryPointUrl = null;
         this.activity = new Activity(metadata);
+        this.identifier = null;
         this.firstName = null;
         this.lastName = null;
         this.email = null;
         this.organizationIds = null;
-        this.organizationName = null;
+        this.organizationNames = null;
         this.preferredLanguage = null;
         this.dates = null;
     }
@@ -38,11 +39,12 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             auth: {type: Object},
             lang: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
+            identifier: {type: String, attribute: false},
             firstName: {type: String, attribute: false},
             lastName: {type: String, attribute: false},
             email: {type: String, attribute: false},
             organizationIds: {type: Array, attribute: false},
-            //organizationName: {type: String, attribute: false},
+            organizationNames: {type: Array, attribute: false},
             dates: {type: Array, attribute: false},
         };
     }
@@ -60,6 +62,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
 
         const data = await response.json();
 
+        this.identifier = data.identifier;
         this.firstName = data.givenName;
         this.lastName = data.familyName;
         this.email = data.localData.email ?? '';
@@ -70,35 +73,14 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         super.connectedCallback();
     }
 
-    async fetchOrganization(id) {
-        if (!this.organizationId) {
-            this.organizationName = '';
-            return;
-        }
-
-        let response = await fetch(this.entryPointUrl + '/base/organizations/' + id, {
-            headers: {
-                'Content-Type': 'application/ld+json',
-                Authorization: 'Bearer ' + this.auth.token,
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(response);
-        }
-
-        let data = await response.json();
-        let organizationName = data.name ?? '';
-        console.log(organizationName);
-        //this.organizationName = data.name ?? '';
-    }
-
     async fetchOrganizations(){
 
         if (!this.organizationIds) {
             return;
         }
 
+
+        let organizations = [];
         for (let index = 0; index < this.organizationIds.length; index++){
             let response = await fetch(this.entryPointUrl + '/base/organizations/' + this.organizationIds[index], {
                 headers: {
@@ -111,10 +93,11 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             }
 
             let data = await response.json();
-            let organizationName = data.name ?? '';
-            console.log(organizationName);
+            let organizationName = data.name;
+            organizations.push(organizationName);
 
         }
+        this.organizationNames = organizations;
     }
     async fetchDates() {
 
@@ -132,6 +115,39 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         const forms_data = await response.json();
         const decodedDataFeedSchema = JSON.parse(forms_data['dataFeedSchema']);
         this.dates = decodedDataFeedSchema['properties']['possibleDates']['items']['enum'];
+    }
+    async register()
+    {
+        let response;
+        let body = {
+            form: '/formalize/forms/' + FORM_IDENTIFIER,
+            dataFeedElement: {
+                identifier: this.identifier,
+                givenName: this.firstName,
+                familyName: this.lastName,
+                email: this.email,
+                organizationIds: this.organizationIds,
+                organizationNames: this.organizationNames,
+                preferredLanguage: this._('.language').checked,
+                possibleDates: this._('.date').checked,
+                privacyConsent: this._('.agreement').checked,
+            },
+        };
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/ld+json',
+                Authorization: 'Bearer ' + this.auth.token,
+            },
+            body: JSON.stringify(body),
+        };
+
+        response = await this.httpGetAsync(
+            this.entryPointUrl + '/checkin/guest-check-in-actions',
+            options
+        );
+
+        return response;
     }
 
     showDates() {
@@ -174,6 +190,8 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
 
             let option = document.createElement('div');
 
+            box.classList.add("date");
+
             option.appendChild(box);
             option.appendChild(label);
 
@@ -183,9 +201,9 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         return container;
     }
 
-    send()
+    async send()
     {
-        console.log("Send data");
+        await this.register();
     }
 
 
@@ -250,11 +268,12 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         return html`
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
             <div class="${loggedIn ? '' : 'hidden'}">
+
                 <div class="field">
-                    <label class="label">${i18n.t('name.first')}</label>
-                    <div class="control">
-                        <input type="text" class="textField" value="${this.firstName}" readonly/>
-                    </div>
+                <label class="label">${i18n.t('name.first')}</label>
+                <div class="control">
+                    <input type="text" class="textField" value="${this.firstName}" readonly/>
+                </div>
                 </div>
 
                 <div class="field">
@@ -264,12 +283,12 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                     </div>
                 </div>
 
-                <!--<div class="field">
+                <div class="field">
                     <label class="label">${i18n.t('organization')}</label>
                     <div class="control">
-                        <input type="text" class="textField" value="${this.organizationName}" readonly/>
+                        <input type="text" class="textField" readonly/>
                     </div>
-                </div>-->
+                </div>
 
                 <div class="field">
                     <label class="label">${i18n.t('email')}</label>
@@ -282,15 +301,15 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                     <label class="label">${i18n.t('languages.label')}</label>
                     <div class="control">
                         <div>
-                            <input type="radio" id="language-german" name="language" value="german" @click="${this.languageClick}">
+                            <input type="radio" class="language" id="language-german" name="language" value="de">
                             <label for="language-german">${i18n.t('languages.german')}</label>
                         </div>
                         <div>
-                            <input type="radio" id="language-english" name="language" value="english" @click="${this.languageClick}">
+                            <input type="radio" class="language" id="language-english" name="language" value="en">
                             <label for="language-english">${i18n.t('languages.english')}</label>
                         </div>
                         <div>
-                            <input type="radio" id="language-both" name="language" value="both" @click="${this.languageClick}">
+                            <input type="radio" class="language" id="language-both" name="language" value="both">
                             <label for="language-both">${i18n.t('languages.both')}</label>
                         </div>
                     </div>
@@ -306,11 +325,11 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                     <label class="label">${i18n.t('agreement.label')}</label>
                     <div class="control">
                         <div>
-                            <input type="radio" id="yes" name="yes" value="yes">
+                            <input type="radio" class="agreement" id="yes" name="true" value="true">
                             <label for="yes">${i18n.t('agreement.yes')}</label>
                         </div>
                         <div>
-                        <input type="radio" id="no" name="no" value="no">
+                        <input type="radio" class="agreement" id="no" name="false" value="false">
                             <label for="no">${i18n.t('agreement.no')}</label>
                         </div>
                     </div>
@@ -324,6 +343,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                        @click="${this.send}"
                        type="is-primary">${i18n.t('submit')}</dbp-button>
                 </div>
+                
 
             </div>
 
