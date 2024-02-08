@@ -24,6 +24,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         this.organizationIds = null;
         this.organizationNames = null;
         this.preferredLanguage = null;
+        this.available = false;
         this.dates = null;
     }
 
@@ -45,6 +46,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             email: {type: String, attribute: false},
             organizationIds: {type: Array, attribute: false},
             organizationNames: {type: Array, attribute: false},
+            available: {type: Boolean, attribute: false},
             dates: {type: Array, attribute: false},
         };
     }
@@ -115,6 +117,10 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         const forms_data = await response.json();
         const decodedDataFeedSchema = JSON.parse(forms_data['dataFeedSchema']);
         this.dates = decodedDataFeedSchema['properties']['possibleDates']['items']['enum'];
+        const start = new Date(forms_data['availabilityStarts']);
+        const end = new Date(forms_data['availabilityEnds']);
+        const current = new Date();
+        this.available = (start.getTime() < current.getTime()) && (end.getTime() > current.getTime());
     }
     async register()
     {
@@ -147,13 +153,21 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             options
         );
 
+
         return response;
     }
 
     showDates() {
         if (!this.dates) {
             return;
-        };
+        }
+        if (!this.available)
+        {
+            let paragraph = document.createElement('p');
+            let text = document.createTextNode("Sorry, registration is not possible at the time.");
+            paragraph.appendChild(text);
+            return paragraph;
+        }
         let i18n = this._i18n;
         let container = document.createElement('div');
         this.dates.forEach((date_string) => {
