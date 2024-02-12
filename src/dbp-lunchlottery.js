@@ -26,6 +26,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         this.preferredLanguage = null;
         this.available = false;
         this.dates = null;
+        this.language = null;
     }
 
     static get scopedElements() {
@@ -48,8 +49,23 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             organizationNames: {type: Array, attribute: false},
             available: {type: Boolean, attribute: false},
             dates: {type: Array, attribute: false},
+            language: {type: String, attribute: false},
         };
     }
+
+    async httpGetAsync(url, options) {
+        let response = await fetch(url, options)
+            .then((result) => {
+                if (!result.ok) throw result;
+                return result;
+            })
+            .catch((error) => {
+                return error;
+            });
+
+        return response;
+    }
+
     async fetchPerson() {
         let response = await fetch(this.entryPointUrl + '/base/people/' + this.auth['user-id'] + '?includeLocal=email,staffAt', {
             headers: {
@@ -88,6 +104,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                 headers: {
                     'Content-Type': 'application/ld+json',
                     Authorization: 'Bearer ' + this.auth.token,
+                    'Accept-Language': this.lang,
                 },
             });
             if (!response.ok) {
@@ -124,21 +141,26 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
     }
     async register()
     {
+        let language = this._("input[class='language']:checked");
+        let agreement = this._("input[class='agreement']:checked");
+        let date = this._("input[class='date']:checked");
         let response;
+        let data = {
+                "identifier": this.identifier,
+                "givenName": this.firstName,
+                "familyName": this.lastName,
+                "email": this.email,
+                "organizationIds": this.organizationIds,
+                "organizationNames": this.organizationNames,
+                "preferredLanguage": language,
+                "possibleDates": date,
+                "privacyConsent": agreement,
+            };
         let body = {
             form: '/formalize/forms/' + FORM_IDENTIFIER,
-            dataFeedElement: {
-                identifier: this.identifier,
-                givenName: this.firstName,
-                familyName: this.lastName,
-                email: this.email,
-                organizationIds: this.organizationIds,
-                organizationNames: this.organizationNames,
-                preferredLanguage: this._('.language').checked,
-                possibleDates: this._('.date').checked,
-                privacyConsent: this._('.agreement').checked,
-            },
+            dataFeedElement: JSON.stringify(data),
         };
+
         const options = {
             method: 'POST',
             headers: {
@@ -149,10 +171,9 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         };
 
         response = await this.httpGetAsync(
-            this.entryPointUrl + '/checkin/guest-check-in-actions',
+            this.entryPointUrl + '/formalize/submissions',
             options
         );
-
 
         return response;
     }
@@ -160,13 +181,6 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
     showDates() {
         if (!this.dates) {
             return;
-        }
-        if (!this.available)
-        {
-            let paragraph = document.createElement('p');
-            let text = document.createTextNode("Sorry, registration is not possible at the time.");
-            paragraph.appendChild(text);
-            return paragraph;
         }
         let i18n = this._i18n;
         let container = document.createElement('div');
@@ -277,92 +291,98 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
 
     render() {
         let loggedIn = this.auth && this.auth.token;
+        let available = this.available;
         let i18n = this._i18n;
 
         return html`
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
             <div class="${loggedIn ? '' : 'hidden'}">
+                <div class="${available ? '' : 'hidden'}">
 
-                <div class="field">
-                <label class="label">${i18n.t('name.first')}</label>
-                <div class="control">
-                    <input type="text" class="textField" value="${this.firstName}" readonly/>
-                </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">${i18n.t('name.last')}</label>
+                    <div class="field">
+                    <label class="label">${i18n.t('name.first')}</label>
                     <div class="control">
-                        <input type="text" class="textField" value="${this.lastName}" readonly/>
+                        <input type="text" class="textField" value="${this.firstName}" readonly/>
                     </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">${i18n.t('organization')}</label>
-                    <div class="control">
-                        <input type="text" class="textField" readonly/>
                     </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">${i18n.t('email')}</label>
-                    <div class="control">
-                        <input type="email" class="textField" value="${this.email}" readonly/>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">${i18n.t('languages.label')}</label>
-                    <div class="control">
-                        <div>
-                            <input type="radio" class="language" id="language-german" name="language" value="de">
-                            <label for="language-german">${i18n.t('languages.german')}</label>
-                        </div>
-                        <div>
-                            <input type="radio" class="language" id="language-english" name="language" value="en">
-                            <label for="language-english">${i18n.t('languages.english')}</label>
-                        </div>
-                        <div>
-                            <input type="radio" class="language" id="language-both" name="language" value="both">
-                            <label for="language-both">${i18n.t('languages.both')}</label>
+    
+                    <div class="field">
+                        <label class="label">${i18n.t('name.last')}</label>
+                        <div class="control">
+                            <input type="text" class="textField" value="${this.lastName}" readonly/>
                         </div>
                     </div>
-
-                </div>
-                <!-- Should I add the provided dates, or make a webcomponent that lets the customers choose the dates themselves? -->
-                <div class="field">
-                    <label class="label">${i18n.t('date.label')}</label>
-                    <div class="control">${this.showDates()}</div>
-                </div>
-
-                <div class="field">
-                    <label class="label">${i18n.t('agreement.label')}</label>
-                    <div class="control">
-                        <div>
-                            <input type="radio" class="agreement" id="yes" name="true" value="true">
-                            <label for="yes">${i18n.t('agreement.yes')}</label>
-                        </div>
-                        <div>
-                        <input type="radio" class="agreement" id="no" name="false" value="false">
-                            <label for="no">${i18n.t('agreement.no')}</label>
+    
+                    <div class="field">
+                        <label class="label">${i18n.t('organization')}</label>
+                        <div class="control">
+                            <input type="text" class="textField" readonly/>
                         </div>
                     </div>
+    
+                    <div class="field">
+                        <label class="label">${i18n.t('email')}</label>
+                        <div class="control">
+                            <input type="email" class="textField" value="${this.email}" readonly/>
+                        </div>
+                    </div>
+    
+                    <div class="field">
+                        <label class="label">${i18n.t('languages.label')}</label>
+                        <div class="control">
+                            <div>
+                                <input type="radio" class="language" id="language-german" name="language" value="de">
+                                <label for="language-german">${i18n.t('languages.german')}</label>
+                            </div>
+                            <div>
+                                <input type="radio" class="language" id="language-english" name="language" value="en">
+                                <label for="language-english">${i18n.t('languages.english')}</label>
+                            </div>
+                            <div>
+                                <input type="radio" class="language" id="language-both" name="language" value="both">
+                                <label for="language-both">${i18n.t('languages.both')}</label>
+                            </div>
+                        </div>
+    
+                    </div>
+                    <!-- Should I add the provided dates, or make a webcomponent that lets the customers choose the dates themselves? -->
+                    <div class="field">
+                        <label class="label">${i18n.t('date.label')}</label>
+                        <div class="control">${this.showDates()}</div>
+                    </div>
+    
+                    <div class="field">
+                        <label class="label">${i18n.t('agreement.label')}</label>
+                        <div class="control">
+                            <div>
+                                <input type="radio" class="agreement" id="yes" name="agree" value="true">
+                                <label for="yes">${i18n.t('agreement.yes')}</label>
+                            </div>
+                            <div>
+                            <input type="radio" class="agreement" id="no" name="agree" value="false">
+                                <label for="no">${i18n.t('agreement.no')}</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+    
+                    <div id="rightSide">
+                        <dbp-button 
+                           value="Primary"
+                           @click="${this.send}"
+                           type="is-primary">${i18n.t('submit')}</dbp-button>
+                    </div>
                 </div>
-                
-               
-
-                <div id="rightSide">
-                    <dbp-button 
-                       value="Primary"
-                       @click="${this.send}"
-                       type="is-primary">${i18n.t('submit')}</dbp-button>
-                </div>
-                
 
             </div>
 
             <div class="${!loggedIn ? '' : 'hidden'}">
                 <p>${i18n.t('please-log-in')}</p>
+            </div>
+            
+            <div class="${!available ? '' : 'hidden'}">
+                <p>${i18n.t('availibility')}</p>
             </div>
         `;
     }
