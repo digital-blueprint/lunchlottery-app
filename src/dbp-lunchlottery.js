@@ -141,9 +141,9 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
     }
     async register()
     {
-        let language = this._("input[class='language']:checked");
-        let agreement = this._("input[class='agreement']:checked");
-        let date = this._("input[class='date']:checked");
+        let language = this._("input[class='language']:checked").value;
+        let agreement = this._("input[class='agreement']:checked").value;
+        let date = this._("input[class='date']:checked").value;
         let response;
         let data = {
                 "identifier": this.identifier,
@@ -174,7 +174,6 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             this.entryPointUrl + '/formalize/submissions',
             options
         );
-
         return response;
     }
 
