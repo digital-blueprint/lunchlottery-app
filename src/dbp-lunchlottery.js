@@ -23,6 +23,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         this.email = null;
         this.organizationIds = null;
         this.organizationNames = null;
+        this.organizationsString = null;
         this.preferredLanguage = null;
         this.available = false;
         this.dates = null;
@@ -47,6 +48,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             email: {type: String, attribute: false},
             organizationIds: {type: Array, attribute: false},
             organizationNames: {type: Array, attribute: false},
+            organizationsString: {type: String, attribute: false},
             available: {type: Boolean, attribute: false},
             dates: {type: Array, attribute: false},
             language: {type: String, attribute: false},
@@ -96,7 +98,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         if (!this.organizationIds) {
             return;
         }
-
+        this.organizationsString = '';
 
         let organizations = [];
         for (let index = 0; index < this.organizationIds.length; index++){
@@ -114,18 +116,12 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             let data = await response.json();
             let organizationName = data.name;
             organizations.push(organizationName);
-
+            this.organizationsString += organizationName;
+            if(index != (this.organizationIds.length - 1))
+                this.organizationsString += ', ';
         }
         this.organizationNames = organizations;
     }
-
-    /*showOrganizations(){
-        let all_organizations = '';
-        this.organizationNames.forEach((organization) => {
-            all_organizations = all_organizations + ' ' + organization;
-        });
-        return all_organizations;
-    }*/
 
     async fetchDates() {
 
@@ -150,6 +146,15 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
     }
     async register()
     {
+        if(!this.shadowRoot.querySelectorAll('.language'))
+            return;
+
+        if(!this.shadowRoot.querySelectorAll('.date'))
+            return;
+
+        if(!this.shadowRoot.querySelectorAll('.agreement'))
+            return;
+
         let language = this._("input[class='language']:checked").value;
         let agreement_radio = this._("input[class='agreement']:checked").value;
         let agreement;
@@ -170,6 +175,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                 dates.push(element.value);
             }
         });
+
 
         let response;
         let data = {
@@ -342,7 +348,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                     <div class="field">
                         <label class="label">${i18n.t('organization')}</label>
                         <div class="control">
-                            <input type="text" class="textField"" readonly/>
+                            <input type="text" class="textField" value="${this.organizationsString}" readonly/>
                         </div>
                     </div>
     
