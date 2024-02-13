@@ -142,8 +142,26 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
     async register()
     {
         let language = this._("input[class='language']:checked").value;
-        let agreement = this._("input[class='agreement']:checked").value;
-        let date = this._("input[class='date']:checked").value;
+        let agreement_radio = this._("input[class='agreement']:checked").value;
+        let agreement;
+
+        if(agreement_radio == 't')
+        {
+            agreement = Boolean(true);
+        }
+        else
+        {
+            agreement = Boolean(false);
+        }
+        const dates = [];
+
+        this.shadowRoot.querySelectorAll('.date').forEach((element) => {
+            if(element.checked)
+            {
+                dates.push(element.value);
+            }
+        });
+
         let response;
         let data = {
                 "identifier": this.identifier,
@@ -153,7 +171,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                 "organizationIds": this.organizationIds,
                 "organizationNames": this.organizationNames,
                 "preferredLanguage": language,
-                "possibleDates": date,
+                "possibleDates": dates,
                 "privacyConsent": agreement,
             };
         let body = {
@@ -189,7 +207,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
 
             //create checkbox
             box.type = "checkbox";
-            box.value = date;
+            box.value = date_string;
 
             //create checkbox label
             let label = document.createElement('label');
@@ -354,11 +372,11 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                         <label class="label">${i18n.t('agreement.label')}</label>
                         <div class="control">
                             <div>
-                                <input type="radio" class="agreement" id="yes" name="agree" value="true">
+                                <input type="radio" class="agreement" id="yes" name="agree" value="t">
                                 <label for="yes">${i18n.t('agreement.yes')}</label>
                             </div>
                             <div>
-                            <input type="radio" class="agreement" id="no" name="agree" value="false">
+                            <input type="radio" class="agreement" id="no" name="agree" value="f">
                                 <label for="no">${i18n.t('agreement.no')}</label>
                             </div>
                         </div>
