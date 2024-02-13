@@ -119,13 +119,13 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         this.organizationNames = organizations;
     }
 
-    showOrganizations(){
+    /*showOrganizations(){
         let all_organizations = '';
         this.organizationNames.forEach((organization) => {
             all_organizations = all_organizations + ' ' + organization;
         });
         return all_organizations;
-    }
+    }*/
 
     async fetchDates() {
 
@@ -342,7 +342,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                     <div class="field">
                         <label class="label">${i18n.t('organization')}</label>
                         <div class="control">
-                            <input type="text" class="textField" value ="${this.showOrganizations()}" readonly/>
+                            <input type="text" class="textField"" readonly/>
                         </div>
                     </div>
     
