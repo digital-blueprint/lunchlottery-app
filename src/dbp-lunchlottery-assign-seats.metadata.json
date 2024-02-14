@@ -1,0 +1,18 @@
+{
+    "element": "dbp-lunchlottery-assign-seats",
+    "module_src": "dbp-lunchlottery-assign-seats.js",
+    "routing_name": "lunchlottery-assign-seats",
+    "name": {
+        "de": "The Lunch Lottery - Sitzplätze zuweisen",
+        "en": "The Lunch Lottery - Assign seats"
+    },
+    "short_name": {
+        "de": "The Lunch Lottery - Sitzplätze zuweisen",
+        "en": "The Lunch Lottery - Assign seats"
+    },
+    "description": {
+        "de": "todo",
+        "en": "todo"
+    },
+    "subscribe": "lang,auth,entry-point-url"
+}
