@@ -108,8 +108,8 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
     async fetchForm() {
         let response = await fetch(this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER, {
             headers: {
-                'Content-Type': 'application/ld+json'
-                //Authorization: 'Bearer ' + this.auth.token, todo
+                'Content-Type': 'application/ld+json',
+                Authorization: 'Bearer ' + this.auth.token,
             }
         });
 
@@ -162,8 +162,8 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
     async fetchSubmissionsCollection() {
         let response = await fetch(this.entryPointUrl + '/formalize/submissions/?formIdentifier=' + FORM_IDENTIFIER, {
             headers: {
-                'Content-Type': 'application/ld+json'
-                //Authorization: 'Bearer ' + this.auth.token, todo
+                'Content-Type': 'application/ld+json',
+                Authorization: 'Bearer ' + this.auth.token,
             }
         });
 
