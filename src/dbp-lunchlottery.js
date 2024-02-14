@@ -322,33 +322,31 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
             <div class="${loggedIn ? '' : 'hidden'}">
                 <div class="${available ? '' : 'hidden'}">
-                    <!--disabled-->
-                    <!--yur lunch lotter anmelden name-->
                     <div class="field">
                     <label class="label">${i18n.t('name.first')}</label>
                     <div class="control">
-                        <input type="text" class="textField" value="${this.firstName}" readonly/>
+                        <input type="text" class="textField" value="${this.firstName}" disabled/>
                     </div>
                     </div>
     
                     <div class="field">
                         <label class="label">${i18n.t('name.last')}</label>
                         <div class="control">
-                            <input type="text" class="textField" value="${this.lastName}" readonly/>
+                            <input type="text" class="textField" value="${this.lastName}" disabled/>
                         </div>
                     </div>
     
                     <div class="field">
                         <label class="label">${i18n.t('organization')}</label>
                         <div class="control">
-                            <input type="text" class="textField" value="${this.organizationsString}" readonly/>
+                            <input type="text" class="textField" value="${this.organizationsString}" disabled/>
                         </div>
                     </div>
     
                     <div class="field">
                         <label class="label">${i18n.t('email')}</label>
                         <div class="control">
-                            <input type="email" class="textField" value="${this.email}" readonly/>
+                            <input type="email" class="textField" value="${this.email}" disabled/>
                         </div>
                     </div>
     
@@ -370,7 +368,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                         </div>
     
                     </div>
-                    <!-- Should I add the provided dates, or make a webcomponent that lets the customers choose the dates themselves? -->
+
                     <div class="field">
                         <label class="label">${i18n.t('date.label')}</label>
                         <div class="control">${this.showDates()}</div>
