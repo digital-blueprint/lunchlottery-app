@@ -11,8 +11,8 @@
         "en": "The Lunch Lottery - Assign seats"
     },
     "description": {
-        "de": "todo",
-        "en": "todo"
+        "de": "Ermöglicht das Erstellen der Sitzplatzzuordnung für das nächste 'Lunch Lottery' Event",
+        "en": "Allows to create the seat assigment for the next 'Lunch Lottery' event"
     },
     "subscribe": "lang,auth,entry-point-url"
 }

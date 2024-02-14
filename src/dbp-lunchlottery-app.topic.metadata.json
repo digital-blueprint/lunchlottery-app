@@ -8,8 +8,8 @@
         "en": "The Lunch Lottery - Meet your Colleagues"
     },
     "description": {
-        "de": "Das ist eine Frontend Template App. Mit dieser kann man die Frontendentwicklung für Digitial Blueprint starten.",
-        "en": "This is a frontend template app. With this app you can start the frontend development for Digitial Blueprint."
+        "de": "",
+        "en": ""
     },
     "routing_name": "dbp-lunchlottery-app",
     "activities": [

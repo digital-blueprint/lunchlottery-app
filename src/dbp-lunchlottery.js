@@ -285,6 +285,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         return [
             commonStyles.getThemeCSS(),
             commonStyles.getGeneralCSS(),
+            commonStyles.getActivityCSS(),
             css`
                 .hidden {
                     display: none;
@@ -319,7 +320,19 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         let i18n = this._i18n;
 
         return html`
-            <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
+            <h2>${this.activity.getName(this.lang)}</h2>
+            <p class="subheadline">
+                <slot name="description">
+                    ${this.activity.getDescription(this.lang)}
+                </slot>
+            </p>
+
+            <slot name="activity-description">
+                <p>${i18n.t('register.description-text')} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
+                <br />
+            </slot>
+            
+             <!-- <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p> -->
             <div class="${loggedIn ? '' : 'hidden'}">
                 <div class="${available ? '' : 'hidden'}">
                     <div class="field">

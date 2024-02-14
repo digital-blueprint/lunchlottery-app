@@ -355,6 +355,8 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
     static get styles() {
         return [
             commonStyles.getThemeCSS(),
+            commonStyles.getGeneralCSS(),
+            commonStyles.getActivityCSS(),
             commonStyles.getButtonCSS(),
             css`
                 .hidden {
@@ -418,8 +420,12 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
         };
 
         return html`
-            <h3>${this.activity.getName(this.lang)}</h3>
-            <p>${this.activity.getDescription(this.lang)}</p>
+            <h2>${this.activity.getName(this.lang)}</h2>
+            <p class="subheadline">
+                <slot name="description">
+                    ${this.activity.getDescription(this.lang)}
+                </slot>
+            </p>
 
             <div class="control full-size-spinner ${classMap({hidden: !this.loading})}">
                 <span class="loading">
