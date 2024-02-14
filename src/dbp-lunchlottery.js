@@ -146,14 +146,6 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
     }
     async register()
     {
-        if(!this.shadowRoot.querySelectorAll('.language'))
-            return;
-
-        if(!this.shadowRoot.querySelectorAll('.date'))
-            return;
-
-        if(!this.shadowRoot.querySelectorAll('.agreement'))
-            return;
 
         let language = this._("input[class='language']:checked").value;
         let agreement_radio = this._("input[class='agreement']:checked").value;
@@ -330,7 +322,8 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
             <div class="${loggedIn ? '' : 'hidden'}">
                 <div class="${available ? '' : 'hidden'}">
-
+                    <!--disabled-->
+                    <!--yur lunch lotter anmelden name-->
                     <div class="field">
                     <label class="label">${i18n.t('name.first')}</label>
                     <div class="control">
