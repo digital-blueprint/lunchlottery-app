@@ -396,7 +396,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
     }
 
     render() {
-        let loggedIn = this.auth && this.auth.token;
         let i18n = this._i18n;
 
         let options = {
