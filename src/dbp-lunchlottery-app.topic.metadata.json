@@ -12,6 +12,13 @@
         "en": "This is a frontend template app. With this app you can start the frontend development for Digitial Blueprint."
     },
     "routing_name": "dbp-lunchlottery-app",
-    "activities": [{"path": "dbp-lunchlottery.metadata.json"}],
+    "activities": [
+        {
+            "path": "dbp-lunchlottery.metadata.json"
+        },
+        {
+            "path": "dbp-lunchlottery-assign-seats.metadata.json"
+        }
+    ],
     "attributes": []
 }

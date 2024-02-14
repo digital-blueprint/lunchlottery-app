@@ -1,6 +1,35 @@
 {
     "please-log-in": "Bitte melde dich an",
     "availibility": "Die Anmeldung zur Lunch-Lottery ist aktuell nicht geöffnet.",
+    "loading": "Lade...",
+    "errors": {
+        "unauthorized-title": "Keine Berechtigung",
+        "unauthorized-body": "Keine Berechtigung um auf die angeforderte Ressource zuzugreifen.",
+        "notfound-title": "Ressource nicht gefunden",
+        "notfound-body": "Die angeforderte Ressource wurde nicht gefunden.",
+        "errors.other-title": "Fehler",
+        "errors.other-body": "Beim Zugriff auf die angeforderte Ressource ist ein Fehler aufgetreten."
+    },
+    "table": {
+        "number": "Tische",
+        "seats": "Plätze/Tisch",
+        "add": "Tisch hinzufügen",
+        "remove": "Tisch entfernen"
+    },
+    "process": {
+        "run": "Plätze zuweisen",
+        "download": "Excel-Datei herunterladen"
+    },
+    "results": {
+        "givenName": "Vorname",
+        "familyName": "Nachname",
+        "email": "E-Mail",
+        "organizationNames": "Organisationseinheiten",
+        "preferredLanguage": "Bevorzugte Sprache",
+        "date": "Datum",
+        "table": "Tisch",
+        "privacyConsent": "Zustimmung"
+    },
     "name": {
         "first": "*Vorname",
         "last": "*Nachname"
