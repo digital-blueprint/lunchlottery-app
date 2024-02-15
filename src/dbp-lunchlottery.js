@@ -223,14 +223,36 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                 agreement = Boolean(element.value);
             }
         });
-
-
-        if(!language || !agreement || dates.length === 0)
+        //Check language field
+        if(!language)
         {
-            console.log("fill");
+            this._('#lang-error').hidden = false;
             return;
         }
-
+        else
+        {
+            this._('#lang-error').hidden = true;
+        }
+        //Check dates field
+        if(dates.length === 0)
+        {
+            this._('#dates-error').hidden = false;
+            return;
+        }
+        else
+        {
+            this._('#dates-error').hidden = true;
+        }
+        //Check agreement field
+        if(!agreement)
+        {
+            this._('#agreement-error').hidden = false;
+            return;
+        }
+        else
+        {
+            this._('#agreement-error').hidden = true;
+        }
 
         let response;
 
@@ -322,7 +344,10 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                 .textField{
                     width: 100%;
                 }
-
+                
+                .input-error{
+                    background-color: var(--dbp-warning-surface)
+                }
                 #rightSide {
                 float:right;
             `,
@@ -399,12 +424,13 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                                     <label for="language-both">${i18n.t('languages.both')}</label>
                                 </div>
                             </div>
-                            
+                            <span class="input-error" id="lang-error" hidden>${i18n.t('errors.language')}</span>
                         </div>
     
                         <div class="field">
                             <label class="label">${i18n.t('date.label')}</label>
                             <div class="control">${this.showDates()}</div>
+                            <span class="input-error" id="dates-error" hidden>${i18n.t('errors.date')}</span>
                         </div>
         
                         <div class="field">
@@ -418,6 +444,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                                 <input type="radio" class="agreement" id="no" name="agree" value="false">
                                     <label for="no">${i18n.t('agreement.no')}</label>
                                 </div>
+                                <span class="input-error" id="agreement-error" hidden>${i18n.t('errors.agreement')}</span>
                             </div>
                         </div>
         
@@ -441,6 +468,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             <div class="${!available ? '' : 'hidden'}">
                 <p>${i18n.t('availibility')}</p>
             </div>
+            
         `;
     }
 }

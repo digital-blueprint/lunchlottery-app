@@ -11,7 +11,10 @@
         "notfound-title": "Ressource nicht gefunden",
         "notfound-body": "Die angeforderte Ressource wurde nicht gefunden.",
         "errors.other-title": "Fehler",
-        "errors.other-body": "Beim Zugriff auf die angeforderte Ressource ist ein Fehler aufgetreten."
+        "errors.other-body": "Beim Zugriff auf die angeforderte Ressource ist ein Fehler aufgetreten.",
+        "language": "Sie müssen eine Sprache wählen.",
+        "date": "Sie müssen einen Tag wählen.",
+        "agreement": "Sie müssen zustimmen oder ablehnen."
     },
     "table": {
         "number": "Tische",

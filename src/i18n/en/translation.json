@@ -11,7 +11,10 @@
         "notfound-title": "Ressource not found",
         "notfound-body": "Requested ressource not found.",
         "errors.other-title": "Error",
-        "errors.other-body": "There was an error accessing requested ressource."
+        "errors.other-body": "There was an error accessing requested ressource.",
+        "language": "You must choose a language.",
+        "date": "You must choose a date.",
+        "agreement": "You must agree or disagree."
     },
     "table": {
         "number": "Tables",
