@@ -1,0 +1,18 @@
+{
+    "element": "dbp-lunchlottery-assign-seats",
+    "module_src": "dbp-lunchlottery-assign-seats.js",
+    "routing_name": "lunchlottery-assign-seats",
+    "name": {
+        "de": "Lunch Lottery Sitzplätze zuweisen",
+        "en": "Assign Lunch Lottery seats"
+    },
+    "short_name": {
+        "de": "Lunch Lottery Sitzplätze zuweisen",
+        "en": "Assign Lunch Lottery seats"
+    },
+    "description": {
+        "de": "Ermöglicht das Erstellen der Sitzplatzzuordnung für das nächste Lunch Lottery Event",
+        "en": "Allows to create the seat assigment for the next Lunch Lottery event"
+    },
+    "subscribe": "lang,auth,entry-point-url"
+}

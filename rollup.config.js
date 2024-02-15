@@ -119,11 +119,17 @@ export default (async () => {
             appEnv != 'test'
                 ? (appEnv.length > 6 && appEnv.substring(appEnv.length - 6) == "Custom") ?
                     [
-                        'src/' + appName + '.js', 'src/dbp-lunchlottery.js',
+                        'src/' + appName + '.js',
+                        'src/dbp-lunchlottery.js',
+                        'src/dbp-lunchlottery-assign-seats.js',
                         await getPackagePath('@tugraz/web-components', 'src/logo.js')
                     ]
                     :
-                    ['src/' + appName + '.js', 'src/dbp-lunchlottery.js']
+                    [
+                        'src/' + appName + '.js',
+                        'src/dbp-lunchlottery.js',
+                        'src/dbp-lunchlottery-assign-seats.js'
+                    ]
                 : globSync('test/**/*.js'),
         output: {
             dir: 'dist',
@@ -258,6 +264,10 @@ export default (async () => {
                         src: await getPackagePath('@dbp-toolkit/common', 'assets/icons/*.svg'),
                         dest: 'dist/' + (await getDistPath('@dbp-toolkit/common', 'icons')),
                     },
+                    {
+                        src: await getPackagePath('tabulator-tables', 'dist/css/*.css'),
+                        dest: 'dist/' + (await getDistPath('@dbp-toolkit/tabulator-table', 'tabulator-tables/css')),
+                    },
                 ],
             }),
             !whitelabel &&
@@ -290,6 +300,10 @@ export default (async () => {
                     {
                         src: await getPackagePath('@dbp-toolkit/common', 'assets/icons/*.svg'),
                         dest: 'dist/' + (await getDistPath('@dbp-toolkit/common', 'icons')),
+                    },
+                    {
+                        src: await getPackagePath('tabulator-tables', 'dist/css/tabulator.min.css'),
+                        dest: 'dist/' + (await getDistPath('@dbp-toolkit/tabulator-table', 'tabulator-tables/css')),
                     },
                 ],
             }),

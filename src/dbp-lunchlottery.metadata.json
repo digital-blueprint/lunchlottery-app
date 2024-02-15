@@ -3,16 +3,16 @@
     "module_src": "dbp-lunchlottery.js",
     "routing_name": "lunchlottery",
     "name": {
-        "de": "The Lunch Lottery - Meet your Colleagues",
-        "en": "The Lunch Lottery - Meet your Colleagues"
+        "de": "Für die Lunch Lottery Anmelden",
+        "en": "Register for The Lunch Lottery"
     },
     "short_name": {
-        "de": "The Lunch Lottery - Meet your Colleagues",
-        "en": "The Lunch Lottery - Meet your Colleagues"
+        "de": "Für die Lunch Lottery Anmelden",
+        "en": "Register for The Lunch Lottery"
     },
     "description": {
-        "de": "Informationen zu den Teilnahmebedingungen bei Initiativen der Personal-/Kompetenzentwicklung finden Sie",
-        "en": "Information on the conditions of participation and data protection for initiatives of The Human Development Department can be found"
+        "de": "Ermöglicht die Anmeldung zum nächsten Lunch Lottery Event",
+        "en": "Allows to register for the next Lunch Lottery event"
     },
     "subscribe": "lang,auth,entry-point-url",
     "here": {

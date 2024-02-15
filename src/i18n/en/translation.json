@@ -1,6 +1,38 @@
 {
+    "register": {
+        "description-text": "Information on the conditions of participation and data protection for initiatives of The Human Development Department can be found"
+    },
     "please-log-in": "Please log in",
     "availibility": "Registering for lunch lottery is currently not possible.",
+    "loading": "loading...",
+    "errors": {
+        "unauthorized-title": "Unauthorized",
+        "unauthorized-body": "No authorization to access requested ressource.",
+        "notfound-title": "Ressource not found",
+        "notfound-body": "Requested ressource not found.",
+        "errors.other-title": "Error",
+        "errors.other-body": "There was an error accessing requested ressource."
+    },
+    "table": {
+        "number": "Tables",
+        "seats": "Seats/table",
+        "add": "Add table",
+        "remove": "Remove table"
+    },
+    "process": {
+        "run": "Assign seats",
+        "download": "Download Excel file"
+    },
+    "results": {
+        "givenName": "First name",
+        "familyName": "Last name",
+        "email": "E-mail",
+        "organizationNames": "Organizational units",
+        "preferredLanguage": "Preferred language",
+        "date": "Date",
+        "table": "Table",
+        "privacyConsent": "Consent"
+    },
     "name": {
         "first": "*First Name",
         "last": "*Last Name"
