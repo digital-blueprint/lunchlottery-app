@@ -159,17 +159,22 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         {
             agreement = Boolean(false);
         }
-        const dates = [];
 
+        let checked = false;
+        const dates = [];
         this.shadowRoot.querySelectorAll('.date').forEach((element) => {
             if(element.checked)
             {
                 dates.push(element.value);
+                checked = true;
             }
         });
 
+        if(!checked)
+            return;
 
         let response;
+
         let data = {
                 "identifier": this.identifier,
                 "givenName": this.firstName,
@@ -322,81 +327,87 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             <p>${this.activity.getDescription(this.lang)} <a href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
             <div class="${loggedIn ? '' : 'hidden'}">
                 <div class="${available ? '' : 'hidden'}">
-                    <div class="field">
-                    <label class="label">${i18n.t('name.first')}</label>
-                    <div class="control">
-                        <input type="text" class="textField" value="${this.firstName}" disabled/>
-                    </div>
-                    </div>
-    
-                    <div class="field">
-                        <label class="label">${i18n.t('name.last')}</label>
+                    <form>
+                        <div class="field">
+                        <label class="label">${i18n.t('name.first')}</label>
                         <div class="control">
-                            <input type="text" class="textField" value="${this.lastName}" disabled/>
+                            <input type="text" class="textField" value="${this.firstName}" disabled/>
                         </div>
-                    </div>
-    
-                    <div class="field">
-                        <label class="label">${i18n.t('organization')}</label>
-                        <div class="control">
-                            <input type="text" class="textField" value="${this.organizationsString}" disabled/>
                         </div>
-                    </div>
-    
-                    <div class="field">
-                        <label class="label">${i18n.t('email')}</label>
-                        <div class="control">
-                            <input type="email" class="textField" value="${this.email}" disabled/>
-                        </div>
-                    </div>
-    
-                    <div class="field">
-                        <label class="label">${i18n.t('languages.label')}</label>
-                        <div class="control">
-                            <div>
-                                <input type="radio" class="language" id="language-german" name="language" value="de">
-                                <label for="language-german">${i18n.t('languages.german')}</label>
-                            </div>
-                            <div>
-                                <input type="radio" class="language" id="language-english" name="language" value="en">
-                                <label for="language-english">${i18n.t('languages.english')}</label>
-                            </div>
-                            <div>
-                                <input type="radio" class="language" id="language-both" name="language" value="both">
-                                <label for="language-both">${i18n.t('languages.both')}</label>
+        
+                        <div class="field">
+                            <label class="label">${i18n.t('name.last')}</label>
+                            <div class="control">
+                                <input type="text" class="textField" value="${this.lastName}" disabled/>
                             </div>
                         </div>
-    
-                    </div>
-
-                    <div class="field">
-                        <label class="label">${i18n.t('date.label')}</label>
-                        <div class="control">${this.showDates()}</div>
-                    </div>
-    
-                    <div class="field">
-                        <label class="label">${i18n.t('agreement.label')}</label>
-                        <div class="control">
-                            <div>
-                                <input type="radio" class="agreement" id="yes" name="agree" value="t">
-                                <label for="yes">${i18n.t('agreement.yes')}</label>
-                            </div>
-                            <div>
-                            <input type="radio" class="agreement" id="no" name="agree" value="f">
-                                <label for="no">${i18n.t('agreement.no')}</label>
+        
+                        <div class="field">
+                            <label class="label">${i18n.t('organization')}</label>
+                            <div class="control">
+                                <input type="text" class="textField" value="${this.organizationsString}" disabled/>
                             </div>
                         </div>
-                    </div>
-                    
-                   
+        
+                        <div class="field">
+                            <label class="label">${i18n.t('email')}</label>
+                            <div class="control">
+                                <input type="email" class="textField" value="${this.email}" disabled/>
+                            </div>
+                        </div>
+        
+                        <div class="field">
+                            <label class="label">${i18n.t('languages.label')}</label>
+                            <div class="control">
+                                <div>
+                                    <input type="radio" class="language" id="language-german" name="language" value="de">
+                                    <label for="language-german">${i18n.t('languages.german')}</label>
+                                </div>
+                                <div>
+                                    <input type="radio" class="language" id="language-english" name="language" value="en">
+                                    <label for="language-english">${i18n.t('languages.english')}</label>
+                                </div>
+                                <div>
+                                    <input type="radio" class="language" id="language-both" name="language" value="both">
+                                    <label for="language-both">${i18n.t('languages.both')}</label>
+                                </div>
+                            </div>
+                            
+                        </div>
     
-                    <div id="rightSide">
-                        <dbp-button 
-                           value="Primary"
-                           @click="${this.send}"
-                           type="is-primary">${i18n.t('submit')}</dbp-button>
+                        <div class="field">
+                            <label class="label">${i18n.t('date.label')}</label>
+                            <div class="control">${this.showDates()}</div>
+                        </div>
+        
+                        <div class="field">
+                            <label class="label">${i18n.t('agreement.label')}</label>
+                            <div class="control">
+                                <div>
+                                    <input type="radio" class="agreement" id="yes" name="agree" value="t">
+                                    <label for="yes">${i18n.t('agreement.yes')}</label>
+                                </div>
+                                <div>
+                                <input type="radio" class="agreement" id="no" name="agree" value="f">
+                                    <label for="no">${i18n.t('agreement.no')}</label>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div id="rightSide">
+                            <dbp-button
+                                    value="Primary"
+                                    
+                                    >${i18n.t('submit')}</dbp-button>
+                            <!--<dbp-button 
+                               value="Primary"
+                               @click="${this.send}"
+                               type="is-primary">${i18n.t('submit')}</dbp-button>-->
+                            <!--<button @click="${this.send}">${i18n.t('submit')}</button>-->
+                        </div>
                     </div>
-                </div>
+                    </form>
+                        
 
             </div>
 
