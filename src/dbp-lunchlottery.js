@@ -68,6 +68,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         return response;
     }
 
+
     async fetchPerson() {
         let response = await fetch(this.entryPointUrl + '/base/people/' + this.auth['user-id'] + '?includeLocal=email,staffAt', {
             headers: {
@@ -144,69 +145,6 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         const current = new Date();
         this.available = (start.getTime() < current.getTime()) && (end.getTime() > current.getTime());
     }
-    async register()
-    {
-
-        let language = this._("input[class='language']:checked").value;
-        let agreement_radio = this._("input[class='agreement']:checked").value;
-        let agreement;
-
-        if(agreement_radio == 't')
-        {
-            agreement = Boolean(true);
-        }
-        else
-        {
-            agreement = Boolean(false);
-        }
-
-        let checked = false;
-        const dates = [];
-        this.shadowRoot.querySelectorAll('.date').forEach((element) => {
-            if(element.checked)
-            {
-                dates.push(element.value);
-                checked = true;
-            }
-        });
-
-        if(!checked)
-            return;
-
-        let response;
-
-        let data = {
-                "identifier": this.identifier,
-                "givenName": this.firstName,
-                "familyName": this.lastName,
-                "email": this.email,
-                "organizationIds": this.organizationIds,
-                "organizationNames": this.organizationNames,
-                "preferredLanguage": language,
-                "possibleDates": dates,
-                "privacyConsent": agreement,
-            };
-        let body = {
-            form: '/formalize/forms/' + FORM_IDENTIFIER,
-            dataFeedElement: JSON.stringify(data),
-        };
-
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/ld+json',
-                Authorization: 'Bearer ' + this.auth.token,
-            },
-            body: JSON.stringify(body),
-        };
-
-        response = await this.httpGetAsync(
-            this.entryPointUrl + '/formalize/submissions',
-            options
-        );
-        return response;
-    }
-
     showDates() {
         if (!this.dates) {
             return;
@@ -258,8 +196,84 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         return container;
     }
 
-    async send()
+    async register()
     {
+        let language = null;
+        this.shadowRoot.querySelectorAll('.language').forEach((element) => {
+            if(element.checked)
+            {
+                language = element.value;
+            }
+        });
+        //let language = this._("input[class='language']:checked").value;
+
+
+        const dates = [];
+        this.shadowRoot.querySelectorAll('.date').forEach((element) => {
+            if(element.checked)
+            {
+                dates.push(element.value);
+            }
+        });
+
+        let agreement = null;
+        this.shadowRoot.querySelectorAll('.agreement').forEach((element) => {
+            if(element.checked)
+            {
+                agreement = Boolean(element.value);
+            }
+        });
+
+
+        if(!language || !agreement || dates.length === 0)
+        {
+            console.log("fill");
+            return;
+        }
+
+
+        let response;
+
+        let data = {
+                "identifier": this.identifier,
+                "givenName": this.firstName,
+                "familyName": this.lastName,
+                "email": this.email,
+                "organizationIds": this.organizationIds,
+                "organizationNames": this.organizationNames,
+                "preferredLanguage": language,
+                "possibleDates": dates,
+                "privacyConsent": agreement,
+            };
+        let body = {
+            form: '/formalize/forms/' + FORM_IDENTIFIER,
+            dataFeedElement: JSON.stringify(data),
+        };
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/ld+json',
+                Authorization: 'Bearer ' + this.auth.token,
+            },
+            body: JSON.stringify(body),
+        };
+
+        response = await this.httpGetAsync(
+            this.entryPointUrl + '/formalize/submissions',
+            options
+        );
+        return response;
+    }
+
+    async buttonClickHandler()
+    {
+        setTimeout(() => {
+            const scopedTagName = this.getScopedTagName('dbp-button');
+            this.shadowRoot.querySelectorAll(scopedTagName).forEach(element => {
+                element.stop();
+            });
+        }, 1000);
         await this.register();
     }
 
@@ -397,26 +411,22 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                             <label class="label">${i18n.t('agreement.label')}</label>
                             <div class="control">
                                 <div>
-                                    <input type="radio" class="agreement" id="yes" name="agree" value="t">
+                                    <input type="radio" class="agreement" id="yes" name="agree" value="true">
                                     <label for="yes">${i18n.t('agreement.yes')}</label>
                                 </div>
                                 <div>
-                                <input type="radio" class="agreement" id="no" name="agree" value="f">
+                                <input type="radio" class="agreement" id="no" name="agree" value="false">
                                     <label for="no">${i18n.t('agreement.no')}</label>
                                 </div>
                             </div>
                         </div>
         
                         <div id="rightSide">
-                            <dbp-button
-                                    value="Primary"
-                                    
-                                    >${i18n.t('submit')}</dbp-button>
-                            <!--<dbp-button 
+                            
+                            <dbp-button 
                                value="Primary"
-                               @click="${this.send}"
-                               type="is-primary">${i18n.t('submit')}</dbp-button>-->
-                            <!--<button @click="${this.send}">${i18n.t('submit')}</button>-->
+                               @click="${this.buttonClickHandler}"
+                               type="is-primary">${i18n.t('submit')}</dbp-button>
                         </div>
                     </div>
                     </form>
