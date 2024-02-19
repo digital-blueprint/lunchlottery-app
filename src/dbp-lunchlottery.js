@@ -305,6 +305,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             switch (propName) {
                 case 'lang':
                     this._i18n.changeLanguage(this.lang);
+                    this.fetchOrganizations();
                     break;
                 case 'auth':
                     // If we are logged in, but don't have the person data yet, fetch it
@@ -346,7 +347,11 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                 }
                 
                 .input-error{
-                    background-color: var(--dbp-warning-surface)
+                    background-color: var(--dbp-warning-surface);
+                    padding-bottom: calc(0.375em - 1px);
+                    padding-left: 0.75em;
+                    padding-right: 0.75em;
+                    padding-top: calc(0.375em - 1px);
                 }
                 #rightSide {
                 float:right;
