@@ -27,7 +27,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         this.preferredLanguage = null;
         this.available = false;
         this.dates = null;
-        this.language = null;
+        this.container = null;
     }
 
     static get scopedElements() {
@@ -52,6 +52,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             available: {type: Boolean, attribute: false},
             dates: {type: Array, attribute: false},
             language: {type: String, attribute: false},
+            container: {type: Object},
         };
     }
 
@@ -145,10 +146,18 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
         const current = new Date();
         this.available = (start.getTime() < current.getTime()) && (end.getTime() > current.getTime());
     }
-    showDates() {
-        if (!this.dates) {
-            return;
+    async createDatesCheckboxes() {
+        let response = await fetch(this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER, {
+            headers: {
+                'Content-Type': 'application/ld+json',
+                Authorization: 'Bearer ' + this.auth.token,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(response);
         }
+
         let i18n = this._i18n;
         let container = document.createElement('div');
         this.dates.forEach((date_string) => {
@@ -193,7 +202,12 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
             container.appendChild(option);
 
         });
-        return container;
+        this.container = container;
+    }
+
+    showDates()
+    {
+        return this.container;
     }
 
     async register()
@@ -312,6 +326,7 @@ class LunchLottery extends ScopedElementsMixin(DBPLitElement) {
                     if (this.auth && this.auth['login-status'] === 'logged-in' && !this.firstName) {
                         this.fetchPerson();
                         this.fetchDates();
+                        this.createDatesCheckboxes();
                     }
                     break;
                 case 'organizationIds':
