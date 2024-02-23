@@ -437,7 +437,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
                         organizationNames: assignment.organizationNames.join(', '),
                         preferredLanguage: assignment.preferredLanguage,
                         date: date.identifier,
-                        table: index + ': ' + seat + '/' + table.availableSeats,
+                        table: (index + 1) + ': ' + seat + '/' + table.availableSeats,
                         privacyConsent: assignment.privacyConsent
                     };
                     rows.push(row);
