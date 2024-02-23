@@ -23,6 +23,7 @@
         "remove": "Remove table"
     },
     "process": {
+        "settings": "Table settings",
         "run": "Assign seats",
         "download": "Download Excel file"
     },

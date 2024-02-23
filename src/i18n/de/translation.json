@@ -23,6 +23,7 @@
         "remove": "Tisch entfernen"
     },
     "process": {
+        "settings": "Tischkonfiguration",
         "run": "Plätze zuweisen",
         "download": "Excel-Datei herunterladen"
     },
