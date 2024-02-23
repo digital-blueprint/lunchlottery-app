@@ -466,7 +466,12 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
     }
 
     downloadResults() {
-        const worksheet = XLSX.utils.json_to_sheet(this.variants[this.currentVariant]);
+        let rows = [];
+        this.variants[this.currentVariant].forEach(row => {
+            row['date'] = new Date(row['date']);
+            rows.push(row);
+        });
+        const worksheet = XLSX.utils.json_to_sheet(rows);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet);
         XLSX.writeFile(workbook, 'LunchLotteryResults.xlsx', {compression: true});
