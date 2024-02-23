@@ -16,6 +16,12 @@
         "date": "Sie müssen einen Tag wählen.",
         "agreement": "Sie müssen zustimmen oder ablehnen."
     },
+    "oks": {
+        "updated-title": "Einstellungen übernommen",
+        "updated-body": "Die gewählten Einstellungen wurden erfolgreich übernommen.",
+        "cleared-title": "Anmeldungen gelöscht",
+        "cleared-body": "Alle Anmeldungen erfolgreich aus der Datenbank gelöscht."
+    },
     "table": {
         "number": "Tische",
         "seats": "Plätze/Tisch",
@@ -35,6 +41,17 @@
         "date": "Datum",
         "table": "Tisch",
         "privacyConsent": "Zustimmung"
+    },
+    "manage": {
+        "settings": "Einstellungen",
+        "availability": "Anmeldezeitraum",
+        "availabilityStarts": "Anmeldebeginn",
+        "availabilityEnds": "Anmeldeschluss",
+        "dates": "Veranstaltungstermine",
+        "add": "Hinzufügen",
+        "remove": "Löschen",
+        "save": "Einstellungen übernehmen",
+        "delete": "Anmeldungen löschen"
     },
     "name": {
         "first": "*Vorname",

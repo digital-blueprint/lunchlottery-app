@@ -10,11 +10,17 @@
         "unauthorized-body": "No authorization to access requested ressource.",
         "notfound-title": "Ressource not found",
         "notfound-body": "Requested ressource not found.",
-        "errors.other-title": "Error",
-        "errors.other-body": "There was an error accessing requested ressource.",
+        "other-title": "Error",
+        "other-body": "There was an error accessing requested ressource.",
         "language": "You must choose a language.",
         "date": "You must choose a date.",
         "agreement": "You must agree or disagree."
+    },
+    "oks": {
+        "updated-title": "Settings updated",
+        "updated-body": "Choosen settings were updated successfully.",
+        "cleared-title": "Registrations deleted",
+        "cleared-body": "All registrations deleted successfully."
     },
     "table": {
         "number": "Tables",
@@ -35,6 +41,17 @@
         "date": "Date",
         "table": "Table",
         "privacyConsent": "Consent"
+    },
+    "manage": {
+        "settings": "Settings",
+        "availability": "Registration timeframe",
+        "availabilityStarts": "Registration starts",
+        "availabilityEnds": "Registration ends",
+        "dates": "Event dates",
+        "add": "Add",
+        "remove": "Remove",
+        "save": "Save settings",
+        "delete": "Delete registrations"
     },
     "name": {
         "first": "*First Name",

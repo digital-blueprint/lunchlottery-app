@@ -18,6 +18,9 @@
         },
         {
             "path": "dbp-lunchlottery-assign-seats.metadata.json"
+        },
+        {
+            "path": "dbp-lunchlottery-manage.metadata.json"
         }
     ],
     "attributes": []
