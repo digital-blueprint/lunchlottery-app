@@ -346,7 +346,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
             seats: 0
         });
         this.saveTables();
-        console.log(this.tables);
     }
 
     updateTableNumber(dateIndex, tableIndex, value) {
