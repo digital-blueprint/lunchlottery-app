@@ -33,6 +33,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
         // activity
         this.view = VIEW_INIT;
         this.loading = false;
+        this.initialized = false;
         this.dateOptions = {
             weekday: 'long',
             day: 'numeric',
@@ -118,8 +119,10 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
         if (this._loginStatus === LoginStatus.LOGGED_OUT) {
             this.sendSetPropertyEvent('requested-login-status', LoginStatus.LOGGED_IN);
         } else if (this.auth && this.auth['login-status'] === LoginStatus.LOGGED_IN) {
-            this.loadData();
-            this.view = VIEW_SETTINGS;
+            if (!this.initialized) {
+                this.loadData();
+                this.initialized = true;
+            }
         }
     }
 
