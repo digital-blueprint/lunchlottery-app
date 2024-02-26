@@ -196,7 +196,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLitElement) {
     }
 
     async clearFormSubmissions() {
-        let response = await fetch(this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER + '/clear', {
+        let response = await fetch(this.entryPointUrl + '/formalize/submissions?formIdentifier=' + FORM_IDENTIFIER, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/ld+json',
