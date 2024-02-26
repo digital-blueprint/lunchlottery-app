@@ -1,0 +1,18 @@
+{
+    "element": "dbp-lunchlottery-manage",
+    "module_src": "dbp-lunchlottery-manage.js",
+    "routing_name": "lunchlottery-manage",
+    "name": {
+        "de": "Lunch Lottery verwalten",
+        "en": "Manage Lunch Lottery"
+    },
+    "short_name": {
+        "de": "Lunch Lottery verwalten",
+        "en": "Manage Lunch Lottery"
+    },
+    "description": {
+        "de": "Ermöglicht die Verwaltung der Lunch Lottery",
+        "en": "Allows to manage Lunch Lottery"
+    },
+    "subscribe": "lang,auth,entry-point-url"
+}

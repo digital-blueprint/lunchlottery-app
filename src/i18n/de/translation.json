@@ -10,11 +10,17 @@
         "unauthorized-body": "Keine Berechtigung um auf die angeforderte Ressource zuzugreifen.",
         "notfound-title": "Ressource nicht gefunden",
         "notfound-body": "Die angeforderte Ressource wurde nicht gefunden.",
-        "errors.other-title": "Fehler",
-        "errors.other-body": "Beim Zugriff auf die angeforderte Ressource ist ein Fehler aufgetreten.",
+        "other-title": "Fehler",
+        "other-body": "Beim Zugriff auf die angeforderte Ressource ist ein Fehler aufgetreten.",
         "language": "Sie müssen eine Sprache wählen.",
         "date": "Sie müssen einen Tag wählen.",
         "agreement": "Sie müssen zustimmen oder ablehnen."
+    },
+    "oks": {
+        "updated-title": "Einstellungen übernommen",
+        "updated-body": "Die gewählten Einstellungen wurden erfolgreich übernommen.",
+        "cleared-title": "Anmeldungen gelöscht",
+        "cleared-body": "Alle Anmeldungen erfolgreich aus der Datenbank gelöscht."
     },
     "table": {
         "number": "Tische",
@@ -36,6 +42,17 @@
         "date": "Datum",
         "table": "Tisch",
         "privacyConsent": "Zustimmung"
+    },
+    "manage": {
+        "settings": "Einstellungen",
+        "availability": "Anmeldezeitraum",
+        "availabilityStarts": "Anmeldebeginn",
+        "availabilityEnds": "Anmeldeschluss",
+        "dates": "Veranstaltungstermine",
+        "add": "Hinzufügen",
+        "remove": "Löschen",
+        "save": "Einstellungen übernehmen",
+        "delete": "Anmeldungen löschen"
     },
     "name": {
         "first": "*Vorname",

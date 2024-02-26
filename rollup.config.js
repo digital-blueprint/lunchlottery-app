@@ -122,13 +122,15 @@ export default (async () => {
                         'src/' + appName + '.js',
                         'src/dbp-lunchlottery.js',
                         'src/dbp-lunchlottery-assign-seats.js',
+                        'src/dbp-lunchlottery-manage.js',
                         await getPackagePath('@tugraz/web-components', 'src/logo.js')
                     ]
                     :
                     [
                         'src/' + appName + '.js',
                         'src/dbp-lunchlottery.js',
-                        'src/dbp-lunchlottery-assign-seats.js'
+                        'src/dbp-lunchlottery-assign-seats.js',
+                        'src/dbp-lunchlottery-manage.js'
                     ]
                 : globSync('test/**/*.js'),
         output: {
