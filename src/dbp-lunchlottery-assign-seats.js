@@ -210,7 +210,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
     }
 
     async fetchSubmissionsCollection() {
-        let response = await fetch(this.entryPointUrl + '/formalize/submissions/?formIdentifier=' + FORM_IDENTIFIER, {
+        let response = await fetch(this.entryPointUrl + '/formalize/submissions?formIdentifier=' + FORM_IDENTIFIER + '&perPage=99999', {
             headers: {
                 'Content-Type': 'application/ld+json',
                 Authorization: 'Bearer ' + this.auth.token,
