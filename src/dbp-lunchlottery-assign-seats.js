@@ -16,6 +16,7 @@ import * as XLSX from 'sheetjs_xlsx';
 import {LoginStatus} from '@dbp-toolkit/auth/src/util';
 
 const VIEW_INIT = 'init';
+const VIEW_SUBMISSIONS = 'submissions';
 const VIEW_SETTINGS = 'settings';
 const VIEW_RESULTS = 'results';
 
@@ -32,16 +33,62 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
         // activity
         this.view = VIEW_INIT;
         this.loading = false;
+        this.initialized = false;
         this.dateOptions = {
             weekday: 'long',
             day: 'numeric',
             month: 'long',
             year: 'numeric'
         };
+
+        // submissions
+        this.submissionOptions = {
+            layout: 'fitColumns',
+            columns: [
+            ],
+            columnDefaults: {
+                vertAlign: 'middle',
+                hozAlign: 'left',
+                resizable: false
+            }
+        };
+        this.submissionOptionsColumnsPrepend = [
+            {title: this._i18n.t('results.givenName'), field: 'givenName'},
+            {title: this._i18n.t('results.familyName'), field: 'familyName'},
+            {title: this._i18n.t('results.email'), field: 'email'},
+            {title: this._i18n.t('results.organizationNames'), field: 'organizationNames'},
+            {title: this._i18n.t('results.preferredLanguage'), field: 'preferredLanguage'},
+        ];
+        this.submissionOptionsColumnsAppend = [
+            {title: this._i18n.t('results.privacyConsent'), field: 'privacyConsent'}
+        ];
+        this.submissionRows = [];
+
+        // settings
         this.tables = {};
         this.loadTables();
+
+        // results
         this.variants = [];
         this.currentVariant = 0;
+        this.resultOptions = {
+            layout: 'fitColumns',
+            columns: [
+                {title: this._i18n.t('results.givenName'), field: 'givenName'},
+                {title: this._i18n.t('results.familyName'), field: 'familyName'},
+                {title: this._i18n.t('results.email'), field: 'email'},
+                {title: this._i18n.t('results.organizationNames'), field: 'organizationNames'},
+                {title: this._i18n.t('results.preferredLanguage'), field: 'preferredLanguage'},
+                {title: this._i18n.t('results.date'), field: 'date'},
+                {title: this._i18n.t('results.table'), field: 'table'},
+                {title: this._i18n.t('results.privacyConsent'), field: 'privacyConsent'}
+            ],
+            columnDefaults: {
+                vertAlign: 'middle',
+                hozAlign: 'left',
+                resizable: false
+            }
+        };
 
         // formalize data
         this.dates = [];
@@ -72,8 +119,10 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
         if (this._loginStatus === LoginStatus.LOGGED_OUT) {
             this.sendSetPropertyEvent('requested-login-status', LoginStatus.LOGGED_IN);
         } else if (this.auth && this.auth['login-status'] === LoginStatus.LOGGED_IN) {
-            this.loadData();
-            this.view = VIEW_SETTINGS;
+            if (!this.initialized) {
+                this.loadData();
+                this.initialized = true;
+            }
         }
     }
 
@@ -103,6 +152,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
         await this.getDates();
         await this.getSubmissions();
         this.loading = false;
+        this.displaySubmissions();
     }
 
     async fetchForm() {
@@ -208,6 +258,76 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
         }
     }
 
+    flattenSubmissions() {
+        let submissionOptionsColumns = [];
+        let availableDates = {};
+        this.dates.forEach(date => {
+            const title = date.date.toISOString();
+            const index = new Intl.DateTimeFormat(undefined, this.dateOptions).format(date.date);
+            submissionOptionsColumns.push({'title': title, 'field': index});
+            availableDates[index] = false;
+        });
+
+        let rows = [];
+        this.submissions.forEach(submission => {
+            let possibleDates = {...availableDates};
+            submission['possibleDates'].forEach(possibleDate => {
+                const date = new Date(possibleDate);
+                const index = new Intl.DateTimeFormat(undefined, this.dateOptions).format(date);
+                if (index in possibleDates) {
+                    possibleDates[index] = true;
+                }
+            });
+
+            let row = Object.assign(
+                {},
+                {
+                    givenName: submission.givenName,
+                    familyName: submission.familyName,
+                    email: submission.email,
+                    organizationNames: submission.organizationNames.join(', '),
+                    preferredLanguage: submission.preferredLanguage
+                },
+                possibleDates,
+                {
+                    privacyConsent: submission.privacyConsent
+                }
+            );
+            rows.push(row);
+        });
+
+        this.submissionOptions['columns'] = [
+            ...this.submissionOptionsColumnsPrepend,
+            ...submissionOptionsColumns,
+            ...this.submissionOptionsColumnsAppend,
+        ];
+
+        return rows;
+    }
+
+    displaySubmissions() {
+        this.submissionRows = this.flattenSubmissions();
+
+        this.view = VIEW_SUBMISSIONS;
+
+        const tabulatorTable = this._('#tabulator-table-submissions');
+        tabulatorTable.options = this.submissionOptions;
+        tabulatorTable.buildTable();
+        tabulatorTable.setData(this.submissionRows);
+    }
+
+    downloadSubmissions() {
+        const worksheet = XLSX.utils.json_to_sheet(this.submissionRows);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet);
+        XLSX.writeFile(workbook, 'LunchLotterySubmissions.xlsx', {compression: true});
+    }
+
+    showSettings() {
+        this.view = VIEW_SETTINGS;
+        this.requestUpdate();
+    }
+
     saveTables() {
         localStorage.setItem('tables', JSON.stringify(this.tables));
         this.requestUpdate();
@@ -226,7 +346,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
             seats: 0
         });
         this.saveTables();
-        console.log(this.tables);
     }
 
     updateTableNumber(dateIndex, tableIndex, value) {
@@ -318,7 +437,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
                         organizationNames: assignment.organizationNames.join(', '),
                         preferredLanguage: assignment.preferredLanguage,
                         date: date.identifier,
-                        table: index + ': ' + seat + '/' + table.availableSeats,
+                        table: (index + 1) + ': ' + seat + '/' + table.availableSeats,
                         privacyConsent: assignment.privacyConsent
                     };
                     rows.push(row);
@@ -340,16 +459,22 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
         this.view = VIEW_RESULTS;
         this.requestUpdate();
 
-        const tabulatorTable = this._('#tabulator-table');
+        const tabulatorTable = this._('#tabulator-table-results');
+        tabulatorTable.options = this.resultOptions;
         tabulatorTable.buildTable();
         tabulatorTable.setData(this.variants[this.currentVariant]);
     }
 
-    download() {
-        const worksheet = XLSX.utils.json_to_sheet(this.variants[this.currentVariant]);
+    downloadResults() {
+        let rows = [];
+        this.variants[this.currentVariant].forEach(row => {
+            row['date'] = new Date(row['date']);
+            rows.push(row);
+        });
+        const worksheet = XLSX.utils.json_to_sheet(rows);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet);
-        XLSX.writeFile(workbook, 'LunchLottery.xlsx', {compression: true});
+        XLSX.writeFile(workbook, 'LunchLotteryResults.xlsx', {compression: true});
     }
 
     static get styles() {
@@ -400,25 +525,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
     render() {
         let i18n = this._i18n;
 
-        let options = {
-            layout: 'fitColumns',
-            columns: [
-                {title: i18n.t('results.givenName'), field: 'givenName'},
-                {title: i18n.t('results.familyName'), field: 'familyName'},
-                {title: i18n.t('results.email'), field: 'email'},
-                {title: i18n.t('results.organizationNames'), field: 'organizationNames'},
-                {title: i18n.t('results.preferredLanguage'), field: 'preferredLanguage'},
-                {title: i18n.t('results.date'), field: 'date'},
-                {title: i18n.t('results.table'), field: 'table'},
-                {title: i18n.t('results.privacyConsent'), field: 'privacyConsent'}
-            ],
-            columnDefaults: {
-                vertAlign: 'middle',
-                hozAlign: 'left',
-                resizable: false
-            }
-        };
-
         return html`
             <h2>${this.activity.getName(this.lang)}</h2>
             <p class="subheadline">
@@ -431,6 +537,33 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
                 <span class="loading">
                     <dbp-mini-spinner text=${i18n.t('loading')}></dbp-mini-spinner>
                 </span>
+            </div>
+
+            <div class="${classMap({hidden: this.loading || this.view !== VIEW_SUBMISSIONS})}">
+                <dbp-tabulator-table
+                    lang="${this.lang}"
+                    class="tabulator-table"
+                    id="tabulator-table-submissions"></dbp-tabulator-table>
+                <button
+                    type="button"
+                    class="button"
+                    title="${i18n.t('process.settings')}"
+                    @click="${() => this.showSettings()}">
+                    <dbp-icon
+                        title="${i18n.t('process.settings')}"
+                        name="dinner"></dbp-icon>
+                    <span>${i18n.t('process.settings')}</span>
+                </button>
+                <button
+                    type="button"
+                    class="button"
+                    title="${i18n.t('process.download')}"
+                    @click="${() => this.downloadSubmissions()}">
+                    <dbp-icon
+                        title="${i18n.t('process.download')}"
+                        name="download"></dbp-icon>
+                    <span>${i18n.t('process.download')}</span>
+                </button>
             </div>
 
             <div class="${classMap({hidden: this.loading || this.view !== VIEW_SETTINGS})}">
@@ -516,8 +649,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
                 <dbp-tabulator-table
                     lang="${this.lang}"
                     class="tabulator-table"
-                    id="tabulator-table"
-                    options=${JSON.stringify(options)}></dbp-tabulator-table>
+                    id="tabulator-table-results"></dbp-tabulator-table>
                 <button
                     type="button"
                     class="button"
@@ -532,7 +664,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
                     type="button"
                     class="button"
                     title="${i18n.t('process.download')}"
-                    @click="${() => this.download()}">
+                    @click="${() => this.downloadResults()}">
                     <dbp-icon
                         title="${i18n.t('process.download')}"
                         name="download"></dbp-icon>
