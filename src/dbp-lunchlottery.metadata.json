@@ -3,11 +3,11 @@
     "module_src": "dbp-lunchlottery.js",
     "routing_name": "lunchlottery",
     "name": {
-        "de": "Für die Lunch Lottery Anmelden",
+        "de": "Für die Lunch Lottery anmelden",
         "en": "Register for The Lunch Lottery"
     },
     "short_name": {
-        "de": "Für die Lunch Lottery Anmelden",
+        "de": "Für die Lunch Lottery anmelden",
         "en": "Register for The Lunch Lottery"
     },
     "description": {
