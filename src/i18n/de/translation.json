@@ -1,15 +1,18 @@
 {
     "register": {
-        "description-text": "Informationen zu den Teilnahmebedingungen bei Initiativen der Personal-/Kompetenzentwicklung finden Sie"
+        "description-text": "Informationen zu den Teilnahmebedingungen bei Initiativen der Personal-/Kompetenzentwicklung finden Sie",
+        "registration-success-text": "Vielen Dank für Ihre Anmeldung zur Lunch Lottery!"
     },
     "please-log-in": "Bitte melde dich an",
-    "availibility": "Die Anmeldung zur Lunch-Lottery ist aktuell nicht geöffnet.",
+    "availibility": "Die Anmeldung zur Lunch Lottery ist derzeit geschlossen.",
     "loading": "Lade...",
     "errors": {
         "unauthorized-title": "Keine Berechtigung",
         "unauthorized-body": "Keine Berechtigung um auf die angeforderte Ressource zuzugreifen.",
         "notfound-title": "Ressource nicht gefunden",
         "notfound-body": "Die angeforderte Ressource wurde nicht gefunden.",
+        "unprocessable_entity-title": "Anmeldedaten ungültig",
+        "unprocessable_entity-body": "Die Anmeldedaten sind ungültig oder unvollständig.",
         "other-title": "Fehler",
         "other-body": "Beim Zugriff auf die angeforderte Ressource ist ein Fehler aufgetreten.",
         "language": "Sie müssen eine Sprache wählen.",

@@ -14,7 +14,7 @@
     "routing_name": "dbp-lunchlottery-app",
     "activities": [
         {
-            "path": "dbp-lunchlottery.metadata.json"
+            "path": "dbp-lunchlottery-register.metadata.json"
         },
         {
             "path": "dbp-lunchlottery-assign-seats.metadata.json"

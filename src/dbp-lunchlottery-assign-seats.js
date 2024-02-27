@@ -6,34 +6,31 @@ import {send} from '@dbp-toolkit/common/notification';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import {Icon, MiniSpinner} from '@dbp-toolkit/common';
 import * as commonStyles from '@dbp-toolkit/common/styles';
-import DBPLitElement from '@dbp-toolkit/common/dbp-lit-element';
 import metadata from './dbp-lunchlottery-assign-seats.metadata.json';
 import {Activity} from './activity.js';
 import {FORM_IDENTIFIER} from './constants';
 import {LunchLotteryDate, LunchLotteryEvent, LunchLotteryTable} from './lunch-lottery';
 import {TabulatorTable} from '@dbp-toolkit/tabulator-table';
 import * as XLSX from 'sheetjs_xlsx';
-import {LoginStatus} from '@dbp-toolkit/auth/src/util';
+import DBPLunchlotteryLitElement from "./dbp-lunchlottery-lit-element";
 
 const VIEW_INIT = 'init';
 const VIEW_SUBMISSIONS = 'submissions';
 const VIEW_SETTINGS = 'settings';
 const VIEW_RESULTS = 'results';
 
-class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
+class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElement) {
     constructor() {
         super();
         this._i18n = createInstance();
         this.lang = this._i18n.language;
         this.activity = new Activity(metadata);
-        this.auth = null;
         this.name = null;
         this.entryPointUrl = null;
 
         // activity
         this.view = VIEW_INIT;
         this.loading = false;
-        this.initialized = false;
         this.dateOptions = {
             weekday: 'long',
             day: 'numeric',
@@ -105,31 +102,17 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
 
     static get properties() {
         return {
+            ...super.properties,
             lang: {type: String},
-            auth: {type: Object},
             name: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
             loading: {type: Boolean, attribute: false}
         };
     }
 
-    _updateAuth() {
-        this._loginStatus = this.auth['login-status'];
-
-        if (this._loginStatus === LoginStatus.LOGGED_OUT) {
-            this.sendSetPropertyEvent('requested-login-status', LoginStatus.LOGGED_IN);
-        } else if (this.auth && this.auth['login-status'] === LoginStatus.LOGGED_IN) {
-            if (!this.initialized) {
-                this.loadData();
-                this.initialized = true;
-            }
-        }
-    }
-
-    connectedCallback() {
-        super.connectedCallback();
-
-        this._loginStatus = '';
+    initialize() {
+        super.initialize();
+        this.loadData();
     }
 
     update(changedProperties) {
@@ -164,32 +147,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLitElement) {
         });
 
         if (!response.ok) {
-            switch (response.status) {
-                case 401:
-                    send({
-                        summary: this._i18n.t('errors.unauthorized-title'),
-                        body: this._i18n.t('errors.unauthorized-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-                    break;
-                case 404:
-                    send({
-                        summary: this._i18n.t('errors.notfound-title'),
-                        body: this._i18n.t('errors.notfound-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-                    break;
-                default:
-                    send({
-                        summary: this._i18n.t('errors.other-title'),
-                        body: this._i18n.t('errors.other-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-            }
-            throw new Error(response);
+            this.handleErrorResponse(response);
         }
 
         return response;

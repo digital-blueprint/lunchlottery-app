@@ -14,5 +14,6 @@
         "de": "Ermöglicht die Verwaltung der Lunch Lottery",
         "en": "Allows to manage Lunch Lottery"
     },
-    "subscribe": "lang,auth,entry-point-url"
+    "subscribe": "lang,auth,entry-point-url",
+    "required_roles": ["ROLE_LUNCH_LOTTERY_ADMIN"]
 }

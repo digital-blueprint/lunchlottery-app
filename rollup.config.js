@@ -120,7 +120,7 @@ export default (async () => {
                 ? (appEnv.length > 6 && appEnv.substring(appEnv.length - 6) == "Custom") ?
                     [
                         'src/' + appName + '.js',
-                        'src/dbp-lunchlottery.js',
+                        'src/dbp-lunchlottery-register.js',
                         'src/dbp-lunchlottery-assign-seats.js',
                         'src/dbp-lunchlottery-manage.js',
                         await getPackagePath('@tugraz/web-components', 'src/logo.js')
@@ -128,7 +128,7 @@ export default (async () => {
                     :
                     [
                         'src/' + appName + '.js',
-                        'src/dbp-lunchlottery.js',
+                        'src/dbp-lunchlottery-register.js',
                         'src/dbp-lunchlottery-assign-seats.js',
                         'src/dbp-lunchlottery-manage.js'
                     ]

@@ -14,5 +14,6 @@
         "de": "Ermöglicht das Erstellen der Sitzplatzzuordnung für das nächste Lunch Lottery Event",
         "en": "Allows to create the seat assigment for the next Lunch Lottery event"
     },
-    "subscribe": "lang,auth,entry-point-url"
+    "subscribe": "lang,auth,entry-point-url",
+    "required_roles": ["ROLE_LUNCH_LOTTERY_ADMIN"]
 }

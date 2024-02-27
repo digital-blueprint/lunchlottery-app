@@ -6,22 +6,20 @@ import {send} from '@dbp-toolkit/common/notification';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import {Icon, MiniSpinner} from '@dbp-toolkit/common';
 import * as commonStyles from '@dbp-toolkit/common/styles';
-import DBPLitElement from '@dbp-toolkit/common/dbp-lit-element';
 import metadata from './dbp-lunchlottery-manage.metadata.json';
 import {Activity} from './activity.js';
 import {FORM_IDENTIFIER} from './constants';
-import {LoginStatus} from '@dbp-toolkit/auth/src/util';
+import DBPLunchlotteryLitElement from "./dbp-lunchlottery-lit-element";
 
 const VIEW_INIT = 'init';
 const VIEW_SETTINGS = 'settings';
 
-class LunchLotteryManage extends ScopedElementsMixin(DBPLitElement) {
+class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) {
     constructor() {
         super();
         this._i18n = createInstance();
         this.lang = this._i18n.language;
         this.activity = new Activity(metadata);
-        this.auth = null;
         this.name = null;
         this.entryPointUrl = null;
 
@@ -46,32 +44,19 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLitElement) {
 
     static get properties() {
         return {
+            ...super.properties,
             lang: {type: String},
-            auth: {type: Object},
             name: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
             loading: {type: Boolean, attribute: false}
         };
     }
 
-    _updateAuth() {
-        this._loginStatus = this.auth['login-status'];
+    initialize() {
+        super.initialize();
 
-        if (this._loginStatus === LoginStatus.LOGGED_OUT) {
-            this.sendSetPropertyEvent('requested-login-status', LoginStatus.LOGGED_IN);
-        } else if (this.auth && this.auth['login-status'] === LoginStatus.LOGGED_IN) {
-            if (!this.initialized) {
-                this.loadData();
-                this.view = VIEW_SETTINGS;
-                this.initialized = true;
-            }
-        }
-    }
-
-    connectedCallback() {
-        super.connectedCallback();
-
-        this._loginStatus = '';
+        this.loadData();
+        this.view = VIEW_SETTINGS;
     }
 
     update(changedProperties) {
@@ -104,32 +89,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLitElement) {
         });
 
         if (!response.ok) {
-            switch (response.status) {
-                case 401:
-                    send({
-                        summary: this._i18n.t('errors.unauthorized-title'),
-                        body: this._i18n.t('errors.unauthorized-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-                    break;
-                case 404:
-                    send({
-                        summary: this._i18n.t('errors.notfound-title'),
-                        body: this._i18n.t('errors.notfound-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-                    break;
-                default:
-                    send({
-                        summary: this._i18n.t('errors.other-title'),
-                        body: this._i18n.t('errors.other-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-            }
-            throw new Error(response);
+            this.handleErrorResponse(response);
         }
 
         return response;
@@ -166,32 +126,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLitElement) {
                 timeout: 5
             });
         } else {
-            switch (response.status) {
-                case 401:
-                    send({
-                        summary: this._i18n.t('errors.unauthorized-title'),
-                        body: this._i18n.t('errors.unauthorized-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-                    break;
-                case 404:
-                    send({
-                        summary: this._i18n.t('errors.notfound-title'),
-                        body: this._i18n.t('errors.notfound-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-                    break;
-                default:
-                    send({
-                        summary: this._i18n.t('errors.other-title'),
-                        body: this._i18n.t('errors.other-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-            }
-            throw new Error(response);
+            this.handleErrorResponse(response);
         }
     }
 

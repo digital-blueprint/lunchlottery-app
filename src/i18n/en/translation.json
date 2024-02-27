@@ -1,15 +1,18 @@
 {
     "register": {
-        "description-text": "Information on the conditions of participation and data protection for initiatives of The Human Development Department can be found"
+        "description-text": "Information on the conditions of participation and data protection for initiatives of The Human Development Department can be found",
+        "registration-success-text": "Thank you for registering for the Lunch Lottery!"
     },
     "please-log-in": "Please log in",
-    "availibility": "Registering for lunch lottery is currently not possible.",
+    "availibility": "Registration for the Lunch Lottery is currently closed.",
     "loading": "loading...",
     "errors": {
         "unauthorized-title": "Unauthorized",
         "unauthorized-body": "No authorization to access requested ressource.",
         "notfound-title": "Ressource not found",
         "notfound-body": "Requested ressource not found.",
+        "unprocessable_entity-title": "Registration data invalid",
+        "unprocessable_entity-body": "The registration data is invalid oder incomplete.",
         "other-title": "Error",
         "other-body": "There was an error accessing requested ressource.",
         "language": "You must choose a language.",
