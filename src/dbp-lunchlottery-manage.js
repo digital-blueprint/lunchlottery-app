@@ -199,7 +199,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
         let formSchema = JSON.parse(this.formData['dataFeedSchema']);
         formSchema['properties']['possibleDates']['items']['enum'] = [];
         for (let i = 0; i < this.dates.length; ++i) {
-            const date = this.dates[i].toISOString();
+            const date = this.dateToISOStringWithTimezoneOffset(this.dates[i]);
             formSchema['properties']['possibleDates']['items']['enum'].push(date);
         }
         this.formData['dataFeedSchema'] = JSON.stringify(formSchema);
@@ -225,6 +225,22 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
 
     dateTimeLocalToDate(datetimeLocal) {
         return new Date(datetimeLocal);
+    }
+
+    dateToISOStringWithTimezoneOffset(date) {
+        let isoString = '';
+        isoString += date.getFullYear() + '-';
+        isoString += ('0' + (date.getMonth() + 1)).slice(-2) + '-';
+        isoString += ('0' + date.getDate()).slice(-2) + 'T';
+        isoString += ('0' + date.getHours()).slice(-2) + ':';
+        isoString += ('0' + date.getMinutes()).slice(-2) + ':';
+        isoString += ('0' + date.getSeconds()).slice(-2);
+        let offset = date.getTimezoneOffset();
+        isoString += (offset <= 0 ? '+' : '-');
+        offset = Math.abs(offset);
+        isoString += ('0' + Math.floor(offset/60)).slice(-2) + ':';
+        isoString += ('0' + (offset%60)).slice(-2);
+        return isoString;
     }
 
     static get styles() {
