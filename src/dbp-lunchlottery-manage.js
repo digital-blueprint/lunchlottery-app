@@ -105,9 +105,11 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
         this.availabilityStarts = new Date(responseBody['availabilityStarts']);
         this.availabilityEnds = new Date(responseBody['availabilityEnds']);
         const formSchema = JSON.parse(responseBody['dataFeedSchema']);
-        for (let i = 0; i < formSchema['properties']['possibleDates']['items']['enum'].length; ++i) {
-            const date = new Date(formSchema['properties']['possibleDates']['items']['enum'][i]);
-            this.dates.push(date);
+        if ('enum' in formSchema['properties']['possibleDates']['items']) {
+            for (let i = 0; i < formSchema['properties']['possibleDates']['items']['enum'].length; ++i) {
+                const date = new Date(formSchema['properties']['possibleDates']['items']['enum'][i]);
+                this.dates.push(date);
+            }
         }
     }
 
@@ -197,10 +199,14 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
         this.formData['availabilityStarts'] = this.availabilityStarts.toISOString();
         this.formData['availabilityEnds'] = this.availabilityEnds.toISOString();
         let formSchema = JSON.parse(this.formData['dataFeedSchema']);
-        formSchema['properties']['possibleDates']['items']['enum'] = [];
-        for (let i = 0; i < this.dates.length; ++i) {
-            const date = this.dateToISOStringWithTimezoneOffset(this.dates[i]);
-            formSchema['properties']['possibleDates']['items']['enum'].push(date);
+        if (this.dates.length) {
+            formSchema['properties']['possibleDates']['items']['enum'] = [];
+            for (let i = 0; i < this.dates.length; ++i) {
+                const date = this.dateToISOStringWithTimezoneOffset(this.dates[i]);
+                formSchema['properties']['possibleDates']['items']['enum'].push(date);
+            }
+        } else {
+            delete formSchema['properties']['possibleDates']['items']['enum'];
         }
         this.formData['dataFeedSchema'] = JSON.stringify(formSchema);
         await this.updateFormData();
