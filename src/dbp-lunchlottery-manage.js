@@ -81,12 +81,15 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
     }
 
     async fetchForm() {
-        let response = await fetch(this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER, {
-            headers: {
-                'Content-Type': 'application/ld+json',
-                Authorization: 'Bearer ' + this.auth.token,
+        const response = await this.httpGetAsync(
+            this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER,
+            {
+                headers: {
+                    'Content-Type': 'application/ld+json',
+                    Authorization: 'Bearer ' + this.auth.token,
+                }
             }
-        });
+        );
 
         if (!response.ok) {
             this.handleErrorResponse(response);
@@ -109,14 +112,17 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
     }
 
     async updateFormData() {
-        let response = await fetch(this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/ld+json',
-                Authorization: 'Bearer ' + this.auth.token,
-            },
-            body: JSON.stringify(this.formData)
-        });
+        const response = await this.httpGetAsync(
+            this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/ld+json',
+                    Authorization: 'Bearer ' + this.auth.token,
+                },
+                body: JSON.stringify(this.formData)
+            }
+        );
 
         if (response.ok) {
             send({
@@ -131,13 +137,16 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
     }
 
     async clearFormSubmissions() {
-        let response = await fetch(this.entryPointUrl + '/formalize/submissions?formIdentifier=' + FORM_IDENTIFIER, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/ld+json',
-                Authorization: 'Bearer ' + this.auth.token,
+        const response = await this.httpGetAsync(
+            this.entryPointUrl + '/formalize/submissions?formIdentifier=' + FORM_IDENTIFIER,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/ld+json',
+                    Authorization: 'Bearer ' + this.auth.token,
+                }
             }
-        });
+        );
 
         if (response.ok) {
             send({
@@ -147,32 +156,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                 timeout: 5
             });
         } else {
-            switch (response.status) {
-                case 401:
-                    send({
-                        summary: this._i18n.t('errors.unauthorized-title'),
-                        body: this._i18n.t('errors.unauthorized-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-                    break;
-                case 404:
-                    send({
-                        summary: this._i18n.t('errors.notfound-title'),
-                        body: this._i18n.t('errors.notfound-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-                    break;
-                default:
-                    send({
-                        summary: this._i18n.t('errors.other-title'),
-                        body: this._i18n.t('errors.other-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-            }
-            throw new Error(response);
+            this.handleErrorResponse(response);
         }
 
         return response;
