@@ -2,7 +2,6 @@ import {createInstance} from './i18n.js';
 import {css, html} from 'lit';
 import {classMap} from 'lit/directives/class-map.js';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
-import {send} from '@dbp-toolkit/common/notification';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import {Icon, MiniSpinner} from '@dbp-toolkit/common';
 import * as commonStyles from '@dbp-toolkit/common/styles';
