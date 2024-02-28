@@ -213,7 +213,18 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
         this.loading = false;
     }
 
+    showDialog() {
+        const dialog = this._('#confirm-delete-dialog');
+        dialog.showModal();
+    }
+
+    closeDialog() {
+        const dialog = this._('#confirm-delete-dialog');
+        dialog.close();
+    }
+
     async clearSubmissions() {
+        this.closeDialog();
         this.loading = true;
         await this.clearFormSubmissions();
         this.loading = false;
@@ -384,14 +395,21 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                     <h3>${i18n.t('manage.delete')}</h3>
                     <button
                         type="button"
-                        class="button"
+                        class="button is-danger"
                         title="${i18n.t('manage.delete')}"
-                        @click="${() => this.clearSubmissions()}">
+                        @click="${() => this.showDialog()}">
                         <dbp-icon
                             title="${i18n.t('manage.delete')}"
                             name="trash"></dbp-icon>
                         <span>${i18n.t('manage.delete')}</span>
                     </button>
+                    <dialog id="confirm-delete-dialog">
+                        <p>
+                            ${i18n.t('manage.deleteDialogText')}
+                        </p>
+                        <button class="button is-danger" @click="${() => this.clearSubmissions()}">${i18n.t('manage.deleteDialogConfirm')}</button>
+                        <button class="button" @click="${() => this.closeDialog()}" autofocus>${i18n.t('manage.deleteDialogCancel')}</button>
+                    </dialog>
                 </div>
             </div>
         `;
