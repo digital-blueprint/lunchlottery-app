@@ -56,9 +56,9 @@
         "remove": "Löschen",
         "save": "Einstellungen übernehmen",
         "delete": "Anmeldungen löschen",
-        "deleteDialogText": "Möchten Sie alle bestehenden Anmeldungen wirklich löschen?",
-        "deleteDialogConfirm": "Ja, alle Anmeldungen löschen!",
-        "deleteDialogCancel": "Nein, abbrechen"
+        "deleteDialogText": "Sind Sie sicher, dass Sie alle Anmeldungen löschen möchten?",
+        "deleteDialogConfirm": "Ja, alle Anmeldungen löschen",
+        "deleteDialogCancel": "Abbrechen"
     },
     "name": {
         "first": "*Vorname",

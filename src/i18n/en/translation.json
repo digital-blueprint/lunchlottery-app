@@ -56,9 +56,9 @@
         "remove": "Remove",
         "save": "Save settings",
         "delete": "Delete registrations",
-        "deleteDialogText": "Do you really want to delete all current registrations?",
-        "deleteDialogConfirm": "Yes, delete all registrations!",
-        "deleteDialogCancel": "No, cancel"
+        "deleteDialogText": "Are you sure you want to delete all registrations?",
+        "deleteDialogConfirm": "Yes, delete all registrations",
+        "deleteDialogCancel": "Cancel"
     },
     "name": {
         "first": "*First Name",
