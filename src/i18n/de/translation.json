@@ -55,7 +55,10 @@
         "add": "Hinzufügen",
         "remove": "Löschen",
         "save": "Einstellungen übernehmen",
-        "delete": "Anmeldungen löschen"
+        "delete": "Anmeldungen löschen",
+        "deleteDialogText": "Möchten Sie alle bestehenden Anmeldungen wirklich löschen?",
+        "deleteDialogConfirm": "Ja, alle Anmeldungen löschen!",
+        "deleteDialogCancel": "Nein, abbrechen"
     },
     "name": {
         "first": "*Vorname",
