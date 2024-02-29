@@ -202,6 +202,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
         if (this.dates.length) {
             formSchema['properties']['possibleDates']['items']['enum'] = [];
             for (let i = 0; i < this.dates.length; ++i) {
+                // we need the timezone offset to get the time right on the server for the registration confirmation email
                 const date = this.dateToISOStringWithTimezoneOffset(this.dates[i]);
                 formSchema['properties']['possibleDates']['items']['enum'].push(date);
             }
