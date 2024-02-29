@@ -2,7 +2,6 @@ import {createInstance} from './i18n.js';
 import {css, html} from 'lit';
 import {classMap} from 'lit/directives/class-map.js';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
-import {send} from '@dbp-toolkit/common/notification';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import {Icon, MiniSpinner} from '@dbp-toolkit/common';
 import * as commonStyles from '@dbp-toolkit/common/styles';
@@ -139,12 +138,15 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
     }
 
     async fetchForm() {
-        let response = await fetch(this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER, {
-            headers: {
-                'Content-Type': 'application/ld+json',
-                Authorization: 'Bearer ' + this.auth.token,
+        const response = await this.httpGetAsync(
+            this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER,
+            {
+                headers: {
+                    'Content-Type': 'application/ld+json',
+                    Authorization: 'Bearer ' + this.auth.token,
+                }
             }
-        });
+        );
 
         if (!response.ok) {
             this.handleErrorResponse(response);
@@ -168,40 +170,18 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
     }
 
     async fetchSubmissionsCollection() {
-        let response = await fetch(this.entryPointUrl + '/formalize/submissions?formIdentifier=' + FORM_IDENTIFIER + '&perPage=99999', {
-            headers: {
-                'Content-Type': 'application/ld+json',
-                Authorization: 'Bearer ' + this.auth.token,
+        const response = await this.httpGetAsync(
+            this.entryPointUrl + '/formalize/submissions?formIdentifier=' + FORM_IDENTIFIER + '&perPage=99999',
+            {
+                headers: {
+                    'Content-Type': 'application/ld+json',
+                    Authorization: 'Bearer ' + this.auth.token,
+                }
             }
-        });
+        );
 
         if (!response.ok) {
-            switch (response.status) {
-                case 401:
-                    send({
-                        summary: this._i18n.t('errors.unauthorized-title'),
-                        body: this._i18n.t('errors.unauthorized-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-                    break;
-                case 404:
-                    send({
-                        summary: this._i18n.t('errors.notfound-title'),
-                        body: this._i18n.t('errors.notfound-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-                    break;
-                default:
-                    send({
-                        summary: this._i18n.t('errors.other-title'),
-                        body: this._i18n.t('errors.other-body'),
-                        type: 'danger',
-                        timeout: 5
-                    });
-            }
-            throw new Error(response);
+            this.handleErrorResponse(response);
         }
 
         return response;
