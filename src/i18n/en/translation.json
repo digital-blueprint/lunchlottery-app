@@ -42,9 +42,13 @@
         "email": "E-mail",
         "organizationNames": "Organizational units",
         "preferredLanguage": "Preferred language",
+        "availableDate-true": "yes",
+        "availableDate-false": "",
         "date": "Date",
         "table": "Table",
-        "privacyConsent": "Consent"
+        "privacyConsent": "Consent",
+        "privacyConsent-true": "yes",
+        "privacyConsent-false": "no"
     },
     "manage": {
         "settings": "Settings",

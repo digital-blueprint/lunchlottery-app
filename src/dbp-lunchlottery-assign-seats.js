@@ -39,24 +39,34 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
 
         // submissions
         this.submissionOptions = {
-            layout: 'fitColumns',
+            layout: 'fitDataTable',
             columns: [
             ],
             columnDefaults: {
                 vertAlign: 'middle',
                 hozAlign: 'left',
-                resizable: false
+                resizable: true
             }
         };
         this.submissionOptionsColumnsPrepend = [
             {title: this._i18n.t('results.givenName'), field: 'givenName'},
             {title: this._i18n.t('results.familyName'), field: 'familyName'},
-            {title: this._i18n.t('results.email'), field: 'email'},
+            {title: this._i18n.t('results.email'), field: 'email', visible: 0},
             {title: this._i18n.t('results.organizationNames'), field: 'organizationNames'},
             {title: this._i18n.t('results.preferredLanguage'), field: 'preferredLanguage'},
         ];
         this.submissionOptionsColumnsAppend = [
-            {title: this._i18n.t('results.privacyConsent'), field: 'privacyConsent'}
+            {
+                title: this._i18n.t('results.privacyConsent'),
+                field: 'privacyConsent',
+                formatter: function(cell, formatterParams, onRendered) {
+                    if (cell.getValue()) {
+                        return this._i18n.t('results.privacyConsent-true');
+                    } else {
+                        return this._i18n.t('results.privacyConsent-false');
+                    }
+                }.bind(this),
+            },
         ];
         this.submissionRows = [];
 
@@ -202,7 +212,25 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         this.dates.forEach(date => {
             const title = date.date.toISOString();
             const index = new Intl.DateTimeFormat(undefined, this.dateOptions).format(date.date);
-            submissionOptionsColumns.push({'title': title, 'field': index});
+            submissionOptionsColumns.push({
+                'title': title,
+                'field': index,
+                'titleFormatter': function(cell, formatterParams, onRendered) {
+                    const date = new Date(cell.getValue());
+                    let dateString = '';
+                    dateString += ('0' + date.getDate()).slice(-2) + '.';
+                    dateString += ('0' + (date.getMonth() + 1)).slice(-2) + '.';
+                    dateString += date.getFullYear();
+                    return dateString;
+                },
+                formatter: function(cell, formatterParams, onRendered) {
+                    if (cell.getValue()) {
+                        return this._i18n.t('results.availableDate-true');
+                    } else {
+                        return this._i18n.t('results.availableDate-false');
+                    }
+                }.bind(this),
+            });
             availableDates[index] = false;
         });
 
