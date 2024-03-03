@@ -45,6 +45,7 @@
         "email": "E-Mail",
         "organizationNames": "Organisationseinheiten",
         "preferredLanguage": "Bevorzugte Sprache",
+        "possibleDates": "Wunschdatum",
         "availableDate-true": "ja",
         "availableDate-false": "",
         "date": "Datum",
