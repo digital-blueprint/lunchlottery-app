@@ -1,6 +1,7 @@
 export class LunchLotteryEvent {
     constructor() {
         this.dates = [];
+        this.unassigned = [];
     }
 
     addDate(date) {
@@ -29,6 +30,10 @@ export class LunchLotteryEvent {
 
     assign(date, table, submission) {
         this.dates[date].assign(table, submission);
+    }
+
+    setUnassigned(submissions) {
+        this.unassigned = submissions;
     }
 }
 

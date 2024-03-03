@@ -485,6 +485,9 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             lunchLotteryEvent.assign(randomItem['date'], randomItem['table'], randomItem['submission']);
             submissions = submissions.filter(submission => submission !== randomItem['submission']);
         }
+        if (submissions.length) {
+            lunchLotteryEvent.setUnassigned(submissions);
+        }
 
         return lunchLotteryEvent;
     }
@@ -502,6 +505,9 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                     ++seat;
                 });
             });
+        });
+        lunchLotteryEvent.unassigned.forEach(submission => {
+            rows.push(submission);
         });
 
         return rows;
