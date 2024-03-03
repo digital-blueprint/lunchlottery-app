@@ -25,6 +25,9 @@
         "cleared-title": "Anmeldungen gelöscht",
         "cleared-body": "Alle Anmeldungen erfolgreich aus der Datenbank gelöscht."
     },
+    "submissions": {
+        "total": "Anzahl Anmeldungen:"
+    },
     "table": {
         "number": "Tische",
         "seats": "Plätze/Tisch",

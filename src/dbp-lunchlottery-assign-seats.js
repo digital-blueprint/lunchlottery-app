@@ -550,6 +550,9 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             </div>
 
             <div class="${classMap({hidden: this.loading || this.view !== VIEW_SUBMISSIONS})}">
+                <p>
+                    ${i18n.t('submissions.total')} ${ this.submissions.length }
+                </p>
                 <dbp-tabulator-table
                     lang="${this.lang}"
                     class="tabulator-table"
