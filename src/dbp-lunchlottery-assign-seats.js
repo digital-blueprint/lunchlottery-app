@@ -169,13 +169,15 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         let response = await this.fetchForm();
         const responseBody = await response.json();
         const formSchema = JSON.parse(responseBody['dataFeedSchema']);
-        for (let i = 0; i < formSchema['properties']['possibleDates']['items']['enum'].length; ++i) {
-            const identifier = formSchema['properties']['possibleDates']['items']['enum'][i];
-            const item = {
-                identifier: identifier,
-                date: new Date(formSchema['properties']['possibleDates']['items']['enum'][i])
-            };
-            this.dates.push(item);
+        if ('enum' in formSchema['properties']['possibleDates']['items']) {
+            for (let i = 0; i < formSchema['properties']['possibleDates']['items']['enum'].length; ++i) {
+                const identifier = formSchema['properties']['possibleDates']['items']['enum'][i];
+                const item = {
+                    identifier: identifier,
+                    date: new Date(formSchema['properties']['possibleDates']['items']['enum'][i])
+                };
+                this.dates.push(item);
+            }
         }
     }
 
