@@ -283,7 +283,49 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
     }
 
     downloadSubmissions() {
-        const worksheet = XLSX.utils.json_to_sheet(this.submissionRows);
+        const worksheet = XLSX.utils.json_to_sheet([]);
+
+        let header = [];
+        this.submissionOptions.columns.forEach(column => {
+            if ('titleFormatter' in column) {
+                header.push(column.titleFormatter(
+                    {
+                        getValue() {
+                            return column['title'];
+                        }
+                    },
+                    column['titleFormatterParams'] || {},
+                    null
+                ));
+            } else {
+                header.push(column['title']);
+            }
+        });
+        XLSX.utils.sheet_add_aoa(worksheet, [header]);
+
+        let rows = [];
+        this.submissionRows.forEach(row => {
+            this.submissionOptions.columns.forEach(column => {
+                if ('field' in column && 'formatter' in column) {
+                    const index = column['field'];
+                    row[index] = column.formatter(
+                        {
+                            getValue() {
+                                return row[index];
+                            }
+                        },
+                        column['formatterParams'] || {},
+                        null
+                    );
+                }
+            });
+            rows.push(row);
+        });
+        XLSX.utils.sheet_add_json(worksheet, rows, {
+            origin: 'A2',
+            skipHeader: true,
+        });
+
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet);
         XLSX.writeFile(workbook, 'LunchLotterySubmissions.xlsx', {compression: true});
