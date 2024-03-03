@@ -68,9 +68,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                 formatter: function(cell, formatterParams, onRendered) {
                     return cell.getValue().join(', ');
                 }.bind(this)
-            }
-        ];
-        this.dataOptionsColumnsAppend = [
+            },
             {
                 title: this._i18n.t('results.date'),
                 field: 'date',
@@ -83,7 +81,9 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                     return value;
                 }.bind(this)
             },
-            {title: this._i18n.t('results.table'), field: 'table'},
+            {title: this._i18n.t('results.table'), field: 'table'}
+        ];
+        this.dataOptionsColumnsAppend = [
             {
                 title: this._i18n.t('results.privacyConsent'),
                 field: 'privacyConsent',
