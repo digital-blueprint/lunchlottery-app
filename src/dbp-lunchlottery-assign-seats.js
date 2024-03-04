@@ -37,28 +37,66 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             year: 'numeric'
         };
 
-        // submissions
-        this.submissionOptions = {
-            layout: 'fitColumns',
+        // data
+        this.dataOptions = {
+            layout: 'fitDataTable',
             columns: [
             ],
             columnDefaults: {
                 vertAlign: 'middle',
                 hozAlign: 'left',
-                resizable: false
+                resizable: true
             }
         };
-        this.submissionOptionsColumnsPrepend = [
+        this.dataOptionsColumnsPrepend = [
             {title: this._i18n.t('results.givenName'), field: 'givenName'},
             {title: this._i18n.t('results.familyName'), field: 'familyName'},
-            {title: this._i18n.t('results.email'), field: 'email'},
-            {title: this._i18n.t('results.organizationNames'), field: 'organizationNames'},
+            {title: this._i18n.t('results.email'), field: 'email', visible: 0},
+            {
+                title: this._i18n.t('results.organizationNames'),
+                field: 'organizationNames',
+                formatter: function(cell, formatterParams, onRendered) {
+                    return cell.getValue().join(', ');
+                }.bind(this)
+            },
             {title: this._i18n.t('results.preferredLanguage'), field: 'preferredLanguage'},
+            {
+                title: this._i18n.t('results.possibleDates'),
+                field: 'possibleDates',
+                visible: 0,
+                xlsx: 0,
+                formatter: function(cell, formatterParams, onRendered) {
+                    return cell.getValue().join(', ');
+                }.bind(this)
+            },
+            {
+                title: this._i18n.t('results.date'),
+                field: 'date',
+                formatter: this.dateFormatter.bind(this),
+                xlsxFormatter: function(cell, formatterParams, onRendered) {
+                    let value = cell.getValue();
+                    if (value) {
+                        value = new Date(value);
+                    }
+                    return value;
+                }.bind(this)
+            },
+            {title: this._i18n.t('results.table'), field: 'table'}
         ];
-        this.submissionOptionsColumnsAppend = [
-            {title: this._i18n.t('results.privacyConsent'), field: 'privacyConsent'}
+        this.dataOptionsColumnsAppend = [
+            {
+                title: this._i18n.t('results.privacyConsent'),
+                field: 'privacyConsent',
+                formatter: function(cell, formatterParams, onRendered) {
+                    if (cell.getValue()) {
+                        return this._i18n.t('results.privacyConsent-true');
+                    } else {
+                        return this._i18n.t('results.privacyConsent-false');
+                    }
+                }.bind(this)
+            }
         ];
-        this.submissionRows = [];
+        this.dataRows = [];
 
         // settings
         this.tables = {};
@@ -67,28 +105,14 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         // results
         this.variants = [];
         this.currentVariant = 0;
-        this.resultOptions = {
-            layout: 'fitColumns',
-            columns: [
-                {title: this._i18n.t('results.givenName'), field: 'givenName'},
-                {title: this._i18n.t('results.familyName'), field: 'familyName'},
-                {title: this._i18n.t('results.email'), field: 'email'},
-                {title: this._i18n.t('results.organizationNames'), field: 'organizationNames'},
-                {title: this._i18n.t('results.preferredLanguage'), field: 'preferredLanguage'},
-                {title: this._i18n.t('results.date'), field: 'date'},
-                {title: this._i18n.t('results.table'), field: 'table'},
-                {title: this._i18n.t('results.privacyConsent'), field: 'privacyConsent'}
-            ],
-            columnDefaults: {
-                vertAlign: 'middle',
-                hozAlign: 'left',
-                resizable: false
-            }
-        };
 
         // formalize data
         this.dates = [];
         this.submissions = [];
+
+        // expanded formalize data
+        this.expandedDates = [];
+        this.expandedSubmissions = [];
     }
 
     static get scopedElements() {
@@ -132,7 +156,9 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
     async loadData() {
         this.loading = true;
         await this.getDates();
+        this.expandDates();
         await this.getSubmissions();
+        this.expandSubmissions();
         this.loading = false;
         this.displaySubmissions();
     }
@@ -159,14 +185,37 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         let response = await this.fetchForm();
         const responseBody = await response.json();
         const formSchema = JSON.parse(responseBody['dataFeedSchema']);
-        for (let i = 0; i < formSchema['properties']['possibleDates']['items']['enum'].length; ++i) {
-            const identifier = formSchema['properties']['possibleDates']['items']['enum'][i];
+        if ('enum' in formSchema['properties']['possibleDates']['items']) {
+            for (let i = 0; i < formSchema['properties']['possibleDates']['items']['enum'].length; ++i) {
+                const isoStringWithTimezoneOffset = formSchema['properties']['possibleDates']['items']['enum'][i];
+                this.dates.push(isoStringWithTimezoneOffset);
+            }
+        }
+    }
+
+    expandDates() {
+        this.expandedDates = [];
+
+        this.dates.forEach(identifier => {
             const item = {
                 identifier: identifier,
-                date: new Date(formSchema['properties']['possibleDates']['items']['enum'][i])
+                date: new Date(identifier)
             };
-            this.dates.push(item);
+            this.expandedDates.push(item);
+        });
+    }
+
+    dateFormatter(cell, formatterParams, onRendered) {
+        let value = cell.getValue();
+        if (value) {
+            const date = new Date(value);
+            let dateString = '';
+            dateString += ('0' + date.getDate()).slice(-2) + '.';
+            dateString += ('0' + (date.getMonth() + 1)).slice(-2) + '.';
+            dateString += date.getFullYear();
+            value = dateString;
         }
+        return value;
     }
 
     async fetchSubmissionsCollection() {
@@ -196,69 +245,147 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         }
     }
 
-    flattenSubmissions() {
-        let submissionOptionsColumns = [];
+    expandSubmissions() {
+        this.expandedSubmissions = [];
+
         let availableDates = {};
-        this.dates.forEach(date => {
-            const title = date.date.toISOString();
-            const index = new Intl.DateTimeFormat(undefined, this.dateOptions).format(date.date);
-            submissionOptionsColumns.push({'title': title, 'field': index});
-            availableDates[index] = false;
+        this.expandedDates.forEach(expandedDate => {
+            availableDates[expandedDate['identifier']] = false;
         });
 
-        let rows = [];
         this.submissions.forEach(submission => {
-            let possibleDates = {...availableDates};
-            submission['possibleDates'].forEach(possibleDate => {
-                const date = new Date(possibleDate);
-                const index = new Intl.DateTimeFormat(undefined, this.dateOptions).format(date);
-                if (index in possibleDates) {
-                    possibleDates[index] = true;
+            let expandedPossibleDates = {...availableDates};
+            submission['possibleDates'].forEach(identifier => {
+                if (identifier in expandedPossibleDates) {
+                    expandedPossibleDates[identifier] = true;
+                } else {
+                    console.error({
+                        'error': 'possibleDates mismatch',
+                        'identifier': identifier,
+                        'availableDates': availableDates,
+                        'submission': submission
+                    });
                 }
             });
 
-            let row = Object.assign(
-                {},
-                {
-                    givenName: submission.givenName,
-                    familyName: submission.familyName,
-                    email: submission.email,
-                    organizationNames: submission.organizationNames.join(', '),
-                    preferredLanguage: submission.preferredLanguage
-                },
-                possibleDates,
-                {
-                    privacyConsent: submission.privacyConsent
-                }
+            let item = Object.assign(
+                submission,
+                expandedPossibleDates
             );
-            rows.push(row);
+
+            this.expandedSubmissions.push(item);
+        });
+    }
+
+    updateDataOptionsColumns() {
+        let dataOptionsColumns = [];
+
+        this.expandedDates.forEach(expandedDate => {
+            const title = expandedDate['date'].toISOString();
+            const identifier = expandedDate['identifier'];
+            dataOptionsColumns.push({
+                'title': title,
+                'field': identifier,
+                'titleFormatter': this.dateFormatter.bind(this),
+                formatter: function(cell, formatterParams, onRendered) {
+                    if (cell.getValue()) {
+                        return this._i18n.t('results.availableDate-true');
+                    } else {
+                        return this._i18n.t('results.availableDate-false');
+                    }
+                }.bind(this)
+            });
         });
 
-        this.submissionOptions['columns'] = [
-            ...this.submissionOptionsColumnsPrepend,
-            ...submissionOptionsColumns,
-            ...this.submissionOptionsColumnsAppend,
+        this.dataOptions['columns'] = [
+            ...this.dataOptionsColumnsPrepend,
+            ...dataOptionsColumns,
+            ...this.dataOptionsColumnsAppend
         ];
-
-        return rows;
     }
 
     displaySubmissions() {
-        this.submissionRows = this.flattenSubmissions();
+        this.updateDataOptionsColumns();
+        this.dataRows = this.expandedSubmissions;
 
         this.view = VIEW_SUBMISSIONS;
 
         const tabulatorTable = this._('#tabulator-table-submissions');
-        tabulatorTable.options = this.submissionOptions;
+        tabulatorTable.options = this.dataOptions;
         tabulatorTable.buildTable();
-        tabulatorTable.setData(this.submissionRows);
+        tabulatorTable.setData(this.dataRows);
     }
 
-    downloadSubmissions() {
-        const worksheet = XLSX.utils.json_to_sheet(this.submissionRows);
+    downloadXlsx(filename) {
+        const worksheet = XLSX.utils.json_to_sheet([]);
+
+        let header = [];
+        this.dataOptions.columns.forEach(column => {
+            if (
+                'field' in column
+                && (!('xlsx' in column) || ('xlsx' in column && column['xlsx']))
+            ) {
+                let value = column['title'];
+                if ('titleFormatter' in column) {
+                    value = column.titleFormatter(
+                        {
+                            getValue() {
+                                return value;
+                            }
+                        },
+                        column['titleFormatterParams'] || {},
+                        null
+                    );
+                }
+                header.push(value);
+            }
+        });
+        XLSX.utils.sheet_add_aoa(worksheet, [header]);
+
+        let rows = [];
+        this.dataRows.forEach(row => {
+            let item = {};
+            this.dataOptions.columns.forEach(column => {
+                if (
+                    'field' in column
+                    && (!('xlsx' in column) || ('xlsx' in column && column['xlsx']))
+                ) {
+                    const index = column['field'];
+                    let value = row[index] || '';
+                    if ('xlsxFormatter' in column) {
+                        value = column.xlsxFormatter(
+                            {
+                                getValue() {
+                                    return value;
+                                }
+                            },
+                            column['xlsxFormatterParams'] || {},
+                            null
+                        );
+                    } else if ('formatter' in column) {
+                        value = column.formatter(
+                            {
+                                getValue() {
+                                    return value;
+                                }
+                            },
+                            column['formatterParams'] || {},
+                            null
+                        );
+                    }
+                    item[index] = value;
+                }
+            });
+            rows.push(item);
+        });
+        XLSX.utils.sheet_add_json(worksheet, rows, {
+            origin: 'A2',
+            skipHeader: true,
+        });
+
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet);
-        XLSX.writeFile(workbook, 'LunchLotterySubmissions.xlsx', {compression: true});
+        XLSX.writeFile(workbook, filename, {compression: true});
     }
 
     showSettings() {
@@ -313,7 +440,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
     createLunchLotteryEvent() {
         let lunchLotteryEvent = new LunchLotteryEvent();
 
-        this.dates.forEach((date, index) => {
+        this.expandedDates.forEach((date, index) => {
             let lunchLotteryDate = new LunchLotteryDate(date['identifier']);
             lunchLotteryEvent.addDate(lunchLotteryDate);
             this.tables[index].forEach(table => {
@@ -329,7 +456,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
 
     calculateDistances() {
         let lunchLotteryEvent = this.createLunchLotteryEvent();
-        let submissions = this.submissions;
+        let submissions = this.expandedSubmissions;
 
         while (submissions.length) {
             let distances = {};
@@ -358,6 +485,9 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             lunchLotteryEvent.assign(randomItem['date'], randomItem['table'], randomItem['submission']);
             submissions = submissions.filter(submission => submission !== randomItem['submission']);
         }
+        if (submissions.length) {
+            lunchLotteryEvent.setUnassigned(submissions);
+        }
 
         return lunchLotteryEvent;
     }
@@ -368,20 +498,16 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             date.tables.forEach((table, index) => {
                 let seat = 1;
                 table.seats.forEach(assignment => {
-                    const row = {
-                        givenName: assignment.givenName,
-                        familyName: assignment.familyName,
-                        email: assignment.email,
-                        organizationNames: assignment.organizationNames.join(', '),
-                        preferredLanguage: assignment.preferredLanguage,
-                        date: date.identifier,
-                        table: (index + 1) + ': ' + seat + '/' + table.availableSeats,
-                        privacyConsent: assignment.privacyConsent
-                    };
+                    let row = assignment;
+                    row['date'] = date.identifier;
+                    row['table'] = (index + 1) + ': ' + seat + '/' + table.availableSeats;
                     rows.push(row);
                     ++seat;
                 });
             });
+        });
+        lunchLotteryEvent.unassigned.forEach(submission => {
+            rows.push(submission);
         });
 
         return rows;
@@ -389,30 +515,18 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
 
     process() {
         const lunchLotteryEvent = this.calculateDistances();
-        const rows = this.flattenResults(lunchLotteryEvent);
+        this.dataRows = this.flattenResults(lunchLotteryEvent);
 
-        this.variants.push(rows);
+        this.variants.push(this.dataRows);
         this.currentVariant = this.variants.length - 1;
 
         this.view = VIEW_RESULTS;
         this.requestUpdate();
 
         const tabulatorTable = this._('#tabulator-table-results');
-        tabulatorTable.options = this.resultOptions;
+        tabulatorTable.options = this.dataOptions;
         tabulatorTable.buildTable();
-        tabulatorTable.setData(this.variants[this.currentVariant]);
-    }
-
-    downloadResults() {
-        let rows = [];
-        this.variants[this.currentVariant].forEach(row => {
-            row['date'] = new Date(row['date']);
-            rows.push(row);
-        });
-        const worksheet = XLSX.utils.json_to_sheet(rows);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet);
-        XLSX.writeFile(workbook, 'LunchLotteryResults.xlsx', {compression: true});
+        tabulatorTable.setData(this.dataRows);
     }
 
     static get styles() {
@@ -478,6 +592,9 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             </div>
 
             <div class="${classMap({hidden: this.loading || this.view !== VIEW_SUBMISSIONS})}">
+                <p>
+                    ${i18n.t('submissions.total')} ${ this.submissions.length }
+                </p>
                 <dbp-tabulator-table
                     lang="${this.lang}"
                     class="tabulator-table"
@@ -496,7 +613,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                     type="button"
                     class="button"
                     title="${i18n.t('process.download')}"
-                    @click="${() => this.downloadSubmissions()}">
+                    @click="${() => this.downloadXlsx('LunchLotterySubmissions.xlsx')}">
                     <dbp-icon
                         title="${i18n.t('process.download')}"
                         name="download"></dbp-icon>
@@ -505,7 +622,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             </div>
 
             <div class="${classMap({hidden: this.loading || this.view !== VIEW_SETTINGS})}">
-                ${this.dates.map((date, dateIndex) => html`
+                ${this.expandedDates.map((date, dateIndex) => html`
                     <div class="date">
                         <h4>${new Intl.DateTimeFormat(undefined, this.dateOptions).format(date.date)}</h4>
                         <table>
@@ -602,7 +719,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                     type="button"
                     class="button"
                     title="${i18n.t('process.download')}"
-                    @click="${() => this.downloadResults()}">
+                    @click="${() => this.downloadXlsx('LunchLotteryResults.xlsx')}">
                     <dbp-icon
                         title="${i18n.t('process.download')}"
                         name="download"></dbp-icon>

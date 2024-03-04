@@ -25,6 +25,9 @@
         "cleared-title": "Registrations deleted",
         "cleared-body": "All registrations deleted successfully."
     },
+    "submissions": {
+        "total": "Number of registrations:"
+    },
     "table": {
         "number": "Tables",
         "seats": "Seats/table",
@@ -42,9 +45,14 @@
         "email": "E-mail",
         "organizationNames": "Organizational units",
         "preferredLanguage": "Preferred language",
+        "possibleDates": "Preferred dates",
+        "availableDate-true": "yes",
+        "availableDate-false": "",
         "date": "Date",
         "table": "Table",
-        "privacyConsent": "Consent"
+        "privacyConsent": "Consent",
+        "privacyConsent-true": "yes",
+        "privacyConsent-false": "no"
     },
     "manage": {
         "settings": "Settings",
