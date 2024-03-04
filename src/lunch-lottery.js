@@ -51,13 +51,17 @@ export class LunchLotteryDate {
         let distance = null;
         let selectedTable = null;
 
-        this.tables.forEach((table, index) => {
-            const [tableDistance] = table.getShortestDistance(submission);
-            if (distance === null || tableDistance < distance) {
-                distance = tableDistance;
-                selectedTable = index;
-            }
-        });
+        if (submission['possibleDates'].includes(this.identifier)) {
+            this.tables.forEach((table, index) => {
+                const [tableDistance] = table.getShortestDistance(submission);
+                if (distance === null || tableDistance < distance) {
+                    distance = tableDistance;
+                    selectedTable = index;
+                }
+            });
+        } else {
+            distance = 9999;
+        }
 
         return [
             distance,
