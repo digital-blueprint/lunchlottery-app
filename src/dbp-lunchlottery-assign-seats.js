@@ -397,7 +397,10 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         if (this.expandedDates.length) {
             this.processButtonDisabled = false;
             this.expandedDates.forEach((expandedDate, index) => {
-                if (this.tables[index].length) {
+                if (
+                    index in this.tables
+                    && this.tables[index].length
+                ) {
                     let dateSeats = 0;
                     this.tables[index].forEach(table => {
                         const tableSeats = table['number'] * table['seats'];
