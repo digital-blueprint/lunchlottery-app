@@ -239,10 +239,20 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
     async getSubmissions() {
         let response = await this.fetchSubmissionsCollection();
         const responseBody = await response.json();
+        let submissions = {};
+        let submissionsCreated = {};
         for (let i = 0; i < responseBody['hydra:member'].length; ++i) {
             const item = JSON.parse(responseBody['hydra:member'][i]['dataFeedElement']);
-            this.submissions.push(item);
+            const created = new Date(responseBody['hydra:member'][i]['dateCreated']);
+            if (
+                !(item['email'] in submissions)
+                || created > submissionsCreated[item['email']]
+            ) {
+                submissions[item['email']] = item;
+                submissionsCreated[item['email']] = created;
+            }
         }
+        this.submissions = Object.values(submissions);
     }
 
     expandSubmissions() {
