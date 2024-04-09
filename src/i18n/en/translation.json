@@ -105,7 +105,8 @@
             "Thursday",
             "Friday",
             "Saturday"
-        ]
+        ],
+        "punctuation" : ", "
     },
 
     "agreement": {

@@ -193,7 +193,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
     }
 
     createPossibleDatesContainer() {
-        let i18n = this._i18n;
+        const i18n = this._i18n;
         let possibleDatesContainer = document.createElement('div');
         this.possibleDates.forEach((date_string) => {
             const date = new Date(date_string);
@@ -221,7 +221,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             let hour = String(date.getHours()) + ':' + String(date.getMinutes());
 
             //get complete date
-            let complete_date = week_day_convert + ', ' + day + ' ' + month_convert + ' - '+ hour + ' ' + i18n.t('date.day-part');
+            let complete_date = week_day_convert + i18n.t('date.punctuation') + day + ' ' + month_convert + ' - '+ hour + ' ' + i18n.t('date.day-part');
             //let complete_date = week_day;
 
             //append data to DOM
@@ -239,10 +239,6 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         });
 
         this.possibleDatesContainer = possibleDatesContainer;
-    }
-
-    getPossibleDatesContainer()
-    {
         return this.possibleDatesContainer;
     }
 
@@ -477,7 +473,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
                     <div class="field">
                         <label class="label">${i18n.t('date.label')}</label>
-                        <div class="control">${this.getPossibleDatesContainer()}</div>
+                        <div class="control">${this.createPossibleDatesContainer()}</div>
                         <div class="error-container">
                             <span class="input-error" id="dates-error" hidden>${i18n.t('errors.date')}</span>
                         </div>
