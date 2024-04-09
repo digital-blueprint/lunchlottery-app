@@ -268,7 +268,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             let agreement = null;
             this.shadowRoot.querySelectorAll('.agreement').forEach((element) => {
                 if (element.checked) {
-                    agreement = Boolean(element.value);
+                    agreement = (element.value === "true");
                 }
             });
             //Check language field
@@ -286,7 +286,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                 this._('#dates-error').hidden = true;
             }
             //Check agreement field
-            if (!agreement) {
+            if (agreement === null) {
                 this._('#agreement-error').hidden = false;
                 return;
             } else {
