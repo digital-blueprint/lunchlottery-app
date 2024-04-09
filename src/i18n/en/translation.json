@@ -1,6 +1,6 @@
 {
     "register": {
-        "description-text": "Information on the conditions of participation and data protection for initiatives of The Human Development Department can be found",
+        "description-text": "Information on the conditions regarding participation and data protection for initiatives of The Human Resource Development Department can be found",
         "registration-success-text": "Thank you for registering for the Lunch Lottery!"
     },
     "please-log-in": "Please log in",
@@ -109,7 +109,7 @@
     },
 
     "agreement": {
-        "label": "*I agree that photots will be taken in order to promote and document the event. The photos will be published on presentations or websites of TU Graz",
+        "label": "*I agree that photos will be taken in order to promote and document the event. The photos will be published on presentations or websites of TU Graz",
         "yes": "Yes",
         "no": "No"
     },

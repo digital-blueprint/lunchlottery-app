@@ -421,7 +421,6 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             <div class="${classMap({hidden: !showForm})}">
                 <slot name="activity-description">
                     <p>${i18n.t('register.description-text')} <a target="_blank" rel="noopener"  href=${i18n.t('further-information')}>${this.activity.getHere(this.lang)}</a></p>
-                    <!--<p>${i18n.t('register.description-text')} <a target="_blank" rel="noopener"  href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>-->
                     <br />
                 </slot>
                 
