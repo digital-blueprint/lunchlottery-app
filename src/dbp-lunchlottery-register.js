@@ -384,7 +384,8 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                     margin-top: 3px;
                 }
                 #rightSide {
-                float:right;
+                    float:right;
+                }
             `,
         ];
     }
@@ -419,7 +420,8 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             
             <div class="${classMap({hidden: !showForm})}">
                 <slot name="activity-description">
-                    <p>${i18n.t('register.description-text')} <a target="_blank" rel="noopener"  href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>
+                    <p>${i18n.t('register.description-text')} <a target="_blank" rel="noopener"  href=${i18n.t('further-information')}>${this.activity.getHere(this.lang)}</a></p>
+                    <!--<p>${i18n.t('register.description-text')} <a target="_blank" rel="noopener"  href="https://tu4u.tugraz.at/go/lunch-lottery">${this.activity.getHere(this.lang)}</a></p>-->
                     <br />
                 </slot>
                 
@@ -514,7 +516,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             </div>
 
             <div class="${classMap({hidden: !showSuccessText})}">
-                <p>${i18n.t('register.registration-success-text')}</p>
+                <h2><b>${i18n.t('register.registration-success-text')}</b></h2>
             </div>
         `;
     }
