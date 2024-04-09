@@ -119,7 +119,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
             {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/ld+json',
+                    'Content-Type': 'application/merge-patch+json',
                     Authorization: 'Bearer ' + this.auth.token,
                 },
                 body: JSON.stringify(this.formData)
