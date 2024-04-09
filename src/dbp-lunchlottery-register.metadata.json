@@ -12,7 +12,7 @@
     },
     "description": {
         "de": "Ermöglicht die Anmeldung zum nächsten Lunch Lottery Event",
-        "en": "Allows to register for the next Lunch Lottery event"
+        "en": "Register for The Lunch Lottery"
     },
     "subscribe": "lang,auth,entry-point-url",
     "here": {
