@@ -538,7 +538,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             date.tables.forEach((table, index) => {
                 let seat = 1;
                 table.seats.forEach(assignment => {
-                    let row = assignment;
+                    let row = Object.assign({}, assignment); // clone
                     row['date'] = date.identifier;
                     row['table'] = (index + 1) + ': ' + seat + '/' + table.availableSeats;
                     rows.push(row);
