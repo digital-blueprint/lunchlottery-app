@@ -502,12 +502,14 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             let distances = {};
             submissions.forEach(submission => {
                 const [distance, table, date] = lunchLotteryEvent.getShortestDistance(submission);
+                // we need integer keys for shortest distance; float numbers are casted to string, then it's not working
+                const distanceKey = Math.floor(distance);
 
-                if (!(distance in distances)) {
-                    distances[distance] = [];
+                if (!(distanceKey in distances)) {
+                    distances[distanceKey] = [];
                 }
 
-                distances[distance].push({
+                distances[distanceKey].push({
                     'submission': submission,
                     'table': table,
                     'date': date
@@ -538,7 +540,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             date.tables.forEach((table, index) => {
                 let seat = 1;
                 table.seats.forEach(assignment => {
-                    let row = assignment;
+                    let row = Object.assign({}, assignment); // clone
                     row['date'] = date.identifier;
                     row['table'] = (index + 1) + ': ' + seat + '/' + table.availableSeats;
                     rows.push(row);
