@@ -1,6 +1,6 @@
 {
     "register": {
-        "description-text": "Information on the conditions regarding participation and data protection for initiatives of The Human Resource Development Department can be found",
+        "description-text": "Information on the conditions of participation and data protection for initiatives of The Human Resource Development Department can be found",
         "registration-success-text": "Thank you for registering for the Lunch Lottery!"
     },
     "please-log-in": "Please log in",
@@ -106,7 +106,8 @@
             "Friday",
             "Saturday"
         ],
-        "punctuation" : ", "
+        "punctuationWeekDay" : ", ",
+        "punctuationMonthDay" : " "
     },
 
     "agreement": {
