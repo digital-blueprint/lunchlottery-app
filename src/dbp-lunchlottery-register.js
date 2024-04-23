@@ -24,6 +24,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         this.identifier = null;
         this.firstName = null;
         this.lastName = null;
+        this.dates = null;
         this.email = null;
         this.organizationIds = [];
         this.organizationNames = [];
@@ -55,12 +56,12 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             identifier: {type: String, attribute: false},
             firstName: {type: String, attribute: false},
             lastName: {type: String, attribute: false},
+            dates: {type: Array, attribute: false},
             email: {type: String, attribute: false},
             organizationIds: {type: Array, attribute: false},
             organizationNames: {type: Array, attribute: false},
             organizationsString: {type: String, attribute: false},
             formAvailability: {type: String, attribute: false},
-            dates: {type: Array, attribute: false},
             language: {type: String, attribute: false},
             container: {type: Object},
             loadingPerson: {type: Boolean, attribute: false},
@@ -221,7 +222,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             let hour = String(date.getHours()) + ':' + String(date.getMinutes());
 
             //get complete date
-            let complete_date = week_day_convert + i18n.t('date.punctuation') + day + ' ' + month_convert + ' - '+ hour + ' ' + i18n.t('date.day-part');
+            let complete_date = week_day_convert + i18n.t('date.punctuationWeekDay') + day + i18n.t('date.punctuationMonthDay') + month_convert + ' - '+ hour + ' ' + i18n.t('date.day-part');
             //let complete_date = week_day;
 
             //append data to DOM
@@ -230,6 +231,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             let option = document.createElement('div');
 
             box.classList.add("date");
+
 
             option.appendChild(box);
             option.appendChild(label);
@@ -240,6 +242,10 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
         this.possibleDatesContainer = possibleDatesContainer;
         return this.possibleDatesContainer;
+    }
+
+    myFunction() {
+        return false;
     }
 
     async submitRegistration()
@@ -264,7 +270,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                     dates.push(element.value);
                 }
             });
-
+            this.dates = dates;
             let agreement = null;
             this.shadowRoot.querySelectorAll('.agreement').forEach((element) => {
                 if (element.checked) {
@@ -284,6 +290,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                 return;
             } else {
                 this._('#dates-error').hidden = true;
+
             }
             //Check agreement field
             if (agreement === null) {
@@ -343,7 +350,13 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                 element.stop();
             });
         }, 1000);
+
         await this.submitRegistration();
+
+        this.shadowRoot.querySelectorAll('.date').forEach((element) => {
+            if(this.dates.includes(element.value))
+                element.checked = true;
+        });
     }
 
     static get styles() {

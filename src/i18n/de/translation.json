@@ -107,7 +107,8 @@
             "Freitag",
             "Samstag"
         ],
-        "punctuation" : ". "
+        "punctuationWeekDay" : ". ",
+        "punctuationMonthDay" : ". "
     },
 
     "agreement": {
