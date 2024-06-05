@@ -232,9 +232,8 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
             box.classList.add("date");
 
-
-            option.appendChild(box);
             option.appendChild(label);
+            label.prepend(box);
 
             possibleDatesContainer.appendChild(option);
 
