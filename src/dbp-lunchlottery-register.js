@@ -381,19 +381,23 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                 .textField{
                     width: 100%;
                 }
-                
+
                 .input-error{
                     background-color: var(--dbp-warning-surface);
                     padding-bottom: calc(0.375em - 1px);
                     padding-left: 0.75em;
                     padding-right: 0.75em;
                     padding-top: calc(0.375em - 1px);
+                    color: var(--dbp-on-warning-surface);
                 }
+
                 .error-container{
                     margin-top: 3px;
                 }
-                #rightSide {
-                    float:right;
+
+                .submit-button {
+                    display: flex;
+                    justify-content: flex-end;
                 }
             `,
         ];
@@ -426,42 +430,42 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                     <dbp-mini-spinner text=${i18n.t('loading')}></dbp-mini-spinner>
                 </span>
             </div>
-            
+
             <div class="${classMap({hidden: !showForm})}">
                 <slot name="activity-description">
                     <p>${i18n.t('register.description-text')} <a target="_blank" rel="noopener"  href=${i18n.t('further-information')}>${this.activity.getHere(this.lang)}</a></p>
                     <br />
                 </slot>
-                
-                <form>
+
+                <form id="registration-form">
                     <div class="field">
-                        <label class="label">${i18n.t('name.first')}</label>
+                        <label class="label" for="reg-firstname">${i18n.t('name.first')}</label>
                         <div class="control">
-                            <input type="text" class="textField" value="${this.firstName}" disabled/>
+                            <input id="reg-firstname" type="text" class="textField" value="${this.firstName}" disabled/>
                         </div>
                     </div>
-    
+
                     <div class="field">
-                        <label class="label">${i18n.t('name.last')}</label>
+                        <label class="label" for="reg-lastname">${i18n.t('name.last')}</label>
                         <div class="control">
-                            <input type="text" class="textField" value="${this.lastName}" disabled/>
+                            <input id="reg-lastname" type="text" class="textField" value="${this.lastName}" disabled/>
                         </div>
                     </div>
-    
+
                     <div class="field">
-                        <label class="label">${i18n.t('organization')}</label>
+                        <label class="label" for="reg-organization">${i18n.t('organization')}</label>
                         <div class="control">
-                            <input type="text" class="textField" value="${this.organizationsString}" disabled/>
+                            <input id="reg-organization" type="text" class="textField" value="${this.organizationsString}" disabled/>
                         </div>
                     </div>
-    
+
                     <div class="field">
-                        <label class="label">${i18n.t('email')}</label>
+                        <label class="label" for="reg-email">${i18n.t('email')}</label>
                         <div class="control">
-                            <input type="email" class="textField" value="${this.email}" disabled/>
+                            <input id="reg-email" type="email" class="textField" value="${this.email}" disabled/>
                         </div>
                     </div>
-    
+
                     <div class="field">
                         <label class="label">${i18n.t('languages.label')}</label>
                         <div class="control">
@@ -481,7 +485,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                         <div class="error-container">
                             <span class="input-error" id="lang-error" hidden>${i18n.t('errors.language')}</span>
                         </div>
-                        
+
                     </div>
 
                     <div class="field">
@@ -491,7 +495,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                             <span class="input-error" id="dates-error" hidden>${i18n.t('errors.date')}</span>
                         </div>
                     </div>
-    
+
                     <div class="field">
                         <label class="label">${i18n.t('agreement.label')}</label>
                         <div class="control">
@@ -507,18 +511,17 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                                 <span class="input-error" id="agreement-error" hidden>${i18n.t('errors.agreement')}</span>
                             </div>
                         </div>
-    
-                        <div id="rightSide">
-                            <dbp-button 
-                               value="Primary"
-                               @click="${this.buttonClickHandler}"
-                               type="is-primary"
-                               class="${classMap({disabled: isPostingSubmission})}">${i18n.t('submit')}</dbp-button>
-                        </div>
+                    </div>
+                    <div class="submit-button">
+                        <dbp-button
+                            value="Primary"
+                            @click="${this.buttonClickHandler}"
+                            type="is-primary"
+                            class="${classMap({disabled: isPostingSubmission})}">${i18n.t('submit')}</dbp-button>
                     </div>
                 </form>
             </div>
-                
+
             <div class="${classMap({hidden: !showFormUnavailable})}">
                 <p>${i18n.t('availibility')}</p>
             </div>
