@@ -438,35 +438,35 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                 </slot>
 
                 <form id="registration-form">
-                    <div class="field">
+                    <div class="field field--firstname">
                         <label class="label" for="reg-firstname">${i18n.t('name.first')}</label>
                         <div class="control">
                             <input id="reg-firstname" type="text" class="textField" value="${this.firstName}" disabled/>
                         </div>
                     </div>
 
-                    <div class="field">
+                    <div class="field field--lastname">
                         <label class="label" for="reg-lastname">${i18n.t('name.last')}</label>
                         <div class="control">
                             <input id="reg-lastname" type="text" class="textField" value="${this.lastName}" disabled/>
                         </div>
                     </div>
 
-                    <div class="field">
+                    <div class="field field--organization">
                         <label class="label" for="reg-organization">${i18n.t('organization')}</label>
                         <div class="control">
                             <input id="reg-organization" type="text" class="textField" value="${this.organizationsString}" disabled/>
                         </div>
                     </div>
 
-                    <div class="field">
+                    <div class="field field--email">
                         <label class="label" for="reg-email">${i18n.t('email')}</label>
                         <div class="control">
                             <input id="reg-email" type="email" class="textField" value="${this.email}" disabled/>
                         </div>
                     </div>
 
-                    <div class="field">
+                    <div class="field field--language">
                         <label class="label">${i18n.t('languages.label')}</label>
                         <div class="control">
                             <div>
@@ -488,7 +488,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
                     </div>
 
-                    <div class="field">
+                    <div class="field field--dates">
                         <label class="label">${i18n.t('date.label')}</label>
                         <div class="control">${this.createPossibleDatesContainer()}</div>
                         <div class="error-container">
@@ -496,7 +496,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                         </div>
                     </div>
 
-                    <div class="field">
+                    <div class="field field--agreement">
                         <label class="label">${i18n.t('agreement.label')}</label>
                         <div class="control">
                             <div>
