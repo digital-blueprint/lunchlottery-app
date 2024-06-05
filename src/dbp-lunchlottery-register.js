@@ -522,11 +522,11 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                 </form>
             </div>
 
-            <div class="${classMap({hidden: !showFormUnavailable})}">
+            <div class="availibility ${classMap({hidden: !showFormUnavailable})}">
                 <p>${i18n.t('availibility')}</p>
             </div>
 
-            <div class="${classMap({hidden: !showSuccessText})}">
+            <div class="registration-success ${classMap({hidden: !showSuccessText})}">
                 <h2><b>${i18n.t('register.registration-success-text')}</b></h2>
             </div>
         `;
