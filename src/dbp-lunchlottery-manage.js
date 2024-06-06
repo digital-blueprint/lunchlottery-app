@@ -279,11 +279,11 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                 .section {
                     margin-bottom: 2rem;
                 }
-                
+
                 .option {
                     margin-bottom: .75rem;
                 }
-                
+
                 .date {
                     margin-bottom: .25rem;
                 }
@@ -328,33 +328,36 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
             </div>
 
             <div class="${classMap({hidden: this.loading || this.view !== VIEW_SETTINGS})}">
-                <div class="section">
+                <div class="section"  data-testid="date-settings-section">
                     <h3>${i18n.t('manage.settings')}</h3>
-                    <div class="option">
+                    <div class="option"  data-testid="manage-start-date-option">
                         <h4>${i18n.t('manage.availabilityStarts')}</h4>
                         <input
                             type="datetime-local"
                             class="textField"
+                            data-testid="availability-starts-input"
                             .value=${this.dateToDatetimeLocal(this.availabilityStarts)}
                             @change=${(e) => this.updateAvailabilityStarts(e.target.value)}
                         />
                     </div>
-                    <div class="option">
+                    <div class="option" data-testid="manage-end-date-option">
                         <h4>${i18n.t('manage.availabilityEnds')}</h4>
                         <input
                             type="datetime-local"
                             class="textField"
+                            data-testid="availability-ends-input"
                             .value=${this.dateToDatetimeLocal(this.availabilityEnds)}
                             @change=${(e) => this.updateAvailabilityEnds(e.target.value)}
                         />
                     </div>
-                    <div class="option">
+                    <div class="option" data-testid="manage-dates-option">
                         <h4>${i18n.t('manage.dates')}</h4>
                         ${this.dates.map((date, dateIndex) => html`
                             <div class="date">
                                 <input
                                     type="datetime-local"
                                     class="textField"
+                                    data-testid="available-date-${dateIndex}-input"
                                     value="${this.dateToDatetimeLocal(date)}"
                                     @change=${(e) => this.updateDate(dateIndex, e.target.value)}
                                 />
@@ -392,7 +395,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                         <span>${i18n.t('manage.save')}</span>
                     </button>
                 </div>
-                <div class="section">
+                <div class="section" data-testid="delete-submissions-section">
                     <h3>${i18n.t('manage.delete')}</h3>
                     <button
                         type="button"
