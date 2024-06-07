@@ -45,8 +45,36 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         this.expandedDates = [];
         this.expandedSubmissions = [];
 
+        let langs = {
+            'en': {
+                columns: {
+                    'givenName': this._i18n.t('results.givenName', {lng: 'en'}),
+                    'familyName': this._i18n.t('results.familyName', {lng: 'en'}),
+                    'email': this._i18n.t('results.email', {lng: 'en'}),
+                    'organizationNames': this._i18n.t('results.organizationNames', {lng: 'en'}),
+                    'preferredLanguage': this._i18n.t('results.preferredLanguage', {lng: 'en'}),
+                    'date': this._i18n.t('results.date', {lng: 'en'}),
+                    'table': this._i18n.t('results.table', {lng: 'en'}),
+                    'privacyConsent': this._i18n.t('results.privacyConsent', {lng: 'en'}),
+                },
+            },
+            'de': {
+                columns: {
+                    'givenName': this._i18n.t('results.givenName', {lng: 'de'}),
+                    'familyName': this._i18n.t('results.familyName', {lng: 'de'}),
+                    'email': this._i18n.t('results.email', {lng: 'de'}),
+                    'organizationNames': this._i18n.t('results.organizationNames', {lng: 'de'}),
+                    'preferredLanguage': this._i18n.t('results.preferredLanguage', {lng: 'de'}),
+                    'date': this._i18n.t('results.date', {lng: 'de'}),
+                    'table': this._i18n.t('results.table', {lng: 'de'}),
+                    'privacyConsent': this._i18n.t('results.privacyConsent', {lng: 'de'}),
+                },
+            },
+        };
+
         // data
         this.dataOptions = {
+            langs: langs,
             layout: 'fitDataTable',
             columns: [],
             columnDefaults: {
