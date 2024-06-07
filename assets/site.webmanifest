@@ -1,6 +1,6 @@
 {
-    "name": "Frontend Starter App",
-    "short_name": "Frontend Starter App",
+    "name": "Lunch Lottery",
+    "short_name": "Lunch Lottery App",
     "icons": [
         {
             "src": "local/@digital-blueprint/lunchlottery-app/icon/android-chrome-192x192.png",
