@@ -16,7 +16,7 @@
     },
     "subscribe": "lang,auth,entry-point-url",
     "here": {
-        "de": "hier.",
-        "en": "here."
+        "de": "hier",
+        "en": "here"
     }
 }

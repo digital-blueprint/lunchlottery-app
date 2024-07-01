@@ -432,7 +432,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
             <div class="${classMap({hidden: !showForm})}">
                 <slot name="activity-description">
-                    <p>${i18n.t('register.description-text')} <a target="_blank" rel="noopener"  href=${i18n.t('further-information')}>${this.activity.getHere(this.lang)}</a></p>
+                    <p>${i18n.t('register.description-text')} <a target="_blank" rel="noopener"  href=${i18n.t('further-information')}>${this.activity.getHere(this.lang)}</a>.</p>
                     <br />
                 </slot>
 
@@ -496,7 +496,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                     </div>
 
                     <div class="field field--agreement">
-                        <label class="label">${i18n.t('agreement.label')}</label>
+                        <label class="label">${i18n.t('agreement.label')} <a target="_blank" rel="noopener"  href=${i18n.t('agreement.privacy-policy')}>${this.activity.getHere(this.lang)}</a>.</label>
                         <div class="control">
                             <div>
                                 <input type="radio" class="agreement" id="yes" name="agree" value="true">

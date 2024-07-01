@@ -82,7 +82,7 @@
         "both": "Beides möglich"
     },
     "date":  {
-        "label": "*Gewünschter Tag (Bitte geben Sie alle für Sie mögliche Optionen an.)",
+        "label": "*Gewünschter Tag (Bitte geben Sie alle für Sie möglichen Optionen an.)",
         "day-part": "Uhr",
         "month": [
             "Januar",
@@ -112,7 +112,8 @@
     },
 
     "agreement": {
-        "label": "*Ich bin damit einverstanden, dass Fotos zum Zweck der Bewerbung und Dokumentation der Veranstaltung gemacht werden. Die Fotos können auf Präsentationen oder Websites der TU Graz veröffentlicht werden.",
+        "label": "*Ich bin damit einverstanden, dass Fotos zum Zweck der Bewerbung und Dokumentation der Veranstaltung gemacht werden. Die Fotos können auf Präsentationen oder Websites der TU Graz veröffentlicht werden. Detaillierte Informationen zum Datenschutz finden Sie",
+        "privacy-policy": "https://tu4u.tugraz.at/fileadmin/user_upload/redaktion/Information/Serviceeinrichtungen/Personal-_und_Kompetenzentwicklung/Lunch_Lottery/Datenschutzerklaerung_Lunch_Lottery_DE.pdf",
         "yes": "Ja",
         "no": "Nein"
     },
