@@ -1,6 +1,7 @@
 {
     "name": "@digital-blueprint/lunchlottery-app",
     "internalName": "dbp-lunchlottery-app",
+    "type": "module",
     "version": "1.1.2",
     "main": "src/dbp-lunchlottery.js",
     "license": "LGPL-2.1-or-later",
@@ -63,18 +64,18 @@
         "sheetjs_xlsx": "^0.20.0"
     },
     "scripts": {
-        "build": "rollup --bundleConfigAsCjs -c",
-        "build-local": "rollup --bundleConfigAsCjs -c --environment APP_ENV:localCustom",
+        "build": "rollup -c",
+        "build-local": "rollup -c --environment APP_ENV:localCustom",
         "i18next": "i18next",
         "format": "npm run format:eslint && npm run format:prettier",
         "format:eslint": "eslint \"**/*.{js,ts}\" --fix",
         "format:prettier": "prettier \"**/*.{js,json,ts}\" --write",
-        "watch": "rollup --bundleConfigAsCjs -c --watch",
-        "watch-local": "rollup --bundleConfigAsCjs -c --watch --environment APP_ENV:localCustom",
-        "watch-custom": "rollup --bundleConfigAsCjs -c --watch --environment APP_ENV:localCustom",
-        "watch-full": "rollup --bundleConfigAsCjs -c --watch --environment FORCE_FULL",
-        "test": "rollup --bundleConfigAsCjs -c --environment APP_ENV:test && karma start --singleRun",
-        "test-full": "rollup --bundleConfigAsCjs -c --environment FORCE_FULL,APP_ENV:test && karma start --singleRun",
+        "watch": "rollup -c --watch",
+        "watch-local": "rollup -c --watch --environment APP_ENV:localCustom",
+        "watch-custom": "rollup -c --watch --environment APP_ENV:localCustom",
+        "watch-full": "rollup -c --watch --environment FORCE_FULL",
+        "test": "rollup -c --environment APP_ENV:test && karma start karma.conf.cjs --singleRun",
+        "test-full": "rollup -c --environment FORCE_FULL,APP_ENV:test && karma start karma.conf.cjs --singleRun",
         "lint": "eslint .",
         "publish": "sed -i 's/\"private\": true/\"private\": false/' package.json && can-npm-publish --verbose 2>&1 && npm publish --access public 2>&1; sed -i 's/\"private\": false/\"private\": true/' package.json"
     }
