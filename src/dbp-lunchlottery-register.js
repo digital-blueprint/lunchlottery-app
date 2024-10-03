@@ -197,6 +197,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         const i18n = this._i18n;
         let possibleDatesContainer = document.createElement('div');
         this.possibleDates.forEach((date_string) => {
+            console.log('date string', date_string);
             const date = new Date(date_string);
             let box = document.createElement('input');
 
@@ -209,6 +210,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
             //get month
             let month = date.getMonth();
+            console.log('month', month);
             let month_convert = i18n.t('date.month.' + String(month));
 
             //get week day
