@@ -346,8 +346,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
     async buttonClickHandler()
     {
         setTimeout(() => {
-            const scopedTagName = this.getScopedTagName('dbp-button');
-            this.shadowRoot.querySelectorAll(scopedTagName).forEach(element => {
+            this.shadowRoot.querySelectorAll('dbp-button').forEach(element => {
                 element.stop();
             });
         }, 1000);
