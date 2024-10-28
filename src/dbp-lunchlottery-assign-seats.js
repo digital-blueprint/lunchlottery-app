@@ -640,6 +640,19 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                 td:first-child {
                     padding-left: 0;
                 }
+                
+                .totalSubmission{
+                    display: flex;
+                    justify-content: flex-start;
+                }
+                
+                .buttons{
+                    float: right
+                }
+                
+                .inlineElements{
+                    display: inline-block;
+               }
             `
         ];
     }
@@ -662,14 +675,15 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             </div>
 
             <div class="${classMap({hidden: this.loading || this.view !== VIEW_SUBMISSIONS})}">
-                <p>
-                    ${i18n.t('submissions.total')} ${ this.submissions.length }
-                </p>
-                <dbp-tabulator-table
-                    lang="${this.lang}"
-                    class="tabulator-table"
-                    id="tabulator-table-submissions"></dbp-tabulator-table>
-                <button
+            <div>
+                <div class="inlineElements totalSubmission">
+                    <p>
+                        ${i18n.t('submissions.total')} ${ this.submissions.length }
+                    </p>
+                </div>
+                
+                <div class ="inlineElements buttons">
+                    <button
                     type="button"
                     class="button"
                     title="${i18n.t('process.settings')}"
@@ -678,17 +692,26 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                         title="${i18n.t('process.settings')}"
                         name="dinner"></dbp-icon>
                     <span>${i18n.t('process.settings')}</span>
-                </button>
-                <button
-                    type="button"
-                    class="button"
-                    title="${i18n.t('process.download')}"
-                    @click="${() => this.downloadXlsx('LunchLotterySubmissions.xlsx')}">
-                    <dbp-icon
+                    </button>
+                    <button
+                        type="button"
+                        class="button"
                         title="${i18n.t('process.download')}"
-                        name="download"></dbp-icon>
-                    <span>${i18n.t('process.download')}</span>
-                </button>
+                        @click="${() => this.downloadXlsx('LunchLotterySubmissions.xlsx')}">
+                        <dbp-icon
+                            title="${i18n.t('process.download')}"
+                            name="download"></dbp-icon>
+                        <span>${i18n.t('process.download')}</span>
+                    </button>
+                </div>
+            </div>
+                
+                
+                <dbp-tabulator-table
+                    lang="${this.lang}"
+                    class="tabulator-table"
+                    id="tabulator-table-submissions"></dbp-tabulator-table>
+                
             </div>
 
             <div class="${classMap({hidden: this.loading || this.view !== VIEW_SETTINGS})}">
