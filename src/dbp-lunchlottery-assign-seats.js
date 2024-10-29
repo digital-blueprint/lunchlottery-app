@@ -3,7 +3,7 @@ import {css, html} from 'lit';
 import {classMap} from 'lit/directives/class-map.js';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import * as commonUtils from '@dbp-toolkit/common/utils';
-import {Icon, MiniSpinner} from '@dbp-toolkit/common';
+import {Icon, MiniSpinner, LoadingButton} from '@dbp-toolkit/common';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import metadata from './dbp-lunchlottery-assign-seats.metadata.json';
 import {Activity} from './activity.js';
@@ -26,6 +26,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         this.activity = new Activity(metadata);
         this.name = null;
         this.entryPointUrl = null;
+        this.allExpanded = false;
 
         // activity
         this.view = VIEW_INIT;
@@ -75,21 +76,50 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         // data
         this.dataOptions = {
             langs: langs,
-            layout: 'fitDataTable',
+            layout: 'fitDataFill',
+            // layout: 'fitColumns',
+            responsiveLayout: 'collapse',
+            responsiveLayoutCollapseStartOpen: false,
             columns: [],
             columnDefaults: {
                 vertAlign: 'middle',
                 hozAlign: 'left',
-                resizable: true
+                resizable: false
+            },
+            responsiveLayoutCollapseFormatter:function(data){
+                //data - an array of objects containing the column title and value for each cell
+                let table = document.createElement("table");
+                data.forEach(function(row){
+                    let tableRow = document.createElement("tr");
+                    // format date title
+                    if (!isNaN(Date.parse(row.title))) {
+                        const date = new Date(row.title);
+                        let dateString = '';
+                        dateString += ('0' + date.getDate()).slice(-2) + '.';
+                        dateString += ('0' + (date.getMonth() + 1)).slice(-2) + '.';
+                        dateString += date.getFullYear();
+                        row.title = dateString;
+                    }
+                    if (row.value === undefined) {
+                        row.value = "";
+                    }
+                    tableRow.innerHTML = "<td><strong>" + row.title + "</strong></td><td>" + row.value + "</td>";
+                    table.appendChild(tableRow);
+                });
+
+                return Object.keys(data).length ? table : "";
             }
         };
         this.dataOptionsColumnsPrepend = [
-            {title: this._i18n.t('results.givenName'), field: 'givenName'},
-            {title: this._i18n.t('results.familyName'), field: 'familyName'},
+            {title: 'details', field: 'details', hozAlign: 'center', width: 65, formatter:"responsiveCollapse", headerHozAlign:"center", sorter:"string", headerSort:false, responsive:0},
+            {title: this._i18n.t('results.givenName'), field: 'givenName', minWidth: 120, responsive: 0},
+            {title: this._i18n.t('results.familyName'), field: 'familyName', minWidth: 120, responsive: 0},
             {title: this._i18n.t('results.email'), field: 'email', visible: 0},
             {
                 title: this._i18n.t('results.organizationNames'),
                 field: 'organizationNames',
+                minWidth: 300,
+                responsive: 1,
                 formatter: function(cell, formatterParams, onRendered) {
                     return cell.getValue().join(', ');
                 }.bind(this)
@@ -98,6 +128,8 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             {
                 title: this._i18n.t('results.possibleDates'),
                 field: 'possibleDates',
+                responsive: 9,
+                width: 120,
                 visible: 0,
                 xlsx: 0,
                 formatter: function(cell, formatterParams, onRendered) {
@@ -107,6 +139,10 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             {
                 title: this._i18n.t('results.date'),
                 field: 'date',
+                width: 120,
+                minWidth: 120,
+                widthShrink: 0,
+                responsive: 1,
                 formatter: this.dateFormatter.bind(this),
                 xlsxFormatter: function(cell, formatterParams, onRendered) {
                     let value = cell.getValue();
@@ -116,12 +152,13 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                     return value;
                 }.bind(this)
             },
-            {title: this._i18n.t('results.table'), field: 'table'}
+            {title: this._i18n.t('results.table'), field: 'table', responsive: 1}
         ];
         this.dataOptionsColumnsAppend = [
             {
                 title: this._i18n.t('results.privacyConsent'),
                 field: 'privacyConsent',
+                responsive: 9,
                 formatter: function(cell, formatterParams, onRendered) {
                     if (cell.getValue()) {
                         return this._i18n.t('results.privacyConsent-true');
@@ -145,6 +182,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
     static get scopedElements() {
         return {
             'dbp-icon': Icon,
+            'dbp-loading-button': LoadingButton,
             'dbp-mini-spinner': MiniSpinner,
             'dbp-tabulator-table': TabulatorTable
         };
@@ -156,7 +194,8 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             lang: {type: String},
             name: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
-            loading: {type: Boolean, attribute: false}
+            loading: {type: Boolean, attribute: false},
+            allExpanded: {type: Boolean, attribute: false}
         };
     }
 
@@ -348,8 +387,8 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
 
         this.view = VIEW_SUBMISSIONS;
 
-        const tabulatorTable = this._('#tabulator-table-submissions');
-        tabulatorTable.options = this.dataOptions;
+        const tabulatorTable = /** @type {TabulatorTable} */ (this._('#tabulator-table-submissions'));
+        // tabulatorTable.options = this.dataOptions;
         tabulatorTable.buildTable();
         tabulatorTable.setData(this.dataRows);
     }
@@ -594,7 +633,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         this.requestUpdate();
 
         const tabulatorTable = this._('#tabulator-table-results');
-        tabulatorTable.options = this.dataOptions;
+        // tabulatorTable.options = this.dataOptions;
         tabulatorTable.buildTable();
         tabulatorTable.setData(this.dataRows);
     }
@@ -612,6 +651,12 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
 
                 .align-right {
                     text-align: right;
+                }
+
+                .control-button-container {
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 1rem;
                 }
 
                 .date,
@@ -640,18 +685,24 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                 td:first-child {
                     padding-left: 0;
                 }
-                
+
                 .totalSubmission{
                     display: flex;
                     justify-content: flex-start;
                 }
-                
+
                 .buttons{
                     float: right
                 }
-                
+
                 .inlineElements{
                     display: inline-block;
+               }
+
+               @media screen and (max-width: 530px) {
+                    .control-button-container {
+                        flex-direction: column;
+                    }
                }
             `
         ];
@@ -675,23 +726,40 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             </div>
 
             <div class="${classMap({hidden: this.loading || this.view !== VIEW_SUBMISSIONS})}">
-            <div>
-                <div class="inlineElements totalSubmission">
-                    <p>
-                        ${i18n.t('submissions.total')} ${ this.submissions.length }
-                    </p>
-                </div>
-                
-                <div class ="inlineElements buttons">
+                <p>
+                    ${i18n.t('submissions.total')} ${ this.submissions.length }
+                </p>
+                <div class="control-button-container">
+                    <dbp-loading-button id="expand-all-btn"
+                        class="${classMap({hidden: this.allExpanded})}"
+                        value="${i18n.t('expand-all')}"
+                        @click="${() => {
+                            this.allExpanded = true;
+                            const table = /** @type {TabulatorTable} */ (this._('#tabulator-table-submissions'));
+                            table.expandAll();
+                        }}"
+                        title="${i18n.t('expand-all')}"
+                        >${i18n.t('expand-all')}</dbp-loading-button>
+
+                    <dbp-loading-button id="collapse-all-btn"
+                        class="${classMap({hidden: !this.allExpanded})}"
+                        value="${i18n.t('collapse-all')}"
+                        @click="${() => {
+                            this.allExpanded = false;
+                            const table = /** @type {TabulatorTable} */ (this._('#tabulator-table-submissions'));
+                            table.collapseAll();
+                        }}"
+                        title="${i18n.t('collapse-all')}"
+                        >${i18n.t('collapse-all')}</dbp-loading-button>
                     <button
-                    type="button"
-                    class="button"
-                    title="${i18n.t('process.settings')}"
-                    @click="${() => this.showSettings()}">
-                    <dbp-icon
+                        type="button"
+                        class="button"
                         title="${i18n.t('process.settings')}"
-                        name="dinner"></dbp-icon>
-                    <span>${i18n.t('process.settings')}</span>
+                        @click="${() => this.showSettings()}">
+                        <dbp-icon
+                            title="${i18n.t('process.settings')}"
+                            name="dinner"></dbp-icon>
+                        <span>${i18n.t('process.settings')}</span>
                     </button>
                     <button
                         type="button"
@@ -704,14 +772,11 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                         <span>${i18n.t('process.download')}</span>
                     </button>
                 </div>
-            </div>
-                
-                
                 <dbp-tabulator-table
                     lang="${this.lang}"
                     class="tabulator-table"
+                    .options="${this.dataOptions}"
                     id="tabulator-table-submissions"></dbp-tabulator-table>
-                
             </div>
 
             <div class="${classMap({hidden: this.loading || this.view !== VIEW_SETTINGS})}">
@@ -799,30 +864,54 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             </div>
 
             <div class="${classMap({hidden: this.loading || this.view !== VIEW_RESULTS})}">
+                <div class="control-button-container">
+                    <dbp-loading-button id="expand-all-btn"
+                        class="${classMap({hidden: this.allExpanded})}"
+                        value="${i18n.t('expand-all')}"
+                        @click="${() => {
+                            this.allExpanded = true;
+                            const table = /** @type {TabulatorTable} */ (this._('#tabulator-table-results'));
+                            table.expandAll();
+                        }}"
+                        title="${i18n.t('expand-all')}"
+                        >${i18n.t('expand-all')}</dbp-loading-button>
+
+                    <dbp-loading-button id="collapse-all-btn"
+                        class="${classMap({hidden: !this.allExpanded})}"
+                        value="${i18n.t('collapse-all')}"
+                        @click="${() => {
+                            this.allExpanded = false;
+                            const table = /** @type {TabulatorTable} */ (this._('#tabulator-table-results'));
+                            table.collapseAll();
+                        }}"
+                        title="${i18n.t('collapse-all')}"
+                        >${i18n.t('collapse-all')}</dbp-loading-button>
+                    <button
+                        type="button"
+                        class="button"
+                        title="${i18n.t('process.run')}"
+                        @click="${() => this.process()}">
+                        <dbp-icon
+                            title="${i18n.t('process.run')}"
+                            name="dinner"></dbp-icon>
+                        <span>${i18n.t('process.run')}</span>
+                    </button>
+                    <button
+                        type="button"
+                        class="button"
+                        title="${i18n.t('process.download')}"
+                        @click="${() => this.downloadXlsx('LunchLotteryResults.xlsx')}">
+                        <dbp-icon
+                            title="${i18n.t('process.download')}"
+                            name="download"></dbp-icon>
+                        <span>${i18n.t('process.download')}</span>
+                    </button>
+                </div>
                 <dbp-tabulator-table
                     lang="${this.lang}"
                     class="tabulator-table"
+                    .options="${this.dataOptions}"
                     id="tabulator-table-results"></dbp-tabulator-table>
-                <button
-                    type="button"
-                    class="button"
-                    title="${i18n.t('process.run')}"
-                    @click="${() => this.process()}">
-                    <dbp-icon
-                        title="${i18n.t('process.run')}"
-                        name="dinner"></dbp-icon>
-                    <span>${i18n.t('process.run')}</span>
-                </button>
-                <button
-                    type="button"
-                    class="button"
-                    title="${i18n.t('process.download')}"
-                    @click="${() => this.downloadXlsx('LunchLotteryResults.xlsx')}">
-                    <dbp-icon
-                        title="${i18n.t('process.download')}"
-                        name="download"></dbp-icon>
-                    <span>${i18n.t('process.download')}</span>
-                </button>
             </div>
         `;
     }

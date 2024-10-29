@@ -117,5 +117,7 @@
         "yes": "Ja",
         "no": "Nein"
     },
-    "submit": "Absenden"
+    "submit": "Absenden",
+    "expand-all": "Alles aufklappen",
+    "collapse-all": "Alles zuklappen"
 }
