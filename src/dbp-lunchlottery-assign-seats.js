@@ -393,8 +393,15 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         tabulatorTable.setData(this.dataRows);
     }
 
-    download() {
+    downloadSubmissions() {
         let table = this._('#tabulator-table-submissions');
+        let fileFormat = "xlsx";
+        let dataName = 'data';
+        table.download(fileFormat, dataName);
+    }
+
+    downloadResults() {
+        let table = this._('#tabulator-table-results');
         let fileFormat = "xlsx";
         let dataName = 'data';
         table.download(fileFormat, dataName);
@@ -772,7 +779,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                         type="button"
                         class="button"
                         title="${i18n.t('process.download')}"
-                        @click="${() => this.download()}">
+                        @click="${() => this.downloadSubmissions()}">
                         <dbp-icon
                             title="${i18n.t('process.download')}"
                             name="download"></dbp-icon>
@@ -907,7 +914,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                         type="button"
                         class="button"
                         title="${i18n.t('process.download')}"
-                        @click="${() => this.downloadXlsx('LunchLotteryResults.xlsx')}">
+                        @click="${() => this.downloadResults()}">
                         <dbp-icon
                             title="${i18n.t('process.download')}"
                             name="download"></dbp-icon>
