@@ -64,6 +64,8 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             formAvailability: {type: String, attribute: false},
             language: {type: String, attribute: false},
             container: {type: Object},
+            possibleDates: {type: Array, attribute: false},
+            possibleDatesContainer: {type: Object},
             loadingPerson: {type: Boolean, attribute: false},
             loadingOrganizations: {type: Boolean, attribute: false},
             loadingForm: {type: Boolean, attribute: false},
@@ -196,6 +198,9 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
     createPossibleDatesContainer() {
         const i18n = this._i18n;
         let possibleDatesContainer = document.createElement('div');
+        console.log('poss dates ', this.possibleDates);
+        if(!this.possibleDates)
+            return;
         this.possibleDates.forEach((date_string) => {
             console.log('date string', date_string);
             const date = new Date(date_string);
