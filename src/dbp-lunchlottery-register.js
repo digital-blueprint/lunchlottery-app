@@ -182,13 +182,14 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                 const formData = await response.json();
                 const decodedDataFeedSchema = JSON.parse(formData['dataFeedSchema']);
                 this.possibleDates = decodedDataFeedSchema['properties']['possibleDates']['items']['enum'];
+                console.log('poss dates ', decodedDataFeedSchema['properties']['possibleDates']);
                 const start = new Date(formData['availabilityStarts']);
                 const end = new Date(formData['availabilityEnds']);
                 const current = new Date();
                 this.formAvailability = (start.getTime() < current.getTime()) && (end.getTime() > current.getTime()) ?
                     FORM_AVAILABILITY_AVAILABLE : FORM_AVAILABILITY_UNAVAILABLE;
-
-                this.createPossibleDatesContainer();
+                if(this.possibleDates && this.possibleDates.length != 0)
+                    this.createPossibleDatesContainer();
             }
         } finally {
             this.loadingForm = false;
@@ -199,7 +200,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         const i18n = this._i18n;
         let possibleDatesContainer = document.createElement('div');
         console.log('poss dates ', this.possibleDates);
-        if(!this.possibleDates)
+        if(!this.possibleDates )
             return;
         this.possibleDates.forEach((date_string) => {
             console.log('date string', date_string);
