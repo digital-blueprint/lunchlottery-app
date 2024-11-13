@@ -676,7 +676,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             commonStyles.getButtonCSS(),
             css`
                 #tabulator-table-submissions {
-                    --tabulator-collapse-padding-left: 68px;
+                    --dbp-tabulator-collapse-padding-left: 68px;
                 }
 
                 .hidden {
