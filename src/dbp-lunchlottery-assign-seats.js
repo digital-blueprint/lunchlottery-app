@@ -399,7 +399,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         let table = this._('#tabulator-table-submissions');
         let fileFormat = "xlsx";
         const today = new Date();
-        let month = today.getMonth();
+        let month = today.getMonth() + 1;
         month = month.toString();
         let day = today.getDate()
         day = day.toString();
@@ -413,7 +413,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         let table = this._('#tabulator-table-results');
         let fileFormat = "xlsx";
         const today = new Date();
-        let month = today.getMonth();
+        let month = today.getMonth() + 1;
         month = month.toString();
         let day = today.getDate()
         day = day.toString();
