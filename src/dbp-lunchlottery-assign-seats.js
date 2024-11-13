@@ -398,14 +398,28 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
     downloadSubmissions() {
         let table = this._('#tabulator-table-submissions');
         let fileFormat = "xlsx";
-        let dataName = 'data';
+        const today = new Date();
+        let month = today.getMonth();
+        month = month.toString();
+        let day = today.getDate()
+        day = day.toString();
+        let year = today.getFullYear();
+        year = year.toString();
+        let dataName = 'LLRegistrations' + day + month + year;
         table.download(fileFormat, dataName);
     }
 
     downloadResults() {
         let table = this._('#tabulator-table-results');
         let fileFormat = "xlsx";
-        let dataName = 'data';
+        const today = new Date();
+        let month = today.getMonth();
+        month = month.toString();
+        let day = today.getDate()
+        day = day.toString();
+        let year = today.getFullYear();
+        year = year.toString();
+        let dataName = 'LLSubmissions' + day + month + year;
         table.download(fileFormat, dataName);
     }
 
