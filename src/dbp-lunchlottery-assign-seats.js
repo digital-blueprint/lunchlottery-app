@@ -49,6 +49,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         let langs = {
             'en': {
                 columns: {
+                    'details': this._i18n.t('results.details', {lng: 'en'}),
                     'givenName': this._i18n.t('results.givenName', {lng: 'en'}),
                     'familyName': this._i18n.t('results.familyName', {lng: 'en'}),
                     'email': this._i18n.t('results.email', {lng: 'en'}),
@@ -61,6 +62,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             },
             'de': {
                 columns: {
+                    'details': this._i18n.t('results.details', {lng: 'de'}),
                     'givenName': this._i18n.t('results.givenName', {lng: 'de'}),
                     'familyName': this._i18n.t('results.familyName', {lng: 'de'}),
                     'email': this._i18n.t('results.email', {lng: 'de'}),
@@ -659,6 +661,10 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             commonStyles.getActivityCSS(),
             commonStyles.getButtonCSS(),
             css`
+                #tabulator-table-submissions {
+                    --tabulator-collapse-padding-left: 68px;
+                }
+
                 .hidden {
                     display: none;
                 }
@@ -700,16 +706,16 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                     padding-left: 0;
                 }
 
-                .totalSubmission{
+                .totalSubmission {
                     display: flex;
                     justify-content: flex-start;
                 }
 
-                .buttons{
+                .buttons {
                     float: right
                 }
 
-                .inlineElements{
+                .inlineElements {
                     display: inline-block;
                }
 
