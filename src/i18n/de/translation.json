@@ -41,6 +41,7 @@
         "download": "Excel-Datei herunterladen"
     },
     "results": {
+        "details": "Einzelheiten",
         "givenName": "Vorname",
         "familyName": "Nachname",
         "email": "E-Mail",
