@@ -401,7 +401,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         const today = new Date();
         let month = today.getMonth() + 1;
         month = month.toString();
-        let day = today.getDate()
+        let day = today.getDate();
         day = day.toString();
         let year = today.getFullYear();
         year = year.toString();
@@ -415,7 +415,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         const today = new Date();
         let month = today.getMonth() + 1;
         month = month.toString();
-        let day = today.getDate()
+        let day = today.getDate();
         day = day.toString();
         let year = today.getFullYear();
         year = year.toString();
