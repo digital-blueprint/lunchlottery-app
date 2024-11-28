@@ -6,6 +6,9 @@
       gnumake
       vscode
       playwright-driver.browsers
+      zellij # smart terminal workspace
+      lazygit # git terminal
+      just # task runner
     ];
 
     shellHook = ''
