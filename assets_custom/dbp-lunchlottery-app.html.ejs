@@ -30,7 +30,7 @@
 
     <!-- Loading spinner -->
     <script type="module">
-        import {Spinner} from '<%= getPrivateUrl('tug_spinner.js') %>';
+        import {Spinner} from "<%= getPrivateUrl('tug_spinner.js') %>";
         customElements.define('tug-spinner', Spinner);
     </script>
 
@@ -141,6 +141,7 @@
     env='<%= buildInfo.env %>'
     themes='[{"class": "light-theme", "icon": "sun", "name": "Light Mode"},
         {"class": "dark-theme", "icon": "night", "name": "Dark Mode"}]'
+    app-name='<%= name %>'
 ><tug-spinner id='spinner'></tug-spinner>
 </<%= name %>>
 

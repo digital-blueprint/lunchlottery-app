@@ -30,7 +30,7 @@
 
     <!-- Loading spinner -->
     <script type="module">
-        import {Spinner} from '<%= getPrivateUrl('spinner.js') %>';
+        import {Spinner} from "<%= getPrivateUrl('spinner.js') %>";
         customElements.define('dbp-loading-spinner', Spinner);
     </script>
 
@@ -55,10 +55,7 @@
         }
 
         /* style override */
-        html {
-        }
-
-        .light-theme{
+        .light-theme {
             --dbp-override-background: white;
             --dbp-override-content: #222120;
 
@@ -83,7 +80,7 @@
             --dbp-override-border: 1px solid #222120;
         }
 
-        .dark-theme{
+        .dark-theme {
             --dbp-override-background: #222120;
             --dbp-override-content: white;
 
@@ -127,6 +124,7 @@
     env='<%= buildInfo.env %>'
     themes='[{"class": "light-theme", "icon": "sun", "name": "Light Mode"},
         {"class": "dark-theme", "icon": "night", "name": "Dark Mode"}]'
+    app-name='<%= name %>'
 ><dbp-loading-spinner></dbp-loading-spinner>
 </<%= name %>>
 
