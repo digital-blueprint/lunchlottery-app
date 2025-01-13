@@ -143,7 +143,6 @@ export default (async () => {
             sourcemap: true,
         },
         treeshake: prodBuild,
-        preserveEntrySignatures: false,
         plugins: [
             del({
                 targets: 'dist/*',
