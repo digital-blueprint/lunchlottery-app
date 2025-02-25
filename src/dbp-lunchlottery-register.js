@@ -251,10 +251,6 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         return this.possibleDatesContainer;
     }
 
-    myFunction() {
-        return false;
-    }
-
     async submitRegistration()
     {
         try {

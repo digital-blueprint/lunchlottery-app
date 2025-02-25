@@ -10,7 +10,6 @@ import {Activity} from './activity.js';
 import {FORM_IDENTIFIER} from './constants';
 import {LunchLotteryDate, LunchLotteryEvent, LunchLotteryTable} from './lunch-lottery';
 import {TabulatorTable} from '@dbp-toolkit/tabulator-table';
-import * as XLSX from 'sheetjs_xlsx';
 import DBPLunchlotteryLitElement from "./dbp-lunchlottery-lit-element";
 
 const VIEW_INIT = 'init';
@@ -421,78 +420,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         year = year.toString();
         let dataName = 'LLSubmissions' + day + month + year;
         table.download(fileFormat, dataName);
-    }
-
-    downloadXlsx(filename) {
-        const worksheet = XLSX.utils.json_to_sheet([]);
-
-        let header = [];
-        this.dataOptions.columns.forEach(column => {
-            if (
-                'field' in column
-                && (!('xlsx' in column) || ('xlsx' in column && column['xlsx']))
-            ) {
-                let value = column['title'];
-                if ('titleFormatter' in column) {
-                    value = column.titleFormatter(
-                        {
-                            getValue() {
-                                return value;
-                            }
-                        },
-                        column['titleFormatterParams'] || {},
-                        null
-                    );
-                }
-                header.push(value);
-            }
-        });
-        XLSX.utils.sheet_add_aoa(worksheet, [header]);
-
-        let rows = [];
-        this.dataRows.forEach(row => {
-            let item = {};
-            this.dataOptions.columns.forEach(column => {
-                if (
-                    'field' in column
-                    && (!('xlsx' in column) || ('xlsx' in column && column['xlsx']))
-                ) {
-                    const index = column['field'];
-                    let value = row[index] || '';
-                    if ('xlsxFormatter' in column) {
-                        value = column.xlsxFormatter(
-                            {
-                                getValue() {
-                                    return value;
-                                }
-                            },
-                            column['xlsxFormatterParams'] || {},
-                            null
-                        );
-                    } else if ('formatter' in column) {
-                        value = column.formatter(
-                            {
-                                getValue() {
-                                    return value;
-                                }
-                            },
-                            column['formatterParams'] || {},
-                            null
-                        );
-                    }
-                    item[index] = value;
-                }
-            });
-            rows.push(item);
-        });
-        XLSX.utils.sheet_add_json(worksheet, rows, {
-            origin: 'A2',
-            skipHeader: true,
-        });
-
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet);
-        XLSX.writeFile(workbook, filename, {compression: true});
     }
 
     showSettings() {
