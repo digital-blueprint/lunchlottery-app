@@ -386,7 +386,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                     </div>
                     <button
                         type="button"
-                        class="button"
+                        class="button is-primary"
                         title="${i18n.t('manage.save')}"
                         @click="${() => this.save()}">
                         <dbp-icon
