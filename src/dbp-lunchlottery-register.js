@@ -101,7 +101,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         try {
             this.loadingPerson = true;
 
-            const response = await fetch(this.entryPointUrl + '/base/people/' + this.auth['user-id'] + '?includeLocal=email,staffAt', {
+            const response = await fetch(this.entryPointUrl + '/base/people/' + encodeURIComponent(this.auth['user-id']) + '?includeLocal=email,staffAt', {
                 headers: {
                     'Content-Type': 'application/ld+json',
                     Authorization: 'Bearer ' + this.auth.token,
@@ -137,7 +137,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
             let organizations = [];
             for (let index = 0; index < this.organizationIds.length; index++) {
-                let response = await fetch(this.entryPointUrl + '/base/organizations/' + this.organizationIds[index], {
+                let response = await fetch(this.entryPointUrl + '/base/organizations/' + encodeURIComponent(this.organizationIds[index]), {
                     headers: {
                         'Content-Type': 'application/ld+json',
                         Authorization: 'Bearer ' + this.auth.token,
@@ -168,7 +168,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             this.possibleDates = [];
             this.formAvailability = FORM_AVAILABILITY_INIT;
 
-            const response = await fetch(this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER, {
+            const response = await fetch(this.entryPointUrl + '/formalize/forms/' + encodeURIComponent(FORM_IDENTIFIER), {
                 headers: {
                     'Content-Type': 'application/ld+json',
                     Authorization: 'Bearer ' + this.auth.token,

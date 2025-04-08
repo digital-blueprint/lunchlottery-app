@@ -82,7 +82,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
 
     async fetchForm() {
         const response = await this.httpGetAsync(
-            this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER,
+            this.entryPointUrl + '/formalize/forms/' + encodeURIComponent(FORM_IDENTIFIER),
             {
                 headers: {
                     'Content-Type': 'application/ld+json',
@@ -115,7 +115,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
 
     async updateFormData() {
         const response = await this.httpGetAsync(
-            this.entryPointUrl + '/formalize/forms/' + FORM_IDENTIFIER,
+            this.entryPointUrl + '/formalize/forms/' + encodeURIComponent(FORM_IDENTIFIER),
             {
                 method: 'PATCH',
                 headers: {
@@ -140,7 +140,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
 
     async clearFormSubmissions() {
         const response = await this.httpGetAsync(
-            this.entryPointUrl + '/formalize/submissions?formIdentifier=' + FORM_IDENTIFIER,
+            this.entryPointUrl + '/formalize/submissions?formIdentifier=' + encodeURIComponent(FORM_IDENTIFIER),
             {
                 method: 'DELETE',
                 headers: {
