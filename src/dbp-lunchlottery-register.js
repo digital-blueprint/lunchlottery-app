@@ -133,8 +133,8 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             this.organizationNames = [];
 
             let organizations = [];
-            for (let index = 0; index < this.organizationIds.length; index++) {
-                let response = await fetch(this.entryPointUrl + '/base/organizations/' + encodeURIComponent(this.organizationIds[index]), {
+            for (let orgId of this.organizationIds) {
+                let response = await fetch(this.entryPointUrl + '/base/organizations/' + encodeURIComponent(orgId), {
                     headers: {
                         'Content-Type': 'application/ld+json',
                         Authorization: 'Bearer ' + this.auth.token,
