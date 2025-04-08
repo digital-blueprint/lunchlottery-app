@@ -37,7 +37,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         this.loadingForm = false;
         this.isPostingSubmission = false;
         this.wasSubmissionSuccessful = false;
-        this.disbleForm = false;
+        this.disableForm = false;
     }
 
     static get scopedElements() {
@@ -107,7 +107,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             });
 
             if (!response.ok) {
-                this.disbleForm = true;
+                this.disableForm = true;
                 this.handleErrorResponse(response);
             } else {
                 const data = await response.json();
@@ -145,7 +145,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                     if (response.status === 404) {
                         organizations.push(this._i18n.t('unknown-org', {id: orgId}));
                     } else {
-                        this.disbleForm = true;
+                        this.disableForm = true;
                         this.handleErrorResponse(response);
                     }
                 } else {
@@ -173,7 +173,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             });
 
             if (!response.ok) {
-                this.disbleForm = true;
+                this.disableForm = true;
                 this.handleErrorResponse(response);
             } else {
                 const formData = await response.json();
@@ -412,7 +412,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         const isPostingSubmission = this.isPostingSubmission;
 
         const showSpinner = (this.isLoading() || this.isLoadingData()) && !isFormUnavailable && !this.wasSubmissionSuccessful;
-        const showForm = this.isLoggedIn() && !this.isLoadingData() && !isFormUnavailable && !this.wasSubmissionSuccessful && !this.disbleForm;
+        const showForm = this.isLoggedIn() && !this.isLoadingData() && !isFormUnavailable && !this.wasSubmissionSuccessful && !this.disableForm;
         const showFormUnavailable = this.isLoggedIn() && isFormUnavailable;
         const showSuccessText = this.isLoggedIn() && this.wasSubmissionSuccessful;
 
