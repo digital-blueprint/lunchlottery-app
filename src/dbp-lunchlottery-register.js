@@ -142,12 +142,15 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                     },
                 });
                 if (!response.ok) {
-                    this.disbleForm = true;
-                    this.handleErrorResponse(response);
+                    if (response.status === 404) {
+                        organizations.push(this._i18n.t('unknown-org', {id: orgId}));
+                    } else {
+                        this.disbleForm = true;
+                        this.handleErrorResponse(response);
+                    }
                 } else {
                     const data = await response.json();
-                    const organizationName = data.name;
-                    organizations.push(organizationName);
+                    organizations.push(data.name);
                 }
             }
             this.organizationNames = organizations;

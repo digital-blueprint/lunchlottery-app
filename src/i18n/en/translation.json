@@ -6,6 +6,7 @@
     "please-log-in": "Please log in",
     "availibility": "Registration for the Lunch Lottery is currently closed.",
     "loading": "loading...",
+    "unknown-org": "Unknown organizational unit ({{id}})",
     "errors": {
         "unauthorized-title": "Unauthorized",
         "unauthorized-body": "No authorization to access requested ressource.",
