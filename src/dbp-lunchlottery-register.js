@@ -28,7 +28,6 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         this.email = null;
         this.organizationIds = [];
         this.organizationNames = [];
-        this.organizationsString = null;
         this.preferredLanguage = null;
         this.formAvailability = FORM_AVAILABILITY_INIT;
         this.possibleDates = [];
@@ -60,7 +59,6 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             email: {type: String, attribute: false},
             organizationIds: {type: Array, attribute: false},
             organizationNames: {type: Array, attribute: false},
-            organizationsString: {type: String, attribute: false},
             formAvailability: {type: String, attribute: false},
             language: {type: String, attribute: false},
             container: {type: Object},
@@ -133,7 +131,6 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         try {
             this.loadingOrganizations = true;
             this.organizationNames = [];
-            this.organizationsString = '';
 
             let organizations = [];
             for (let index = 0; index < this.organizationIds.length; index++) {
@@ -151,9 +148,6 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                     const data = await response.json();
                     const organizationName = data.name;
                     organizations.push(organizationName);
-                    this.organizationsString += organizationName;
-                    if (index !== (this.organizationIds.length - 1))
-                        this.organizationsString += ', ';
                 }
             }
             this.organizationNames = organizations;
@@ -457,7 +451,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                     <div class="field field--organization">
                         <label class="label" for="reg-organization">${i18n.t('organization')}</label>
                         <div class="control">
-                            <input id="reg-organization" type="text" class="textField" value="${this.organizationsString}" disabled/>
+                            <input id="reg-organization" type="text" class="textField" value="${this.organizationNames.join(', ')}" disabled/>
                         </div>
                     </div>
 
