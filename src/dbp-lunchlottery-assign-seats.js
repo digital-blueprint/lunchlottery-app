@@ -791,7 +791,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                                             @click="${() => this.removeTable(dateIndex, tableIndex)}">
                                             <dbp-icon
                                                 title="${i18n.t('table.remove')}"
-                                                name="remove-file"></dbp-icon>
+                                                name="trash"></dbp-icon>
                                             <span>${i18n.t('table.remove')}</span>
                                         </button>
                                     </td>

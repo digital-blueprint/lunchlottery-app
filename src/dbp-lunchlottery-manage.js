@@ -368,7 +368,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                                     @click="${() => this.removeDate(dateIndex)}">
                                     <dbp-icon
                                         title="${i18n.t('manage.remove')}"
-                                        name="remove-file"></dbp-icon>
+                                        name="trash"></dbp-icon>
                                     <span>${i18n.t('manage.remove')}</span>
                                 </button>
                             </div>
@@ -396,7 +396,6 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                     </button>
                 </div>
                 <div class="section" data-testid="delete-submissions-section">
-                    <h3>${i18n.t('manage.delete')}</h3>
                     <button
                         type="button"
                         class="button is-danger"
