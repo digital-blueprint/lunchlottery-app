@@ -805,7 +805,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                             @click="${() => this.addTable(dateIndex)}">
                             <dbp-icon
                                 title="${i18n.t('table.add')}"
-                                name="add-file"></dbp-icon>
+                                name="plus"></dbp-icon>
                             <span>${i18n.t('table.add')}</span>
                         </button>
                     </div>

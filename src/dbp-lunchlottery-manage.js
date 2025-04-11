@@ -380,7 +380,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                             @click="${() => this.addDate()}">
                             <dbp-icon
                                 title="${i18n.t('manage.add')}"
-                                name="add-file"></dbp-icon>
+                                name="plus"></dbp-icon>
                             <span>${i18n.t('manage.add')}</span>
                         </button>
                     </div>
