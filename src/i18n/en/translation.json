@@ -1,118 +1,99 @@
 {
+    "agreement": {
+        "label": "*I agree that photos will be taken in order to promote and document the event. The photos will be published on presentations or websites of TU Graz. Detailed information on Privacy Policy can be found",
+        "no": "No",
+        "privacy-policy": "https://tu4u.tugraz.at/fileadmin/user_upload/redaktion/Information/Serviceeinrichtungen/Personal-_und_Kompetenzentwicklung/Lunch_Lottery/Datenschutzerklaerung_Lunch_Lottery_ENG.pdf",
+        "yes": "Yes"
+    },
     "availability": "Registration for the Lunch Lottery is currently closed.",
+    "collapse-all": "Collapse all",
+    "date": {
+        "day-part": "p.m.",
+        "label": "*Preferred day (Please select all possible options.)",
+        "punctuationMonthDay": " ",
+        "punctuationWeekDay": ", "
+    },
+    "email": "*Email",
     "errors": {
-        "unauthorized-title": "Unauthorized",
-        "unauthorized-body": "No authorization to access requested ressource.",
-        "notfound-title": "Ressource not found",
-        "notfound-body": "Requested ressource not found.",
-        "unprocessable_entity-title": "Registration data invalid",
-        "unprocessable_entity-body": "The registration data is invalid oder incomplete.",
-        "other-title": "Error",
-        "other-body": "There was an error accessing requested ressource.",
-        "language": "You must choose a language.",
+        "agreement": "You must agree or disagree.",
         "date": "You must choose a date.",
-        "agreement": "You must agree or disagree."
+        "language": "You must choose a language.",
+        "notfound-body": "Requested ressource not found.",
+        "notfound-title": "Ressource not found",
+        "other-body": "There was an error accessing requested ressource.",
+        "other-title": "Error",
+        "unauthorized-body": "No authorization to access requested ressource.",
+        "unauthorized-title": "Unauthorized",
+        "unprocessable_entity-body": "The registration data is invalid oder incomplete.",
+        "unprocessable_entity-title": "Registration data invalid"
     },
+    "expand-all": "Expand all",
     "further-information": "https://tu4u.tugraz.at/fileadmin/user_upload/redaktion/Information/Serviceeinrichtungen/Personal-_und_Kompetenzentwicklung/Conditions_of_Participation_Human_Resource_Development_Department_TU_Graz.pdf",
-    "oks": {
-        "updated-title": "Settings updated",
-        "updated-body": "Choosen settings were updated successfully.",
-        "cleared-title": "Registrations deleted",
-        "cleared-body": "All registrations deleted successfully."
+    "languages": {
+        "both": "Both possible",
+        "english": "English",
+        "german": "German",
+        "label": "*Preferred language at lunch"
     },
-    "submissions": {
-        "total": "Number of registrations:"
-    },
-    "table": {
-        "number": "Tables",
-        "seats": "Seats/table",
-        "add": "Add table",
-        "remove": "Remove table"
-    },
-    "process": {
-        "settings": "Table settings",
-        "run": "Assign seats",
-        "download": "Download Excel file"
-    },
-    "results": {
-        "details": "Details",
-        "givenName": "First name",
-        "familyName": "Last name",
-        "email": "E-mail",
-        "organizationNames": "Organizational units",
-        "preferredLanguage": "Preferred language",
-        "possibleDates": "Preferred dates",
-        "availableDate-true": "yes",
-        "availableDate-false": "",
-        "date": "Date",
-        "table": "Table",
-        "privacyConsent": "Consent",
-        "privacyConsent-true": "yes",
-        "privacyConsent-false": "no"
-    },
+    "loading": "loading...",
     "manage": {
-        "settings": "Settings",
-        "availability": "Registration timeframe",
-        "availabilityStarts": "Registration starts",
-        "availabilityEnds": "Registration ends",
-        "dates": "Event dates",
         "add": "Add",
+        "availabilityEnds": "Registration ends",
+        "availabilityStarts": "Registration starts",
+        "dates": "Event dates",
+        "delete": "Delete registrations",
+        "deleteDialogCancel": "Cancel",
+        "deleteDialogConfirm": "Yes, delete all registrations",
+        "deleteDialogText": "Are you sure you want to delete all registrations?",
         "remove": "Remove",
         "save": "Save settings",
-        "delete": "Delete registrations",
-        "deleteDialogText": "Are you sure you want to delete all registrations?",
-        "deleteDialogConfirm": "Yes, delete all registrations",
-        "deleteDialogCancel": "Cancel"
+        "settings": "Settings"
     },
     "name": {
         "first": "*First Name",
         "last": "*Last Name"
     },
+    "oks": {
+        "cleared-body": "All registrations deleted successfully.",
+        "cleared-title": "Registrations deleted",
+        "updated-body": "Choosen settings were updated successfully.",
+        "updated-title": "Settings updated"
+    },
     "organization": "*Organisational unit",
-    "email": "*Email",
-    "languages": {
-        "label": "*Preferred language at lunch",
-        "german": "German",
-        "english": "English",
-        "both": "Both possible"
+    "process": {
+        "download": "Download Excel file",
+        "run": "Assign seats",
+        "settings": "Table settings"
     },
-    "date": {
-        "label": "*Preferred day (Please select all possible options.)",
-        "day-part": "p.m.",
-        "month": [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December"
-        ],
-        "week" : [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday"
-        ],
-        "punctuationWeekDay" : ", ",
-        "punctuationMonthDay" : " "
+    "register": {
+        "description-text": "Information on the conditions of participation and data protection for initiatives of The Human Resource Development Department can be found",
+        "registration-success-text": "Thank you for registering for the Lunch Lottery!"
     },
-
-    "agreement": {
-        "label": "*I agree that photos will be taken in order to promote and document the event. The photos will be published on presentations or websites of TU Graz. Detailed information on Privacy Policy can be found",
-        "privacy-policy": "https://tu4u.tugraz.at/fileadmin/user_upload/redaktion/Information/Serviceeinrichtungen/Personal-_und_Kompetenzentwicklung/Lunch_Lottery/Datenschutzerklaerung_Lunch_Lottery_ENG.pdf",
-        "yes": "Yes",
-        "no": "No"
+    "results": {
+        "availableDate-false": "",
+        "availableDate-true": "yes",
+        "date": "Date",
+        "details": "Details",
+        "email": "E-mail",
+        "familyName": "Last name",
+        "givenName": "First name",
+        "organizationNames": "Organizational units",
+        "possibleDates": "Preferred dates",
+        "preferredLanguage": "Preferred language",
+        "privacyConsent": "Consent",
+        "privacyConsent-false": "no",
+        "privacyConsent-true": "yes",
+        "table": "Table"
+    },
+    "submissions": {
+        "total": "Number of registrations:"
     },
     "submit": "Submit",
-    "expand-all": "Expand all",
-    "collapse-all": "Collapse all"
+    "table": {
+        "add": "Add table",
+        "number": "Tables",
+        "remove": "Remove table",
+        "seats": "Seats/table"
+    },
+    "unknown-org": "Unknown organizational unit ({{id}})"
 }
