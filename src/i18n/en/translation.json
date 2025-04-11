@@ -1,12 +1,5 @@
 {
-    "register": {
-        "description-text": "Information on the conditions of participation and data protection for initiatives of The Human Resource Development Department can be found",
-        "registration-success-text": "Thank you for registering for the Lunch Lottery!"
-    },
-    "please-log-in": "Please log in",
-    "availibility": "Registration for the Lunch Lottery is currently closed.",
-    "loading": "loading...",
-    "unknown-org": "Unknown organizational unit ({{id}})",
+    "availability": "Registration for the Lunch Lottery is currently closed.",
     "errors": {
         "unauthorized-title": "Unauthorized",
         "unauthorized-body": "No authorization to access requested ressource.",
