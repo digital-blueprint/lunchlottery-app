@@ -1,91 +1,15 @@
 {
-    "register": {
-        "description-text": "Informationen zu den Teilnahmebedingungen bei Initiativen der Personal-/Kompetenzentwicklung finden Sie",
-        "registration-success-text": "Vielen Dank für Ihre Anmeldung zur Lunch Lottery!"
+    "agreement": {
+        "label": "*Ich bin damit einverstanden, dass Fotos zum Zweck der Bewerbung und Dokumentation der Veranstaltung gemacht werden. Die Fotos können auf Präsentationen oder Websites der TU Graz veröffentlicht werden. Detaillierte Informationen zum Datenschutz finden Sie",
+        "no": "Nein",
+        "privacy-policy": "https://tu4u.tugraz.at/fileadmin/user_upload/redaktion/Information/Serviceeinrichtungen/Personal-_und_Kompetenzentwicklung/Lunch_Lottery/Datenschutzerklaerung_Lunch_Lottery_DE.pdf",
+        "yes": "Ja"
     },
-    "please-log-in": "Bitte melde dich an",
     "availability": "Die Anmeldung zur Lunch Lottery ist derzeit geschlossen.",
-    "loading": "Lade...",
-    "unknown-org": "Unbekannte Organisationseinheit ({{id}})",
-    "errors": {
-        "unauthorized-title": "Keine Berechtigung",
-        "unauthorized-body": "Keine Berechtigung um auf die angeforderte Ressource zuzugreifen.",
-        "notfound-title": "Ressource nicht gefunden",
-        "notfound-body": "Die angeforderte Ressource wurde nicht gefunden.",
-        "unprocessable_entity-title": "Anmeldedaten ungültig",
-        "unprocessable_entity-body": "Die Anmeldedaten sind ungültig oder unvollständig.",
-        "other-title": "Fehler",
-        "other-body": "Beim Zugriff auf die angeforderte Ressource ist ein Fehler aufgetreten.",
-        "language": "Sie müssen eine Sprache wählen.",
-        "date": "Sie müssen einen Tag wählen.",
-        "agreement": "Sie müssen zustimmen oder ablehnen."
-    },
-    "further-information": "https://tu4u.tugraz.at/fileadmin/user_upload/redaktion/Information/Serviceeinrichtungen/Personal-_und_Kompetenzentwicklung/Teilnahmebedingungen_Personal-Kompetenzentwicklung_TU_Graz.pdf ",
-    "oks": {
-        "updated-title": "Einstellungen übernommen",
-        "updated-body": "Die gewählten Einstellungen wurden erfolgreich übernommen.",
-        "cleared-title": "Anmeldungen gelöscht",
-        "cleared-body": "Alle Anmeldungen erfolgreich aus der Datenbank gelöscht."
-    },
-    "submissions": {
-        "total": "Anzahl Anmeldungen:"
-    },
-    "table": {
-        "number": "Tische",
-        "seats": "Plätze/Tisch",
-        "add": "Tisch hinzufügen",
-        "remove": "Tisch entfernen"
-    },
-    "process": {
-        "settings": "Tischkonfiguration",
-        "run": "Plätze zuweisen",
-        "download": "Excel-Datei herunterladen"
-    },
-    "results": {
-        "details": "Einzelheiten",
-        "givenName": "Vorname",
-        "familyName": "Nachname",
-        "email": "E-Mail",
-        "organizationNames": "Organisationseinheiten",
-        "preferredLanguage": "Bevorzugte Sprache",
-        "possibleDates": "Wunschdatum",
-        "availableDate-true": "ja",
-        "availableDate-false": "",
-        "date": "Datum",
-        "table": "Tisch",
-        "privacyConsent": "Zustimmung",
-        "privacyConsent-true": "ja",
-        "privacyConsent-false": "nein"
-    },
-    "manage": {
-        "settings": "Einstellungen",
-        "availability": "Anmeldezeitraum",
-        "availabilityStarts": "Anmeldebeginn",
-        "availabilityEnds": "Anmeldeschluss",
-        "dates": "Veranstaltungstermine",
-        "add": "Hinzufügen",
-        "remove": "Löschen",
-        "save": "Speichern",
-        "delete": "Anmeldungen löschen",
-        "deleteDialogText": "Sind Sie sicher, dass Sie alle Anmeldungen löschen möchten?",
-        "deleteDialogConfirm": "Ja, alle Anmeldungen löschen",
-        "deleteDialogCancel": "Abbrechen"
-    },
-    "name": {
-        "first": "*Vorname",
-        "last": "*Nachname"
-    },
-    "organization": "*Organisationseinheit",
-    "email": "*E-Mail",
-    "languages": {
-        "label": "*Gewünschte Sprache des Austausches",
-        "german": "Deutsch",
-        "english": "Englisch",
-        "both": "Beides möglich"
-    },
-    "date":  {
-        "label": "*Gewünschter Tag (Bitte geben Sie alle für Sie möglichen Optionen an.)",
+    "collapse-all": "Alles zuklappen",
+    "date": {
         "day-part": "Uhr",
+        "label": "*Gewünschter Tag (Bitte geben Sie alle für Sie möglichen Optionen an.)",
         "month": [
             "Januar",
             "Februar",
@@ -100,7 +24,9 @@
             "November",
             "Dezember"
         ],
-        "week" : [
+        "punctuationMonthDay": ". ",
+        "punctuationWeekDay": ", ",
+        "week": [
             "Sonntag",
             "Montag",
             "Dienstag",
@@ -108,18 +34,91 @@
             "Donnerstag",
             "Freitag",
             "Samstag"
-        ],
-        "punctuationWeekDay" : ", ",
-        "punctuationMonthDay" : ". "
+        ]
     },
-
-    "agreement": {
-        "label": "*Ich bin damit einverstanden, dass Fotos zum Zweck der Bewerbung und Dokumentation der Veranstaltung gemacht werden. Die Fotos können auf Präsentationen oder Websites der TU Graz veröffentlicht werden. Detaillierte Informationen zum Datenschutz finden Sie",
-        "privacy-policy": "https://tu4u.tugraz.at/fileadmin/user_upload/redaktion/Information/Serviceeinrichtungen/Personal-_und_Kompetenzentwicklung/Lunch_Lottery/Datenschutzerklaerung_Lunch_Lottery_DE.pdf",
-        "yes": "Ja",
-        "no": "Nein"
+    "email": "*E-Mail",
+    "errors": {
+        "agreement": "Sie müssen zustimmen oder ablehnen.",
+        "date": "Sie müssen einen Tag wählen.",
+        "language": "Sie müssen eine Sprache wählen.",
+        "notfound-body": "Die angeforderte Ressource wurde nicht gefunden.",
+        "notfound-title": "Ressource nicht gefunden",
+        "other-body": "Beim Zugriff auf die angeforderte Ressource ist ein Fehler aufgetreten.",
+        "other-title": "Fehler",
+        "unauthorized-body": "Keine Berechtigung um auf die angeforderte Ressource zuzugreifen.",
+        "unauthorized-title": "Keine Berechtigung",
+        "unprocessable_entity-body": "Die Anmeldedaten sind ungültig oder unvollständig.",
+        "unprocessable_entity-title": "Anmeldedaten ungültig"
+    },
+    "expand-all": "Alles aufklappen",
+    "further-information": "https://tu4u.tugraz.at/fileadmin/user_upload/redaktion/Information/Serviceeinrichtungen/Personal-_und_Kompetenzentwicklung/Teilnahmebedingungen_Personal-Kompetenzentwicklung_TU_Graz.pdf ",
+    "languages": {
+        "both": "Beides möglich",
+        "english": "Englisch",
+        "german": "Deutsch",
+        "label": "*Gewünschte Sprache des Austausches"
+    },
+    "loading": "Lade...",
+    "manage": {
+        "add": "Hinzufügen",
+        "availability": "Anmeldezeitraum",
+        "availabilityEnds": "Anmeldeschluss",
+        "availabilityStarts": "Anmeldebeginn",
+        "dates": "Veranstaltungstermine",
+        "delete": "Anmeldungen löschen",
+        "deleteDialogCancel": "Abbrechen",
+        "deleteDialogConfirm": "Ja, alle Anmeldungen löschen",
+        "deleteDialogText": "Sind Sie sicher, dass Sie alle Anmeldungen löschen möchten?",
+        "remove": "Löschen",
+        "save": "Speichern",
+        "settings": "Einstellungen"
+    },
+    "name": {
+        "first": "*Vorname",
+        "last": "*Nachname"
+    },
+    "oks": {
+        "cleared-body": "Alle Anmeldungen erfolgreich aus der Datenbank gelöscht.",
+        "cleared-title": "Anmeldungen gelöscht",
+        "updated-body": "Die gewählten Einstellungen wurden erfolgreich übernommen.",
+        "updated-title": "Einstellungen übernommen"
+    },
+    "organization": "*Organisationseinheit",
+    "please-log-in": "Bitte melde dich an",
+    "process": {
+        "download": "Excel-Datei herunterladen",
+        "run": "Plätze zuweisen",
+        "settings": "Tischkonfiguration"
+    },
+    "register": {
+        "description-text": "Informationen zu den Teilnahmebedingungen bei Initiativen der Personal-/Kompetenzentwicklung finden Sie",
+        "registration-success-text": "Vielen Dank für Ihre Anmeldung zur Lunch Lottery!"
+    },
+    "results": {
+        "availableDate-false": "",
+        "availableDate-true": "ja",
+        "date": "Datum",
+        "details": "Einzelheiten",
+        "email": "E-Mail",
+        "familyName": "Nachname",
+        "givenName": "Vorname",
+        "organizationNames": "Organisationseinheiten",
+        "possibleDates": "Wunschdatum",
+        "preferredLanguage": "Bevorzugte Sprache",
+        "privacyConsent": "Zustimmung",
+        "privacyConsent-false": "nein",
+        "privacyConsent-true": "ja",
+        "table": "Tisch"
+    },
+    "submissions": {
+        "total": "Anzahl Anmeldungen:"
     },
     "submit": "Absenden",
-    "expand-all": "Alles aufklappen",
-    "collapse-all": "Alles zuklappen"
+    "table": {
+        "add": "Tisch hinzufügen",
+        "number": "Tische",
+        "remove": "Tisch entfernen",
+        "seats": "Plätze/Tisch"
+    },
+    "unknown-org": "Unbekannte Organisationseinheit ({{id}})"
 }
