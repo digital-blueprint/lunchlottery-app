@@ -35,7 +35,6 @@
     "loading": "Lade...",
     "manage": {
         "add": "Hinzufügen",
-        "availability": "Anmeldezeitraum",
         "availabilityEnds": "Anmeldeschluss",
         "availabilityStarts": "Anmeldebeginn",
         "dates": "Veranstaltungstermine",
@@ -58,7 +57,6 @@
         "updated-title": "Einstellungen übernommen"
     },
     "organization": "*Organisationseinheit",
-    "please-log-in": "Bitte melde dich an",
     "process": {
         "download": "Excel-Datei herunterladen",
         "run": "Plätze zuweisen",
