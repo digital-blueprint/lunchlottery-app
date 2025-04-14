@@ -1,5 +1,12 @@
 {
-    "availability": "Die Anmeldung zur Lunch Lottery ist derzeit geschlossen.",
+    "register": {
+        "description-text": "Informationen zu den Teilnahmebedingungen bei Initiativen der Personal-/Kompetenzentwicklung finden Sie",
+        "registration-success-text": "Vielen Dank für Ihre Anmeldung zur Lunch Lottery!"
+    },
+    "please-log-in": "Bitte melde dich an",
+    "availibility": "Die Anmeldung zur Lunch Lottery ist derzeit geschlossen.",
+    "loading": "Lade...",
+    "unknown-org": "Unbekannte Organisationseinheit ({{id}})",
     "errors": {
         "unauthorized-title": "Keine Berechtigung",
         "unauthorized-body": "Keine Berechtigung um auf die angeforderte Ressource zuzugreifen.",
