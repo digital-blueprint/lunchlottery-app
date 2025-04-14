@@ -211,24 +211,15 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             //create checkbox label
             let label = document.createElement('label');
 
-            //get month
-            let month = date.getMonth();
-            console.log('month', month);
-            let month_convert = i18n.t('date.month.' + String(month));
+            const formatter = new Intl.DateTimeFormat(i18n.language, {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                hour: '2-digit',
+                minute: '2-digit',
+            });
 
-            //get week day
-            let week_day = date.getDay();
-            let week_day_convert = i18n.t('date.week.' + String(week_day));
-
-            //get month day
-            let day = date.getDate();
-
-            //get hour
-            let hour = String(date.getHours()) + ':' + String(date.getMinutes());
-
-            //get complete date
-            let complete_date = week_day_convert + i18n.t('date.punctuationWeekDay') + day + i18n.t('date.punctuationMonthDay') + month_convert + ' - '+ hour + ' ' + i18n.t('date.day-part');
-            //let complete_date = week_day;
+            let complete_date = formatter.format(date);
 
             //append data to DOM
             label.appendChild(document.createTextNode(complete_date));

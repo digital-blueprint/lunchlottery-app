@@ -8,33 +8,7 @@
     "availability": "Registration for the Lunch Lottery is currently closed.",
     "collapse-all": "Collapse all",
     "date": {
-        "day-part": "p.m.",
-        "label": "*Preferred day (Please select all possible options.)",
-        "month": [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December"
-        ],
-        "punctuationMonthDay": " ",
-        "punctuationWeekDay": ", ",
-        "week": [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday"
-        ]
+        "label": "*Preferred day (Please select all possible options.)"
     },
     "email": "*Email",
     "errors": {
