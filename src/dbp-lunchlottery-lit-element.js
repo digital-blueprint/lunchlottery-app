@@ -28,16 +28,7 @@ export default class DBPLunchlotteryLitElement extends DBPLitElement {
      */
     _updateAuth() {
         this._loginStatus = this.auth['login-status'];
-
-        if (this._loginStatus === LoginStatus.LOGGED_OUT) {
-            this.sendSetPropertyEvent('requested-login-status', LoginStatus.LOGGED_IN);
-        } else if (this.auth && this.auth['login-status'] === LoginStatus.LOGGED_IN) {
-            if (!this.initialized) {
-                this.initialize();
-                this.initialized = true;
-            }
-        }
-
+        // Every time isLoggedIn()/isLoading() return something different we request a re-render
         let newLoginState = [this.isLoggedIn(), this.isLoading()];
         if (this._loginState.toString() !== newLoginState.toString()) {
             this.requestUpdate();
