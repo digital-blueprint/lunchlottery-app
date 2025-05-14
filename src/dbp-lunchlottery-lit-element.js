@@ -1,5 +1,4 @@
 import DBPLitElement from '@dbp-toolkit/common/dbp-lit-element';
-import {LoginStatus} from "@dbp-toolkit/auth/src/util";
 import {send} from '@dbp-toolkit/common/notification';
 
 export default class DBPLunchlotteryLitElement extends DBPLitElement {
