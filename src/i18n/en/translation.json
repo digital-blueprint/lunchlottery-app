@@ -24,6 +24,8 @@
         "unprocessable_entity-body": "The registration data is invalid oder incomplete.",
         "unprocessable_entity-title": "Registration data invalid"
     },
+    "error-login-message": "Please log in to use this functionality.",
+    "error-login-link": "Log in",
     "expand-all": "Expand all",
     "further-information": "https://tu4u.tugraz.at/fileadmin/user_upload/redaktion/Information/Serviceeinrichtungen/Personal-_und_Kompetenzentwicklung/Conditions_of_Participation_Human_Resource_Development_Department_TU_Graz.pdf",
     "languages": {

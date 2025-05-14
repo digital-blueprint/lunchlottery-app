@@ -354,6 +354,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             commonStyles.getThemeCSS(),
             commonStyles.getGeneralCSS(),
             commonStyles.getActivityCSS(),
+            commonStyles.getNotificationCSS(),
             css`
                 .hidden {
                     display: none;
@@ -518,6 +519,12 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
             <div class="registration-success ${classMap({hidden: !showSuccessText})}">
                 <h2><b>${i18n.t('register.registration-success-text')}</b></h2>
+            </div>
+
+            <div class="notification is-warning ${classMap({
+                        hidden: this.isLoggedIn() || this.isLoading(),
+                    })}">
+                ${i18n.t('error-login-message')} <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
             </div>
         `;
     }
