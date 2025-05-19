@@ -1,4 +1,5 @@
 import DBPLitElement from '@dbp-toolkit/common/dbp-lit-element';
+import {LoginStatus} from "@dbp-toolkit/auth/src/util";
 import {send} from '@dbp-toolkit/common/notification';
 
 export default class DBPLunchlotteryLitElement extends DBPLitElement {
@@ -27,6 +28,14 @@ export default class DBPLunchlotteryLitElement extends DBPLitElement {
      */
     _updateAuth() {
         this._loginStatus = this.auth['login-status'];
+
+        if (this.auth && this.auth['login-status'] === LoginStatus.LOGGED_IN) {
+            if (!this.initialized) {
+                this.initialize();
+                this.initialized = true;
+            }
+        }
+
         // Every time isLoggedIn()/isLoading() return something different we request a re-render
         let newLoginState = [this.isLoggedIn(), this.isLoading()];
         if (this._loginState.toString() !== newLoginState.toString()) {
