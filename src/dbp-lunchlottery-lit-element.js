@@ -78,15 +78,6 @@ export default class DBPLunchlotteryLitElement extends DBPLitElement {
         return (!this.isLoggedIn() && this.auth.token !== undefined);
     }
 
-    /**
-     * Returns if the element has been initialized
-     *
-     * @returns {boolean} true or false
-     */
-    itInitialized() {
-        return this.initialized;
-    }
-
     handleErrorResponse(response) {
         switch (response.status) {
             case 401:
