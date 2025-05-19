@@ -414,7 +414,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         const showSuccessText = this.isLoggedIn() && this.wasSubmissionSuccessful;
 
         return html`
-            <!--<h2>${this.activity.getName(this.lang)}</h2>-->
+            <h2>${this.activity.getName(this.lang)}</h2>
             <p class="subheadline">
                 <slot name="description">
                     ${this.activity.getDescription(this.lang)}
