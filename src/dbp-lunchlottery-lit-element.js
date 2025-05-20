@@ -1,81 +1,29 @@
 import DBPLitElement from '@dbp-toolkit/common/dbp-lit-element';
-import {LoginStatus} from "@dbp-toolkit/auth/src/util";
 import {send} from '@dbp-toolkit/common/notification';
+import {AuthMixin} from '@dbp-toolkit/common';
 
-export default class DBPLunchlotteryLitElement extends DBPLitElement {
+export default class DBPLunchlotteryLitElement extends AuthMixin(DBPLitElement) {
     constructor() {
         super();
-        this.auth = {};
-        this.initialized = false;
+        this._initialized = false;
     }
 
-    static get properties() {
-        return {
-            ...super.properties,
-            auth: {type: Object},
-        };
-    }
-
-    connectedCallback() {
-        super.connectedCallback();
-
-        this._loginStatus = '';
-        this._loginState = [];
-    }
-
-    /**
-     *  Request a re-rendering every time isLoggedIn()/isLoading() changes
-     */
-    _updateAuth() {
-        this._loginStatus = this.auth['login-status'];
-
-        if (this.auth && this.auth['login-status'] === LoginStatus.LOGGED_IN) {
-            if (!this.initialized) {
-                this.initialize();
-                this.initialized = true;
-            }
+    loginCallback() {
+        if (!this._initialized) {
+            this.initialize();
+            this._initialized = true;
         }
-
-        // Every time isLoggedIn()/isLoading() return something different we request a re-render
-        let newLoginState = [this.isLoggedIn(), this.isLoading()];
-        if (this._loginState.toString() !== newLoginState.toString()) {
-            this.requestUpdate();
-        }
-        this._loginState = newLoginState;
     }
 
     initialize() {}
 
-    update(changedProperties) {
-        changedProperties.forEach((oldValue, propName) => {
-            switch (propName) {
-                case "auth":
-                    this._updateAuth();
-                    break;
-            }
-        });
-
-        super.update(changedProperties);
-    }
-
     /**
-     * Returns if a person is set in or not
+     * Returns if the user login is pending
      *
-     * @returns {boolean} true or false
-     */
-    isLoggedIn() {
-        return (this.auth.person !== undefined && this.auth.person !== null);
-    }
-
-    /**
-     * Returns true if a person has successfully logged in
-     *
-     * @returns {boolean} true or false
+     * @returns {boolean}
      */
     isLoading() {
-        if (this._loginStatus === "logged-out")
-            return false;
-        return (!this.isLoggedIn() && this.auth.token !== undefined);
+        return this.isAuthPending();
     }
 
     handleErrorResponse(response) {

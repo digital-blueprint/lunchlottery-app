@@ -65,9 +65,6 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                 case 'lang':
                     this._i18n.changeLanguage(this.lang);
                     break;
-                case 'auth':
-                    this._updateAuth();
-                    break;
             }
         });
 

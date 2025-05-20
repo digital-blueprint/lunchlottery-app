@@ -408,7 +408,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         const i18n = this._i18n;
         const isPostingSubmission = this.isPostingSubmission;
 
-        const showSpinner = (this.isLoading() || this.isLoadingData()) && !isFormUnavailable && !this.wasSubmissionSuccessful;
+        const showSpinner = (this.isAuthPending() || this.isLoadingData()) && !isFormUnavailable && !this.wasSubmissionSuccessful;
         const showForm = this.isLoggedIn() && !this.isLoadingData() && !isFormUnavailable && !this.wasSubmissionSuccessful && !this.disableForm;
         const showFormUnavailable = this.isLoggedIn() && isFormUnavailable;
         const showSuccessText = this.isLoggedIn() && this.wasSubmissionSuccessful;
@@ -527,7 +527,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             </div>
 
             <div class="notification is-warning ${classMap({
-                        hidden: this.isLoggedIn() || this.isLoading(),
+                        hidden: this.isLoggedIn() || this.isAuthPending(),
                     })}">
                 ${i18n.t('error-login-message')} <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
             </div>
