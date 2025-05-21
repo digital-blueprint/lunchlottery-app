@@ -312,7 +312,7 @@ export default (async () => {
                         [
                             '@babel/preset-env',
                             {
-                                loose: true,
+                                loose: false,
                                 modules: false,
                                 shippedProposals: true,
                                 bugfixes: true,
