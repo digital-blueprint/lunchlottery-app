@@ -1,4 +1,3 @@
-import {createInstance} from './i18n.js';
 import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@dbp-toolkit/common';
 import * as commonUtils from '@dbp-toolkit/common/utils';
@@ -17,8 +16,6 @@ const FORM_AVAILABILITY_UNAVAILABLE = 'u';
 class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement) {
     constructor() {
         super();
-        this._i18n = createInstance();
-        this.lang = this._i18n.language;
         this.entryPointUrl = null;
         this.activity = new Activity(metadata);
         this.identifier = null;
@@ -50,7 +47,6 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
     static get properties() {
         return {
             ...super.properties,
-            lang: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
             identifier: {type: String, attribute: false},
             firstName: {type: String, attribute: false},
@@ -80,15 +76,15 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
     }
 
     update(changedProperties) {
+        super.update(changedProperties);
+
         changedProperties.forEach((oldValue, propName) => {
             switch (propName) {
                 case 'lang':
-                    this._i18n.changeLanguage(this.lang);
                     this.fetchOrganizations();
                     break;
             }
         });
-        super.update(changedProperties);
     }
 
     isLoadingData() {

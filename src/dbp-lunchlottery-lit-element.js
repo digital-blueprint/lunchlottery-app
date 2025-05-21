@@ -1,8 +1,9 @@
+import {createInstance} from './i18n.js';
 import DBPLitElement from '@dbp-toolkit/common/dbp-lit-element';
 import {send} from '@dbp-toolkit/common/notification';
-import {AuthMixin} from '@dbp-toolkit/common';
+import {AuthMixin, LangMixin} from '@dbp-toolkit/common';
 
-export default class DBPLunchlotteryLitElement extends AuthMixin(DBPLitElement) {
+export default class DBPLunchlotteryLitElement extends LangMixin(AuthMixin(DBPLitElement), createInstance) {
     constructor() {
         super();
         this._initialized = false;

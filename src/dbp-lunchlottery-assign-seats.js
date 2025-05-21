@@ -1,4 +1,3 @@
-import {createInstance} from './i18n.js';
 import {css, html} from 'lit';
 import {classMap} from 'lit/directives/class-map.js';
 import {ScopedElementsMixin} from '@dbp-toolkit/common';
@@ -20,8 +19,6 @@ const VIEW_RESULTS = 'results';
 class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElement) {
     constructor() {
         super();
-        this._i18n = createInstance();
-        this.lang = this._i18n.language;
         this.activity = new Activity(metadata);
         this.name = null;
         this.entryPointUrl = null;
@@ -192,7 +189,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
     static get properties() {
         return {
             ...super.properties,
-            lang: {type: String},
             name: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
             loading: {type: Boolean, attribute: false},
@@ -203,18 +199,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
     initialize() {
         super.initialize();
         this.loadData();
-    }
-
-    update(changedProperties) {
-        changedProperties.forEach((oldValue, propName) => {
-            switch (propName) {
-                case 'lang':
-                    this._i18n.changeLanguage(this.lang);
-                    break;
-            }
-        });
-
-        super.update(changedProperties);
     }
 
     async loadData() {
