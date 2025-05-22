@@ -4,15 +4,15 @@
     nativeBuildInputs = with pkgs; [
       nodejs_22
       gnumake
-      vscode
-      playwright-driver.browsers
       zellij # smart terminal workspace
       lazygit # git terminal
       just # task runner
     ];
 
     shellHook = ''
-      export PLAYWRIGHT_BROWSERS_PATH=${pkgs.playwright-driver.browsers}
-      export PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=true
+      export CHROMIUM_BIN=${pkgs.chromium}/bin/chromium
+      export FIREFOX_BIN=${pkgs.firefox}/bin/firefox
+
+      echo "Using chromium at $CHROMIUM_BIN and firefox at $FIREFOX_BIN for karma tests"
     '';
 }
