@@ -18,15 +18,6 @@ export default class DBPLunchlotteryLitElement extends LangMixin(AuthMixin(DBPLi
 
     initialize() {}
 
-    /**
-     * Returns if the user login is pending
-     *
-     * @returns {boolean}
-     */
-    isLoading() {
-        return this.isAuthPending();
-    }
-
     handleErrorResponse(response) {
         switch (response.status) {
             case 401:
