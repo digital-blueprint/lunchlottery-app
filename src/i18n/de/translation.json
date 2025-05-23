@@ -11,6 +11,8 @@
         "label": "*Gewünschter Tag (Bitte geben Sie alle für Sie möglichen Optionen an.)"
     },
     "email": "*E-Mail",
+    "error-login-link": "Anmelden",
+    "error-login-message": "Bitte melden Sie sich an, um diese Funktion nutzen zu können.",
     "errors": {
         "agreement": "Sie müssen zustimmen oder ablehnen.",
         "date": "Sie müssen einen Tag wählen.",
@@ -24,8 +26,6 @@
         "unprocessable_entity-body": "Die Anmeldedaten sind ungültig oder unvollständig.",
         "unprocessable_entity-title": "Anmeldedaten ungültig"
     },
-    "error-login-message": "Bitte melden Sie sich an, um diese Funktion nutzen zu können.",
-    "error-login-link": "Anmelden",
     "expand-all": "Alles aufklappen",
     "further-information": "https://tu4u.tugraz.at/fileadmin/user_upload/redaktion/Information/Serviceeinrichtungen/Personal-_und_Kompetenzentwicklung/Teilnahmebedingungen_Personal-Kompetenzentwicklung_TU_Graz.pdf ",
     "languages": {

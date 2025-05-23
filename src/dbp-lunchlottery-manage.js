@@ -8,7 +8,7 @@ import * as commonStyles from '@dbp-toolkit/common/styles';
 import metadata from './dbp-lunchlottery-manage.metadata.json';
 import {Activity} from './activity.js';
 import {FORM_IDENTIFIER} from './constants';
-import DBPLunchlotteryLitElement from "./dbp-lunchlottery-lit-element";
+import DBPLunchlotteryLitElement from './dbp-lunchlottery-lit-element';
 
 const VIEW_INIT = 'init';
 const VIEW_SETTINGS = 'settings';
@@ -35,7 +35,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
     static get scopedElements() {
         return {
             'dbp-icon': Icon,
-            'dbp-mini-spinner': MiniSpinner
+            'dbp-mini-spinner': MiniSpinner,
         };
     }
 
@@ -44,7 +44,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
             ...super.properties,
             name: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
-            loading: {type: Boolean, attribute: false}
+            loading: {type: Boolean, attribute: false},
         };
     }
 
@@ -68,8 +68,8 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                 headers: {
                     'Content-Type': 'application/ld+json',
                     Authorization: 'Bearer ' + this.auth.token,
-                }
-            }
+                },
+            },
         );
 
         if (!response.ok) {
@@ -87,8 +87,14 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
         this.availabilityEnds = new Date(responseBody['availabilityEnds']);
         const formSchema = JSON.parse(responseBody['dataFeedSchema']);
         if ('enum' in formSchema['properties']['possibleDates']['items']) {
-            for (let i = 0; i < formSchema['properties']['possibleDates']['items']['enum'].length; ++i) {
-                const date = new Date(formSchema['properties']['possibleDates']['items']['enum'][i]);
+            for (
+                let i = 0;
+                i < formSchema['properties']['possibleDates']['items']['enum'].length;
+                ++i
+            ) {
+                const date = new Date(
+                    formSchema['properties']['possibleDates']['items']['enum'][i],
+                );
                 this.dates.push(date);
             }
         }
@@ -103,8 +109,8 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                     'Content-Type': 'application/merge-patch+json',
                     Authorization: 'Bearer ' + this.auth.token,
                 },
-                body: JSON.stringify(this.formData)
-            }
+                body: JSON.stringify(this.formData),
+            },
         );
 
         if (response.ok) {
@@ -112,7 +118,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                 summary: this._i18n.t('oks.updated-title'),
                 body: this._i18n.t('oks.updated-body'),
                 type: 'success',
-                timeout: 5
+                timeout: 5,
             });
         } else {
             this.handleErrorResponse(response);
@@ -121,14 +127,16 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
 
     async clearFormSubmissions() {
         const response = await this.httpGetAsync(
-            this.entryPointUrl + '/formalize/submissions?formIdentifier=' + encodeURIComponent(FORM_IDENTIFIER),
+            this.entryPointUrl +
+                '/formalize/submissions?formIdentifier=' +
+                encodeURIComponent(FORM_IDENTIFIER),
             {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/ld+json',
                     Authorization: 'Bearer ' + this.auth.token,
-                }
-            }
+                },
+            },
         );
 
         if (response.ok) {
@@ -136,7 +144,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                 summary: this._i18n.t('oks.cleared-title'),
                 body: this._i18n.t('oks.cleared-body'),
                 type: 'success',
-                timeout: 5
+                timeout: 5,
             });
         } else {
             this.handleErrorResponse(response);
@@ -235,10 +243,10 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
         isoString += ('0' + date.getMinutes()).slice(-2) + ':';
         isoString += ('0' + date.getSeconds()).slice(-2);
         let offset = date.getTimezoneOffset();
-        isoString += (offset <= 0 ? '+' : '-');
+        isoString += offset <= 0 ? '+' : '-';
         offset = Math.abs(offset);
-        isoString += ('0' + Math.floor(offset/60)).slice(-2) + ':';
-        isoString += ('0' + (offset%60)).slice(-2);
+        isoString += ('0' + Math.floor(offset / 60)).slice(-2) + ':';
+        isoString += ('0' + (offset % 60)).slice(-2);
         return isoString;
     }
 
@@ -254,7 +262,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                 }
 
                 h3 {
-                    margin-bottom: .5rem;
+                    margin-bottom: 0.5rem;
                 }
 
                 .section {
@@ -262,14 +270,14 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                 }
 
                 .option {
-                    margin-bottom: .75rem;
+                    margin-bottom: 0.75rem;
                 }
 
                 .date {
-                    margin-bottom: .25rem;
+                    margin-bottom: 0.25rem;
                 }
 
-                input[type="datetime-local"] {
+                input[type='datetime-local'] {
                     padding: calc(0.375em - 1px) 0.75em;
                     font-family: inherit;
                     font-size: inherit;
@@ -287,7 +295,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                 td:first-child {
                     padding-left: 0;
                 }
-            `
+            `,
         ];
     }
 
@@ -297,9 +305,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
         return html`
             <h2>${this.activity.getName(this.lang)}</h2>
             <p class="subheadline">
-                <slot name="description">
-                    ${this.activity.getDescription(this.lang)}
-                </slot>
+                <slot name="description">${this.activity.getDescription(this.lang)}</slot>
             </p>
 
             <div class="control full-size-spinner ${classMap({hidden: !this.loading})}">
@@ -309,17 +315,16 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
             </div>
 
             <div class="${classMap({hidden: this.loading || this.view !== VIEW_SETTINGS})}">
-                <div class="section"  data-testid="date-settings-section">
+                <div class="section" data-testid="date-settings-section">
                     <h3>${i18n.t('manage.settings')}</h3>
-                    <div class="option"  data-testid="manage-start-date-option">
+                    <div class="option" data-testid="manage-start-date-option">
                         <h4>${i18n.t('manage.availabilityStarts')}</h4>
                         <input
                             type="datetime-local"
                             class="textField"
                             data-testid="availability-starts-input"
                             .value=${this.dateToDatetimeLocal(this.availabilityStarts)}
-                            @change=${(e) => this.updateAvailabilityStarts(e.target.value)}
-                        />
+                            @change=${(e) => this.updateAvailabilityStarts(e.target.value)} />
                     </div>
                     <div class="option" data-testid="manage-end-date-option">
                         <h4>${i18n.t('manage.availabilityEnds')}</h4>
@@ -328,40 +333,39 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                             class="textField"
                             data-testid="availability-ends-input"
                             .value=${this.dateToDatetimeLocal(this.availabilityEnds)}
-                            @change=${(e) => this.updateAvailabilityEnds(e.target.value)}
-                        />
+                            @change=${(e) => this.updateAvailabilityEnds(e.target.value)} />
                     </div>
                     <div class="option" data-testid="manage-dates-option">
                         <h4>${i18n.t('manage.dates')}</h4>
-                        ${this.dates.map((date, dateIndex) => html`
-                            <div class="date">
-                                <input
-                                    type="datetime-local"
-                                    class="textField"
-                                    data-testid="available-date-${dateIndex}-input"
-                                    value="${this.dateToDatetimeLocal(date)}"
-                                    @change=${(e) => this.updateDate(dateIndex, e.target.value)}
-                                />
-                                <button
-                                    type="button"
-                                    class="button"
-                                    title="${i18n.t('manage.remove')}"
-                                    @click="${() => this.removeDate(dateIndex)}">
-                                    <dbp-icon
+                        ${this.dates.map(
+                            (date, dateIndex) => html`
+                                <div class="date">
+                                    <input
+                                        type="datetime-local"
+                                        class="textField"
+                                        data-testid="available-date-${dateIndex}-input"
+                                        value="${this.dateToDatetimeLocal(date)}"
+                                        @change=${(e) =>
+                                            this.updateDate(dateIndex, e.target.value)} />
+                                    <button
+                                        type="button"
+                                        class="button"
                                         title="${i18n.t('manage.remove')}"
-                                        name="trash"></dbp-icon>
-                                    <span>${i18n.t('manage.remove')}</span>
-                                </button>
-                            </div>
-                        `)}
+                                        @click="${() => this.removeDate(dateIndex)}">
+                                        <dbp-icon
+                                            title="${i18n.t('manage.remove')}"
+                                            name="trash"></dbp-icon>
+                                        <span>${i18n.t('manage.remove')}</span>
+                                    </button>
+                                </div>
+                            `,
+                        )}
                         <button
                             type="button"
                             class="button"
                             title="${i18n.t('manage.add')}"
                             @click="${() => this.addDate()}">
-                            <dbp-icon
-                                title="${i18n.t('manage.add')}"
-                                name="plus"></dbp-icon>
+                            <dbp-icon title="${i18n.t('manage.add')}" name="plus"></dbp-icon>
                             <span>${i18n.t('manage.add')}</span>
                         </button>
                     </div>
@@ -370,9 +374,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                         class="button is-primary"
                         title="${i18n.t('manage.save')}"
                         @click="${() => this.save()}">
-                        <dbp-icon
-                            title="${i18n.t('manage.save')}"
-                            name="save"></dbp-icon>
+                        <dbp-icon title="${i18n.t('manage.save')}" name="save"></dbp-icon>
                         <span>${i18n.t('manage.save')}</span>
                     </button>
                 </div>
@@ -382,17 +384,17 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                         class="button is-danger"
                         title="${i18n.t('manage.delete')}"
                         @click="${() => this.showDialog()}">
-                        <dbp-icon
-                            title="${i18n.t('manage.delete')}"
-                            name="trash"></dbp-icon>
+                        <dbp-icon title="${i18n.t('manage.delete')}" name="trash"></dbp-icon>
                         <span>${i18n.t('manage.delete')}</span>
                     </button>
                     <dialog id="confirm-delete-dialog">
-                        <p>
-                            ${i18n.t('manage.deleteDialogText')}
-                        </p>
-                        <button class="button is-danger" @click="${() => this.clearSubmissions()}">${i18n.t('manage.deleteDialogConfirm')}</button>
-                        <button class="button" @click="${() => this.closeDialog()}" autofocus>${i18n.t('manage.deleteDialogCancel')}</button>
+                        <p>${i18n.t('manage.deleteDialogText')}</p>
+                        <button class="button is-danger" @click="${() => this.clearSubmissions()}">
+                            ${i18n.t('manage.deleteDialogConfirm')}
+                        </button>
+                        <button class="button" @click="${() => this.closeDialog()}" autofocus>
+                            ${i18n.t('manage.deleteDialogCancel')}
+                        </button>
                     </dialog>
                 </div>
             </div>

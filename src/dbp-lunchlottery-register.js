@@ -6,8 +6,8 @@ import * as commonStyles from '@dbp-toolkit/common/styles';
 import metadata from './dbp-lunchlottery-register.metadata.json';
 import {Activity} from './activity.js';
 import {FORM_IDENTIFIER} from './constants.js';
-import DBPLunchlotteryLitElement from "./dbp-lunchlottery-lit-element";
-import {classMap} from "lit/directives/class-map.js";
+import DBPLunchlotteryLitElement from './dbp-lunchlottery-lit-element';
+import {classMap} from 'lit/directives/class-map.js';
 
 const FORM_AVAILABILITY_INIT = 'i';
 const FORM_AVAILABILITY_AVAILABLE = 'a';
@@ -65,7 +65,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             loadingForm: {type: Boolean, attribute: false},
             isPostingSubmission: {type: Boolean, attribute: false},
             wasSubmissionSuccessful: {type: Boolean, attribute: false},
-            disableForm:  {type: Boolean, attribute: false}
+            disableForm: {type: Boolean, attribute: false},
         };
     }
 
@@ -95,12 +95,18 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         try {
             this.loadingPerson = true;
 
-            const response = await fetch(this.entryPointUrl + '/base/people/' + encodeURIComponent(this.auth['user-id']) + '?includeLocal=email,staffAt', {
-                headers: {
-                    'Content-Type': 'application/ld+json',
-                    Authorization: 'Bearer ' + this.auth.token,
+            const response = await fetch(
+                this.entryPointUrl +
+                    '/base/people/' +
+                    encodeURIComponent(this.auth['user-id']) +
+                    '?includeLocal=email,staffAt',
+                {
+                    headers: {
+                        'Content-Type': 'application/ld+json',
+                        Authorization: 'Bearer ' + this.auth.token,
+                    },
                 },
-            });
+            );
 
             if (!response.ok) {
                 this.disableForm = true;
@@ -130,13 +136,16 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
             let organizations = [];
             for (let orgId of this.organizationIds) {
-                let response = await fetch(this.entryPointUrl + '/base/organizations/' + encodeURIComponent(orgId), {
-                    headers: {
-                        'Content-Type': 'application/ld+json',
-                        Authorization: 'Bearer ' + this.auth.token,
-                        'Accept-Language': this.lang,
+                let response = await fetch(
+                    this.entryPointUrl + '/base/organizations/' + encodeURIComponent(orgId),
+                    {
+                        headers: {
+                            'Content-Type': 'application/ld+json',
+                            Authorization: 'Bearer ' + this.auth.token,
+                            'Accept-Language': this.lang,
+                        },
                     },
-                });
+                );
                 if (!response.ok) {
                     if (response.status === 404) {
                         organizations.push(this._i18n.t('unknown-org', {id: orgId}));
@@ -161,12 +170,15 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             this.possibleDates = [];
             this.formAvailability = FORM_AVAILABILITY_INIT;
 
-            const response = await fetch(this.entryPointUrl + '/formalize/forms/' + encodeURIComponent(FORM_IDENTIFIER), {
-                headers: {
-                    'Content-Type': 'application/ld+json',
-                    Authorization: 'Bearer ' + this.auth.token,
+            const response = await fetch(
+                this.entryPointUrl + '/formalize/forms/' + encodeURIComponent(FORM_IDENTIFIER),
+                {
+                    headers: {
+                        'Content-Type': 'application/ld+json',
+                        Authorization: 'Bearer ' + this.auth.token,
+                    },
                 },
-            });
+            );
 
             if (!response.ok) {
                 this.disableForm = true;
@@ -174,14 +186,17 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             } else {
                 const formData = await response.json();
                 const decodedDataFeedSchema = JSON.parse(formData['dataFeedSchema']);
-                this.possibleDates = decodedDataFeedSchema['properties']['possibleDates']['items']['enum'];
+                this.possibleDates =
+                    decodedDataFeedSchema['properties']['possibleDates']['items']['enum'];
                 console.log('poss dates ', decodedDataFeedSchema['properties']['possibleDates']);
                 const start = new Date(formData['availabilityStarts']);
                 const end = new Date(formData['availabilityEnds']);
                 const current = new Date();
-                this.formAvailability = (start.getTime() < current.getTime()) && (end.getTime() > current.getTime()) ?
-                    FORM_AVAILABILITY_AVAILABLE : FORM_AVAILABILITY_UNAVAILABLE;
-                if(this.possibleDates && this.possibleDates.length != 0)
+                this.formAvailability =
+                    start.getTime() < current.getTime() && end.getTime() > current.getTime()
+                        ? FORM_AVAILABILITY_AVAILABLE
+                        : FORM_AVAILABILITY_UNAVAILABLE;
+                if (this.possibleDates && this.possibleDates.length != 0)
                     this.createPossibleDatesContainer();
             }
         } finally {
@@ -193,15 +208,14 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         const i18n = this._i18n;
         let possibleDatesContainer = document.createElement('div');
         console.log('poss dates ', this.possibleDates);
-        if(!this.possibleDates )
-            return;
+        if (!this.possibleDates) return;
         this.possibleDates.forEach((date_string) => {
             console.log('date string', date_string);
             const date = new Date(date_string);
             let box = document.createElement('input');
 
             //create checkbox
-            box.type = "checkbox";
+            box.type = 'checkbox';
             box.value = date_string;
 
             //create checkbox label
@@ -222,21 +236,19 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
             let option = document.createElement('div');
 
-            box.classList.add("date");
+            box.classList.add('date');
 
             option.appendChild(label);
             label.prepend(box);
 
             possibleDatesContainer.appendChild(option);
-
         });
 
         this.possibleDatesContainer = possibleDatesContainer;
         return this.possibleDatesContainer;
     }
 
-    async submitRegistration()
-    {
+    async submitRegistration() {
         try {
             this.isPostingSubmission = true;
 
@@ -261,7 +273,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             let agreement = null;
             this.shadowRoot.querySelectorAll('.agreement').forEach((element) => {
                 if (element.checked) {
-                    agreement = (element.value === "true");
+                    agreement = element.value === 'true';
                 }
             });
             //Check language field
@@ -277,7 +289,6 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                 return;
             } else {
                 this._('#dates-error').hidden = true;
-
             }
             //Check agreement field
             if (agreement === null) {
@@ -288,15 +299,15 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             }
 
             let data = {
-                "identifier": this.identifier,
-                "givenName": this.firstName,
-                "familyName": this.lastName,
-                "email": this.email,
-                "organizationIds": this.organizationIds,
-                "organizationNames": this.organizationNames,
-                "preferredLanguage": language,
-                "possibleDates": dates,
-                "privacyConsent": agreement,
+                identifier: this.identifier,
+                givenName: this.firstName,
+                familyName: this.lastName,
+                email: this.email,
+                organizationIds: this.organizationIds,
+                organizationNames: this.organizationNames,
+                preferredLanguage: language,
+                possibleDates: dates,
+                privacyConsent: agreement,
             };
             let body = {
                 form: '/formalize/forms/' + FORM_IDENTIFIER,
@@ -314,7 +325,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
             const response = await this.httpGetAsync(
                 this.entryPointUrl + '/formalize/submissions',
-                options
+                options,
             );
 
             if (!response.ok) {
@@ -329,10 +340,9 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         }
     }
 
-    async buttonClickHandler()
-    {
+    async buttonClickHandler() {
         setTimeout(() => {
-            this.shadowRoot.querySelectorAll('dbp-button').forEach(element => {
+            this.shadowRoot.querySelectorAll('dbp-button').forEach((element) => {
                 element.stop();
             });
         }, 1000);
@@ -340,8 +350,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         await this.submitRegistration();
 
         this.shadowRoot.querySelectorAll('.date').forEach((element) => {
-            if(this.dates.includes(element.value))
-                element.checked = true;
+            if (this.dates.includes(element.value)) element.checked = true;
         });
     }
 
@@ -365,11 +374,11 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                     resize: none;
                 }
 
-                .textField{
+                .textField {
                     width: 100%;
                 }
 
-                .input-error{
+                .input-error {
                     background-color: var(--dbp-warning-surface);
                     padding-bottom: calc(0.375em - 1px);
                     padding-left: 0.75em;
@@ -378,7 +387,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                     color: var(--dbp-on-warning-surface);
                 }
 
-                .error-container{
+                .error-container {
                     margin-top: 3px;
                 }
 
@@ -395,7 +404,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
     }
 
     _onLoginClicked(e) {
-        this.sendSetPropertyEvent('requested-login-status', "logged-in");
+        this.sendSetPropertyEvent('requested-login-status', 'logged-in');
         e.preventDefault();
     }
 
@@ -404,17 +413,23 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         const i18n = this._i18n;
         const isPostingSubmission = this.isPostingSubmission;
 
-        const showSpinner = (this.isAuthPending() || this.isLoadingData()) && !isFormUnavailable && !this.wasSubmissionSuccessful;
-        const showForm = this.isLoggedIn() && !this.isLoadingData() && !isFormUnavailable && !this.wasSubmissionSuccessful && !this.disableForm;
+        const showSpinner =
+            (this.isAuthPending() || this.isLoadingData()) &&
+            !isFormUnavailable &&
+            !this.wasSubmissionSuccessful;
+        const showForm =
+            this.isLoggedIn() &&
+            !this.isLoadingData() &&
+            !isFormUnavailable &&
+            !this.wasSubmissionSuccessful &&
+            !this.disableForm;
         const showFormUnavailable = this.isLoggedIn() && isFormUnavailable;
         const showSuccessText = this.isLoggedIn() && this.wasSubmissionSuccessful;
 
         return html`
             <h2>${this.activity.getName(this.lang)}</h2>
             <p class="subheadline">
-                <slot name="description">
-                    ${this.activity.getDescription(this.lang)}
-                </slot>
+                <slot name="description">${this.activity.getDescription(this.lang)}</slot>
             </p>
 
             <div class="control full-size-spinner ${classMap({hidden: !showSpinner})}">
@@ -425,7 +440,13 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
             <div class="${classMap({hidden: !showForm})}">
                 <slot name="activity-description">
-                    <p>${i18n.t('register.description-text')} <a target="_blank" rel="noopener"  href=${i18n.t('further-information')}>${this.activity.getHere(this.lang)}</a>.</p>
+                    <p>
+                        ${i18n.t('register.description-text')}
+                        <a target="_blank" rel="noopener" href=${i18n.t('further-information')}>
+                            ${this.activity.getHere(this.lang)}
+                        </a>
+                        .
+                    </p>
                     <br />
                 </slot>
 
@@ -433,28 +454,50 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                     <div class="field field--firstname">
                         <label class="label" for="reg-firstname">${i18n.t('name.first')}</label>
                         <div class="control">
-                            <input id="reg-firstname" type="text" class="textField" value="${this.firstName}" disabled/>
+                            <input
+                                id="reg-firstname"
+                                type="text"
+                                class="textField"
+                                value="${this.firstName}"
+                                disabled />
                         </div>
                     </div>
 
                     <div class="field field--lastname">
                         <label class="label" for="reg-lastname">${i18n.t('name.last')}</label>
                         <div class="control">
-                            <input id="reg-lastname" type="text" class="textField" value="${this.lastName}" disabled/>
+                            <input
+                                id="reg-lastname"
+                                type="text"
+                                class="textField"
+                                value="${this.lastName}"
+                                disabled />
                         </div>
                     </div>
 
                     <div class="field field--organization">
-                        <label class="label" for="reg-organization">${i18n.t('organization')}</label>
+                        <label class="label" for="reg-organization">
+                            ${i18n.t('organization')}
+                        </label>
                         <div class="control">
-                            <input id="reg-organization" type="text" class="textField" value="${this.organizationNames.join(', ')}" disabled/>
+                            <input
+                                id="reg-organization"
+                                type="text"
+                                class="textField"
+                                value="${this.organizationNames.join(', ')}"
+                                disabled />
                         </div>
                     </div>
 
                     <div class="field field--email">
                         <label class="label" for="reg-email">${i18n.t('email')}</label>
                         <div class="control">
-                            <input id="reg-email" type="email" class="textField" value="${this.email}" disabled/>
+                            <input
+                                id="reg-email"
+                                type="email"
+                                class="textField"
+                                value="${this.email}"
+                                disabled />
                         </div>
                     </div>
 
@@ -462,45 +505,84 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                         <label class="label">${i18n.t('languages.label')}</label>
                         <div class="control">
                             <div>
-                                <input type="radio" class="language" id="language-german" name="language" value="de">
+                                <input
+                                    type="radio"
+                                    class="language"
+                                    id="language-german"
+                                    name="language"
+                                    value="de" />
                                 <label for="language-german">${i18n.t('languages.german')}</label>
                             </div>
                             <div>
-                                <input type="radio" class="language" id="language-english" name="language" value="en">
+                                <input
+                                    type="radio"
+                                    class="language"
+                                    id="language-english"
+                                    name="language"
+                                    value="en" />
                                 <label for="language-english">${i18n.t('languages.english')}</label>
                             </div>
                             <div>
-                                <input type="radio" class="language" id="language-both" name="language" value="both">
+                                <input
+                                    type="radio"
+                                    class="language"
+                                    id="language-both"
+                                    name="language"
+                                    value="both" />
                                 <label for="language-both">${i18n.t('languages.both')}</label>
                             </div>
                         </div>
                         <div class="error-container">
-                            <span class="input-error" id="lang-error" hidden>${i18n.t('errors.language')}</span>
+                            <span class="input-error" id="lang-error" hidden>
+                                ${i18n.t('errors.language')}
+                            </span>
                         </div>
-
                     </div>
 
                     <div class="field field--dates">
                         <label class="label">${i18n.t('date.label')}</label>
                         <div class="control">${this.createPossibleDatesContainer()}</div>
                         <div class="error-container">
-                            <span class="input-error" id="dates-error" hidden>${i18n.t('errors.date')}</span>
+                            <span class="input-error" id="dates-error" hidden>
+                                ${i18n.t('errors.date')}
+                            </span>
                         </div>
                     </div>
 
                     <div class="field field--agreement">
-                        <label class="label">${i18n.t('agreement.label')} <a target="_blank" rel="noopener"  href=${i18n.t('agreement.privacy-policy')}>${this.activity.getHere(this.lang)}</a>.</label>
+                        <label class="label">
+                            ${i18n.t('agreement.label')}
+                            <a
+                                target="_blank"
+                                rel="noopener"
+                                href=${i18n.t('agreement.privacy-policy')}>
+                                ${this.activity.getHere(this.lang)}
+                            </a>
+                            .
+                        </label>
                         <div class="control">
                             <div>
-                                <input type="radio" class="agreement" id="yes" name="agree" value="true">
+                                <input
+                                    type="radio"
+                                    class="agreement"
+                                    id="yes"
+                                    name="agree"
+                                    value="true" />
                                 <label for="yes">${i18n.t('agreement.yes')}</label>
                             </div>
                             <div>
-                                <input type="radio" class="agreement" id="no" name="agree" value="false">
+                                <input
+                                    type="radio"
+                                    class="agreement"
+                                    id="no"
+                                    name="agree"
+                                    value="false" />
                                 <label for="no">${i18n.t('agreement.no')}</label>
                             </div>
                             <div class="error-container">
-                                <span class="input-error" id="agreement-error" hidden>${i18n.t('errors.agreement')}</span>
+                                <span class="input-error" id="agreement-error" hidden>
+                                    ${i18n.t('errors.agreement')}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -509,7 +591,9 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                             value="Primary"
                             @click="${this.buttonClickHandler}"
                             type="is-primary"
-                            class="${classMap({disabled: isPostingSubmission})}">${i18n.t('submit')}</dbp-button>
+                            class="${classMap({disabled: isPostingSubmission})}">
+                            ${i18n.t('submit')}
+                        </dbp-button>
                     </div>
                 </form>
             </div>
@@ -522,10 +606,12 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                 <h2><b>${i18n.t('register.registration-success-text')}</b></h2>
             </div>
 
-            <div class="notification is-warning ${classMap({
-                        hidden: this.isLoggedIn() || this.isAuthPending(),
-                    })}">
-                ${i18n.t('error-login-message')} <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
+            <div
+                class="notification is-warning ${classMap({
+                    hidden: this.isLoggedIn() || this.isAuthPending(),
+                })}">
+                ${i18n.t('error-login-message')}
+                <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
             </div>
         `;
     }

@@ -21,11 +21,7 @@ export class LunchLotteryEvent {
                 selectedDate = index;
             }
         });
-        return [
-            distance,
-            selectedTable,
-            selectedDate
-        ];
+        return [distance, selectedTable, selectedDate];
     }
 
     assign(date, table, submission) {
@@ -63,10 +59,7 @@ export class LunchLotteryDate {
             distance = 9999;
         }
 
-        return [
-            distance,
-            selectedTable
-        ];
+        return [distance, selectedTable];
     }
 
     assign(table, submission) {
@@ -83,7 +76,7 @@ export class LunchLotteryTable {
     getShortestDistance(submission) {
         let distance = 0;
 
-        distance += (submission['possibleDates'].length - 1);
+        distance += submission['possibleDates'].length - 1;
 
         if (this.seats.length === 0) {
             distance += 100;
@@ -93,16 +86,19 @@ export class LunchLotteryTable {
             distance += (this.seats.length / this.availableSeats) * 100;
         }
 
-        this.seats.forEach(seat => {
+        this.seats.forEach((seat) => {
             if (submission['preferredLanguage'] !== seat['preferredLanguage']) {
-                if (submission['preferredLanguage'] !== 'both' && seat['preferredLanguage'] !== 'both') {
+                if (
+                    submission['preferredLanguage'] !== 'both' &&
+                    seat['preferredLanguage'] !== 'both'
+                ) {
                     distance += 9999;
                 } else {
                     distance += 2;
                 }
             }
 
-            submission['organizationIds'].forEach(organizationId => {
+            submission['organizationIds'].forEach((organizationId) => {
                 if (seat['organizationIds'].includes(organizationId)) {
                     distance += 9999;
                 }

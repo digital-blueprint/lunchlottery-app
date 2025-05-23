@@ -12,13 +12,8 @@ import license from 'rollup-plugin-license';
 import del from 'rollup-plugin-delete';
 import emitEJS from 'rollup-plugin-emit-ejs';
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
-import {
-    getPackagePath,
-    getBuildInfo,
-    generateTLSConfig,
-    getDistPath,
-} from '@dbp-toolkit/dev-utils';
-import { createRequire } from "module";
+import {getPackagePath, getBuildInfo, generateTLSConfig, getDistPath} from '@dbp-toolkit/dev-utils';
+import {createRequire} from 'module';
 
 const require = createRequire(import.meta.url);
 let appName = 'dbp-lunchlottery-app';
@@ -41,30 +36,33 @@ let devPath = 'assets_custom/';
 let deploymentPath = '../';
 
 // set whitelabel bool according to used environment
-if ((appEnv.length > 6 && appEnv.substring(appEnv.length - 6) == "Custom") || appEnv == "production") {
+if (
+    (appEnv.length > 6 && appEnv.substring(appEnv.length - 6) == 'Custom') ||
+    appEnv == 'production'
+) {
     whitelabel = false;
 } else {
     whitelabel = true;
 }
 
 // load devconfig for local development if present
-let devConfig = require("./app.config.json");
+let devConfig = require('./app.config.json');
 try {
-    console.log("Loading " + "./" + devPath + "app.config.json ...");
-    devConfig = require("./" + devPath + "app.config.json");
+    console.log('Loading ' + './' + devPath + 'app.config.json ...');
+    devConfig = require('./' + devPath + 'app.config.json');
     customAssetsPath = devPath;
-} catch(e) {
-    if (e.code == "MODULE_NOT_FOUND") {
-        console.warn("no dev-config found, try deployment config instead ...");
+} catch (e) {
+    if (e.code == 'MODULE_NOT_FOUND') {
+        console.warn('no dev-config found, try deployment config instead ...');
 
         // load devconfig for deployment if present
         try {
-            console.log("Loading " + "./" + deploymentPath + "app.config.json ...");
-            devConfig = require("./" + deploymentPath + "app.config.json");
+            console.log('Loading ' + './' + deploymentPath + 'app.config.json ...');
+            devConfig = require('./' + deploymentPath + 'app.config.json');
             customAssetsPath = deploymentPath;
-        } catch(e) {
-            if (e.code == "MODULE_NOT_FOUND") {
-                console.warn("no dev-config found, use default whitelabel config instead ...");
+        } catch (e) {
+            if (e.code == 'MODULE_NOT_FOUND') {
+                console.warn('no dev-config found, use default whitelabel config instead ...');
             } else {
                 throw e;
             }
@@ -76,7 +74,7 @@ try {
 
 // decide on which configs to use
 let config;
-if ((devConfig != undefined && appEnv in devConfig)) {
+if (devConfig != undefined && appEnv in devConfig) {
     // choose devConfig if available
     if (devConfig != undefined && appEnv in devConfig) {
         config = devConfig[appEnv];
@@ -110,8 +108,8 @@ function getOrigin(url) {
 
 config.CSP = `default-src 'self' 'unsafe-inline' \
     ${getOrigin(config.matomoUrl)} ${getOrigin(config.keyCloakBaseURL)} ${getOrigin(
-    config.entryPointURL
-)};\
+        config.entryPointURL,
+    )};\
     img-src * blob: data:`;
 
 export default (async () => {
@@ -119,21 +117,20 @@ export default (async () => {
     return {
         input:
             appEnv != 'test'
-                ? (appEnv.length > 6 && appEnv.substring(appEnv.length - 6) == "Custom") ?
-                    [
-                        'src/' + appName + '.js',
-                        'src/dbp-lunchlottery-register.js',
-                        'src/dbp-lunchlottery-assign-seats.js',
-                        'src/dbp-lunchlottery-manage.js',
-                        await getPackagePath('@tugraz/web-components', 'src/logo.js')
-                    ]
-                    :
-                    [
-                        'src/' + appName + '.js',
-                        'src/dbp-lunchlottery-register.js',
-                        'src/dbp-lunchlottery-assign-seats.js',
-                        'src/dbp-lunchlottery-manage.js'
-                    ]
+                ? appEnv.length > 6 && appEnv.substring(appEnv.length - 6) == 'Custom'
+                    ? [
+                          'src/' + appName + '.js',
+                          'src/dbp-lunchlottery-register.js',
+                          'src/dbp-lunchlottery-assign-seats.js',
+                          'src/dbp-lunchlottery-manage.js',
+                          await getPackagePath('@tugraz/web-components', 'src/logo.js'),
+                      ]
+                    : [
+                          'src/' + appName + '.js',
+                          'src/dbp-lunchlottery-register.js',
+                          'src/dbp-lunchlottery-assign-seats.js',
+                          'src/dbp-lunchlottery-manage.js',
+                      ]
                 : globSync('test/**/*.js'),
         output: {
             dir: 'dist',
@@ -148,53 +145,53 @@ export default (async () => {
                 targets: 'dist/*',
             }),
             whitelabel &&
-            emitEJS({
-                src: 'assets',
-                include: ['**/*.ejs', '**/.*.ejs'],
-                data: {
-                    getUrl: (p) => {
-                        return url.resolve(config.basePath, p);
+                emitEJS({
+                    src: 'assets',
+                    include: ['**/*.ejs', '**/.*.ejs'],
+                    data: {
+                        getUrl: (p) => {
+                            return url.resolve(config.basePath, p);
+                        },
+                        getPrivateUrl: (p) => {
+                            return url.resolve(`${config.basePath}${privatePath}/`, p);
+                        },
+                        name: appName,
+                        entryPointURL: config.entryPointURL,
+                        basePath: config.basePath,
+                        keyCloakBaseURL: config.keyCloakBaseURL,
+                        keyCloakRealm: config.keyCloakRealm,
+                        keyCloakClientId: config.keyCloakClientId,
+                        CSP: config.CSP,
+                        matomoUrl: config.matomoUrl,
+                        matomoSiteId: config.matomoSiteId,
+                        buildInfo: getBuildInfo(appEnv),
                     },
-                    getPrivateUrl: (p) => {
-                        return url.resolve(`${config.basePath}${privatePath}/`, p);
-                    },
-                    name: appName,
-                    entryPointURL: config.entryPointURL,
-                    basePath: config.basePath,
-                    keyCloakBaseURL: config.keyCloakBaseURL,
-                    keyCloakRealm: config.keyCloakRealm,
-                    keyCloakClientId: config.keyCloakClientId,
-                    CSP: config.CSP,
-                    matomoUrl: config.matomoUrl,
-                    matomoSiteId: config.matomoSiteId,
-                    buildInfo: getBuildInfo(appEnv),
-                },
-            }),
+                }),
             !whitelabel &&
-            emitEJS({
-                src: customAssetsPath,
-                include: ['**/*.ejs', '**/.*.ejs'],
-                data: {
-                    getUrl: (p) => {
-                        return url.resolve(config.basePath, p);
+                emitEJS({
+                    src: customAssetsPath,
+                    include: ['**/*.ejs', '**/.*.ejs'],
+                    data: {
+                        getUrl: (p) => {
+                            return url.resolve(config.basePath, p);
+                        },
+                        getPrivateUrl: (p) => {
+                            return url.resolve(`${config.basePath}${privatePath}/`, p);
+                        },
+                        name: appName,
+                        entryPointURL: config.entryPointURL,
+                        basePath: config.basePath,
+                        keyCloakBaseURL: config.keyCloakBaseURL,
+                        keyCloakRealm: config.keyCloakRealm,
+                        keyCloakClientId: config.keyCloakClientId,
+                        CSP: config.CSP,
+                        matomoUrl: config.matomoUrl,
+                        matomoSiteId: config.matomoSiteId,
+                        buildInfo: getBuildInfo(appEnv),
+                        shortName: config.shortName,
+                        appDomain: config.appDomain,
                     },
-                    getPrivateUrl: (p) => {
-                        return url.resolve(`${config.basePath}${privatePath}/`, p);
-                    },
-                    name: appName,
-                    entryPointURL: config.entryPointURL,
-                    basePath: config.basePath,
-                    keyCloakBaseURL: config.keyCloakBaseURL,
-                    keyCloakRealm: config.keyCloakRealm,
-                    keyCloakClientId: config.keyCloakClientId,
-                    CSP: config.CSP,
-                    matomoUrl: config.matomoUrl,
-                    matomoSiteId: config.matomoSiteId,
-                    buildInfo: getBuildInfo(appEnv),
-                    shortName: config.shortName,
-                    appDomain: config.appDomain,
-                },
-            }),
+                }),
             resolve({
                 browser: true,
                 preferBuiltins: true,
@@ -214,12 +211,20 @@ export default (async () => {
                     thirdParty: {
                         allow(dependency) {
                             let licenses = [
-                                'LGPL-2.1-or-later', 'MIT', 'BSD-3-Clause', 'Apache-2.0', '0BSD',
-                                '(MPL-2.0 OR Apache-2.0)', 'MIT OR SEE LICENSE IN FEEL-FREE.md',
-                                '(MIT OR GPL-3.0-or-later)', 'BSD'
+                                'LGPL-2.1-or-later',
+                                'MIT',
+                                'BSD-3-Clause',
+                                'Apache-2.0',
+                                '0BSD',
+                                '(MPL-2.0 OR Apache-2.0)',
+                                'MIT OR SEE LICENSE IN FEEL-FREE.md',
+                                '(MIT OR GPL-3.0-or-later)',
+                                'BSD',
                             ];
                             if (!licenses.includes(dependency.license)) {
-                                throw new Error(`Unknown license for ${dependency.name}: ${dependency.license}`);
+                                throw new Error(
+                                    `Unknown license for ${dependency.name}: ${dependency.license}`,
+                                );
                             }
                             return true;
                         },
@@ -236,75 +241,122 @@ export default (async () => {
                 fileName: 'shared/[name].[hash][extname]',
             }),
             whitelabel &&
-            copy({
-                targets: [
-                    {src: 'assets/silent-check-sso.html', dest: 'dist'},
-                    {src: 'assets/htaccess-shared', dest: 'dist/shared/', rename: '.htaccess'},
-                    {src: 'assets/*.css', dest: 'dist/' + (await getDistPath(pkg.name))},
-                    {src: 'assets/*.ico', dest: 'dist/' + (await getDistPath(pkg.name))},
-                    {src: 'assets/*.svg', dest: 'dist/' + (await getDistPath(pkg.name))},
-                    {src: 'assets/icon/*', dest: 'dist/' + (await getDistPath(pkg.name, 'icon'))},
-                    {src: 'assets/site.webmanifest', dest: 'dist', rename: pkg.internalName + '.webmanifest'},
-                    {
-                        src: await getPackagePath('@fontsource/nunito-sans', '*'),
-                        dest: 'dist/' + (await getDistPath(pkg.name, 'fonts/nunito-sans')),
-                    },
-                    {
-                        src: await getPackagePath('@dbp-toolkit/common', 'src/spinner.js'),
-                        dest: 'dist/' + (await getDistPath(pkg.name)),
-                    },
-                    {
-                        src: await getPackagePath('@dbp-toolkit/common', 'misc/browser-check.js'),
-                        dest: 'dist/' + (await getDistPath(pkg.name)),
-                    },
-                    {src: 'src/*.metadata.json', dest: 'dist'},
-                    {
-                        src: await getPackagePath('@dbp-toolkit/common', 'assets/icons/*.svg'),
-                        dest: 'dist/' + (await getDistPath('@dbp-toolkit/common', 'icons')),
-                    },
-                    {
-                        src: await getPackagePath('tabulator-tables', 'dist/css/*.css'),
-                        dest: 'dist/' + (await getDistPath('@dbp-toolkit/tabulator-table', 'tabulator-tables/css')),
-                    },
-                ],
-            }),
+                copy({
+                    targets: [
+                        {src: 'assets/silent-check-sso.html', dest: 'dist'},
+                        {src: 'assets/htaccess-shared', dest: 'dist/shared/', rename: '.htaccess'},
+                        {src: 'assets/*.css', dest: 'dist/' + (await getDistPath(pkg.name))},
+                        {src: 'assets/*.ico', dest: 'dist/' + (await getDistPath(pkg.name))},
+                        {src: 'assets/*.svg', dest: 'dist/' + (await getDistPath(pkg.name))},
+                        {
+                            src: 'assets/icon/*',
+                            dest: 'dist/' + (await getDistPath(pkg.name, 'icon')),
+                        },
+                        {
+                            src: 'assets/site.webmanifest',
+                            dest: 'dist',
+                            rename: pkg.internalName + '.webmanifest',
+                        },
+                        {
+                            src: await getPackagePath('@fontsource/nunito-sans', '*'),
+                            dest: 'dist/' + (await getDistPath(pkg.name, 'fonts/nunito-sans')),
+                        },
+                        {
+                            src: await getPackagePath('@dbp-toolkit/common', 'src/spinner.js'),
+                            dest: 'dist/' + (await getDistPath(pkg.name)),
+                        },
+                        {
+                            src: await getPackagePath(
+                                '@dbp-toolkit/common',
+                                'misc/browser-check.js',
+                            ),
+                            dest: 'dist/' + (await getDistPath(pkg.name)),
+                        },
+                        {src: 'src/*.metadata.json', dest: 'dist'},
+                        {
+                            src: await getPackagePath('@dbp-toolkit/common', 'assets/icons/*.svg'),
+                            dest: 'dist/' + (await getDistPath('@dbp-toolkit/common', 'icons')),
+                        },
+                        {
+                            src: await getPackagePath('tabulator-tables', 'dist/css/*.css'),
+                            dest:
+                                'dist/' +
+                                (await getDistPath(
+                                    '@dbp-toolkit/tabulator-table',
+                                    'tabulator-tables/css',
+                                )),
+                        },
+                    ],
+                }),
             !whitelabel &&
-            copy({
-                targets: [
-                    {src: customAssetsPath + 'silent-check-sso.html', dest: 'dist'},
-                    {src: customAssetsPath + 'htaccess-shared', dest: 'dist/shared/', rename: '.htaccess'},
-                    {src: customAssetsPath + '*.css', dest: 'dist/' + (await getDistPath(pkg.name))},
-                    {src: customAssetsPath + '*.ico', dest: 'dist/' + (await getDistPath(pkg.name))},
-                    {src: customAssetsPath + '*.svg', dest: 'dist/' + (await getDistPath(pkg.name))},
-                    {src: customAssetsPath + 'icon/*', dest: 'dist/' + (await getDistPath(pkg.name, 'icon'))},
-                    {src: customAssetsPath + 'site.webmanifest', dest: 'dist', rename: pkg.internalName + '.webmanifest'},
-                    {
-                        src: await getPackagePath('@tugraz/font-source-sans-pro', 'files/*'),
-                        dest: 'dist/local/' + pkg.name + '/fonts/source-sans-pro',
-                    },
-                    {
-                        src: await getPackagePath('@tugraz/web-components', 'src/spinner.js'),
-                        dest: 'dist/' + (await getDistPath(pkg.name)), rename: 'tug_spinner.js'
-                    },
-                    {
-                        src: await getPackagePath('@dbp-toolkit/common', 'src/spinner.js'),
-                        dest: 'dist/' + (await getDistPath(pkg.name)),
-                    },
-                    {
-                        src: await getPackagePath('@dbp-toolkit/common', 'misc/browser-check.js'),
-                        dest: 'dist/' + (await getDistPath(pkg.name)),
-                    },
-                    {src: 'src/*.metadata.json', dest: 'dist'},
-                    {
-                        src: await getPackagePath('@dbp-toolkit/common', 'assets/icons/*.svg'),
-                        dest: 'dist/' + (await getDistPath('@dbp-toolkit/common', 'icons')),
-                    },
-                    {
-                        src: await getPackagePath('tabulator-tables', 'dist/css/tabulator.min.css'),
-                        dest: 'dist/' + (await getDistPath('@dbp-toolkit/tabulator-table', 'tabulator-tables/css')),
-                    },
-                ],
-            }),
+                copy({
+                    targets: [
+                        {src: customAssetsPath + 'silent-check-sso.html', dest: 'dist'},
+                        {
+                            src: customAssetsPath + 'htaccess-shared',
+                            dest: 'dist/shared/',
+                            rename: '.htaccess',
+                        },
+                        {
+                            src: customAssetsPath + '*.css',
+                            dest: 'dist/' + (await getDistPath(pkg.name)),
+                        },
+                        {
+                            src: customAssetsPath + '*.ico',
+                            dest: 'dist/' + (await getDistPath(pkg.name)),
+                        },
+                        {
+                            src: customAssetsPath + '*.svg',
+                            dest: 'dist/' + (await getDistPath(pkg.name)),
+                        },
+                        {
+                            src: customAssetsPath + 'icon/*',
+                            dest: 'dist/' + (await getDistPath(pkg.name, 'icon')),
+                        },
+                        {
+                            src: customAssetsPath + 'site.webmanifest',
+                            dest: 'dist',
+                            rename: pkg.internalName + '.webmanifest',
+                        },
+                        {
+                            src: await getPackagePath('@tugraz/font-source-sans-pro', 'files/*'),
+                            dest: 'dist/local/' + pkg.name + '/fonts/source-sans-pro',
+                        },
+                        {
+                            src: await getPackagePath('@tugraz/web-components', 'src/spinner.js'),
+                            dest: 'dist/' + (await getDistPath(pkg.name)),
+                            rename: 'tug_spinner.js',
+                        },
+                        {
+                            src: await getPackagePath('@dbp-toolkit/common', 'src/spinner.js'),
+                            dest: 'dist/' + (await getDistPath(pkg.name)),
+                        },
+                        {
+                            src: await getPackagePath(
+                                '@dbp-toolkit/common',
+                                'misc/browser-check.js',
+                            ),
+                            dest: 'dist/' + (await getDistPath(pkg.name)),
+                        },
+                        {src: 'src/*.metadata.json', dest: 'dist'},
+                        {
+                            src: await getPackagePath('@dbp-toolkit/common', 'assets/icons/*.svg'),
+                            dest: 'dist/' + (await getDistPath('@dbp-toolkit/common', 'icons')),
+                        },
+                        {
+                            src: await getPackagePath(
+                                'tabulator-tables',
+                                'dist/css/tabulator.min.css',
+                            ),
+                            dest:
+                                'dist/' +
+                                (await getDistPath(
+                                    '@dbp-toolkit/tabulator-table',
+                                    'tabulator-tables/css',
+                                )),
+                        },
+                    ],
+                }),
             prodBuild &&
                 getBabelOutputPlugin({
                     compact: false,

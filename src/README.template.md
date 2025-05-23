@@ -1,5 +1,4 @@
-Activities README Template
-=============================
+# Activities README Template
 
 <!--
 This should act as a template README.md for a new frontend application.
@@ -20,7 +19,6 @@ List of placeholders:
 - {{list-activity-attributes}}: a list of activity specific attributes (- `name` (optional): description <br> - example `example`)
 -->
 
-
 # {{Name}} activities
 
 Here you can find the individual activities of the `{{name}}` App. If you want to use the whole app look at [{{name}}](https://github.com/{{app-path}}).
@@ -28,7 +26,6 @@ Here you can find the individual activities of the `{{name}}` App. If you want t
 ## Usage of an activity
 
 You can use every activity alone. Take a look at our examples [here](https://github.com/{{app-path}}/-/tree/main/examples).
-
 
 ## Activities
 
@@ -48,17 +45,15 @@ Note that you will need a Keycloak server along with a client id for the domain 
     - example `lang="de"`
 - `entry-point-url` (optional, default is the TU Graz entry point url): entry point url to access the api
     - example `entry-point-url="https://api-dev.tugraz.at"`
-- `auth` object: you need to set that object property for the auth token
-    - example auth property: `{token: "THE_BEARER_TOKEN"}`
-    - note: most often this should be an attribute that is not set directly, but subscribed at a provider
-{{list-activity-attributes}}
-
+- `auth` object: you need to set that object property for the auth token - example auth property: `{token: "THE_BEARER_TOKEN"}` - note: most often this should be an attribute that is not set directly, but subscribed at a provider
+  {{list-activity-attributes}}
 
 #### Slots
 
 You use templates tags to inject slots into the activity.
 These templates will be converted to div containers when the page is loaded and will not show up before that.
-<!-- 
+
+<!--
 ##### Slot1
 
 Where is the slot shown
@@ -85,17 +80,11 @@ Example:
 
 To ensure a uniform and responsive design these activities should occupy 100% width of the window when the activities' width are under 768 px.
 
-
 ## Mandatory attributes
 
 If you are not using the `provider-root` attribute to "terminate" all provider attributes
 you need to manually add these attributes so that the topic will work properly:
 
 ```html
-<dbp-{{name}}
-    auth
-    requested-login-status
-    analytics-event
->
-</dbp-{{name}}>
+<dbp-{{name}} auth requested-login-status analytics-event></dbp-{{name}}>
 ```

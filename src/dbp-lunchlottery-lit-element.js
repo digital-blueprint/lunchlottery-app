@@ -3,7 +3,10 @@ import DBPLitElement from '@dbp-toolkit/common/dbp-lit-element';
 import {send} from '@dbp-toolkit/common/notification';
 import {AuthMixin, LangMixin} from '@dbp-toolkit/common';
 
-export default class DBPLunchlotteryLitElement extends LangMixin(AuthMixin(DBPLitElement), createInstance) {
+export default class DBPLunchlotteryLitElement extends LangMixin(
+    AuthMixin(DBPLitElement),
+    createInstance,
+) {
     constructor() {
         super();
         this._initialized = false;
@@ -25,7 +28,7 @@ export default class DBPLunchlotteryLitElement extends LangMixin(AuthMixin(DBPLi
                     summary: this._i18n.t('errors.unauthorized-title'),
                     body: this._i18n.t('errors.unauthorized-body'),
                     type: 'danger',
-                    timeout: 5
+                    timeout: 5,
                 });
                 break;
             case 403:
@@ -33,7 +36,7 @@ export default class DBPLunchlotteryLitElement extends LangMixin(AuthMixin(DBPLi
                     summary: this._i18n.t('errors.unauthorized-title'),
                     body: this._i18n.t('errors.unauthorized-body'),
                     type: 'danger',
-                    timeout: 5
+                    timeout: 5,
                 });
                 break;
             case 404:
@@ -41,7 +44,7 @@ export default class DBPLunchlotteryLitElement extends LangMixin(AuthMixin(DBPLi
                     summary: this._i18n.t('errors.notfound-title'),
                     body: this._i18n.t('errors.notfound-body'),
                     type: 'danger',
-                    timeout: 5
+                    timeout: 5,
                 });
                 break;
             case 422: // unprocessable entity
@@ -49,7 +52,7 @@ export default class DBPLunchlotteryLitElement extends LangMixin(AuthMixin(DBPLi
                     summary: this._i18n.t('errors.unprocessable_entity-title'),
                     body: this._i18n.t('errors.unprocessable_entity-body'),
                     type: 'danger',
-                    timeout: 5
+                    timeout: 5,
                 });
                 break;
             default:
@@ -57,7 +60,7 @@ export default class DBPLunchlotteryLitElement extends LangMixin(AuthMixin(DBPLi
                     summary: this._i18n.t('errors.other-title'),
                     body: this._i18n.t('errors.other-body'),
                     type: 'danger',
-                    timeout: 5
+                    timeout: 5,
                 });
         }
         //throw new Error(response);

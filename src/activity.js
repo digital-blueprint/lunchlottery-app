@@ -17,5 +17,4 @@ export class Activity {
         let desc = this._data['here'];
         return desc[lang] ?? desc['en'];
     }
-
 }
