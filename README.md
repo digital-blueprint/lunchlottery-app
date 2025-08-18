@@ -33,6 +33,9 @@ VALUES
   )
 ```
 
+If you are not allowed to register for the lunch lottery, because the registration period is not active,
+set `availability_ends` of the entry to a date in the future, e.g. `2028-01-01 00:00:00`.
+
 ## Overview
 
 ```bash
