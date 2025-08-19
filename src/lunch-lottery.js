@@ -98,8 +98,14 @@ export class LunchLotteryTable {
                 }
             }
 
+            // Ignores the last character of the organization ID
             submission['organizationIds'].forEach((organizationId) => {
-                if (seat['organizationIds'].includes(organizationId)) {
+                const orgIdTrimmed = organizationId.slice(0, -1);
+                if (
+                    seat['organizationIds'].some(
+                        (seatOrgId) => seatOrgId.slice(0, -1) === orgIdTrimmed,
+                    )
+                ) {
                     distance += 9999;
                 }
             });
