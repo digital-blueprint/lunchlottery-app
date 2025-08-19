@@ -36,6 +36,14 @@ VALUES
 If you are not allowed to register for the lunch lottery, because the registration period is not active,
 set `availability_ends` of the entry to a date in the future, e.g. `2028-01-01 00:00:00`.
 
+You need to have admin permissions to the Formalize form to be able to use `Manage Lunch Lottery` and `Assign Lunch Lottery seats`!
+
+For internal development at TU Graz there is a command for creating admin permissions to the form:
+
+```bash
+./bin/console tugraz:relay-tugraz:lunch-lottery-add-admin <person-id>
+```
+
 ## Overview
 
 ```bash
