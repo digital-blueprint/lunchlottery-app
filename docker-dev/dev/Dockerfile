@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:trixie
 
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     openssh-client \
     && rm -rf /var/lib/apt/lists/*
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_22.x | bash - \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y \
