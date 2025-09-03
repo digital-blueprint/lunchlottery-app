@@ -12,7 +12,13 @@ import license from 'rollup-plugin-license';
 import del from 'rollup-plugin-delete';
 import emitEJS from 'rollup-plugin-emit-ejs';
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
-import {getPackagePath, getBuildInfo, generateTLSConfig, getDistPath} from '@dbp-toolkit/dev-utils';
+import {
+    getPackagePath,
+    getBuildInfo,
+    generateTLSConfig,
+    getDistPath,
+    getCopyTargets,
+} from '@dbp-toolkit/dev-utils';
 import {createRequire} from 'module';
 
 const require = createRequire(import.meta.url);
@@ -273,19 +279,7 @@ export default (async () => {
                             dest: 'dist/' + (await getDistPath(pkg.name)),
                         },
                         {src: 'src/*.metadata.json', dest: 'dist'},
-                        {
-                            src: await getPackagePath('@dbp-toolkit/common', 'assets/icons/*.svg'),
-                            dest: 'dist/' + (await getDistPath('@dbp-toolkit/common', 'icons')),
-                        },
-                        {
-                            src: await getPackagePath('tabulator-tables', 'dist/css/*.css'),
-                            dest:
-                                'dist/' +
-                                (await getDistPath(
-                                    '@dbp-toolkit/tabulator-table',
-                                    'tabulator-tables/css',
-                                )),
-                        },
+                        ...(await getCopyTargets(pkg.name, 'dist')),
                     ],
                 }),
             !whitelabel &&
@@ -325,11 +319,6 @@ export default (async () => {
                         {
                             src: await getPackagePath('@tugraz/web-components', 'src/spinner.js'),
                             dest: 'dist/' + (await getDistPath(pkg.name)),
-                            rename: 'tug_spinner.js',
-                        },
-                        {
-                            src: await getPackagePath('@dbp-toolkit/common', 'src/spinner.js'),
-                            dest: 'dist/' + (await getDistPath(pkg.name)),
                         },
                         {
                             src: await getPackagePath(
@@ -339,22 +328,7 @@ export default (async () => {
                             dest: 'dist/' + (await getDistPath(pkg.name)),
                         },
                         {src: 'src/*.metadata.json', dest: 'dist'},
-                        {
-                            src: await getPackagePath('@dbp-toolkit/common', 'assets/icons/*.svg'),
-                            dest: 'dist/' + (await getDistPath('@dbp-toolkit/common', 'icons')),
-                        },
-                        {
-                            src: await getPackagePath(
-                                'tabulator-tables',
-                                'dist/css/tabulator.min.css',
-                            ),
-                            dest:
-                                'dist/' +
-                                (await getDistPath(
-                                    '@dbp-toolkit/tabulator-table',
-                                    'tabulator-tables/css',
-                                )),
-                        },
+                        ...(await getCopyTargets(pkg.name, 'dist')),
                     ],
                 }),
             prodBuild &&
