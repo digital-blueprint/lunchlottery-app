@@ -524,13 +524,75 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         return lunchLotteryEvent;
     }
 
-    calculateDistances() {
+    async injectOrgUnitCodeIntoSubmission(submission) {
+        const organizationIds = submission['organizationIds'];
+
+        if (organizationIds === null || organizationIds.length === 0) {
+            console.error(
+                'injectOrgUnitCodeIntoSubmission: no organizationId for submission',
+                submission,
+            );
+
+            return submission;
+        }
+
+        console.log('injectOrgUnitCodeIntoSubmission organizationIds', organizationIds);
+        submission['orgUnitCodes'] = [];
+
+        for (let organizationId of organizationIds) {
+            console.log('injectOrgUnitCodeIntoSubmission organizationId', organizationId);
+            // Check if organizationId is a promise and skip if it is
+            if (organizationId instanceof Promise) {
+                return;
+            }
+
+            const orgUnitCode = await this.getOrgUnitCodeForOrganizationIdentifier(
+                organizationId,
+                this.auth.token,
+            );
+            if (orgUnitCode !== null) {
+                submission['orgUnitCodes'].push(orgUnitCode);
+            }
+        }
+
+        console.log('injectOrgUnitCodeIntoSubmission submission', submission);
+        return submission;
+    }
+
+    async getOrgUnitCodeForOrganizationIdentifier(organizationIdentifier, authToken) {
+        const response = await fetch(
+            this.entryPointUrl +
+                '/base/organizations/' +
+                encodeURIComponent(organizationIdentifier) +
+                '?includeLocal=code',
+            {
+                headers: {
+                    'Content-Type': 'application/ld+json',
+                    Authorization: 'Bearer ' + authToken,
+                },
+            },
+        );
+
+        if (!response.ok) {
+            console.error('getOrgUnitCodeForOrganizationIdentifier error', response);
+
+            return null;
+        } else {
+            const data = await response.json();
+
+            return data['localData']['code'] || null;
+        }
+    }
+
+    async calculateDistances() {
         let lunchLotteryEvent = this.createLunchLotteryEvent();
         let submissions = this.expandedSubmissions;
 
         while (submissions.length) {
             let distances = {};
-            submissions.forEach((submission) => {
+            for (let submission of submissions) {
+                submission = await this.injectOrgUnitCodeIntoSubmission(submission);
+                console.log('calculateDistances submission', submission);
                 const [distance, table, date] = lunchLotteryEvent.getShortestDistance(submission);
                 // we need integer keys for shortest distance; float numbers are casted to string, then it's not working
                 const distanceKey = Math.floor(distance);
@@ -544,7 +606,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                     table: table,
                     date: date,
                 });
-            });
+            }
 
             const shortestDistance = Object.keys(distances)[0];
             if (shortestDistance >= 9999) {
@@ -591,8 +653,8 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         return rows;
     }
 
-    process() {
-        const lunchLotteryEvent = this.calculateDistances();
+    async process() {
+        const lunchLotteryEvent = await this.calculateDistances();
         this.dataRows = this.flattenResults(lunchLotteryEvent);
 
         this.variants.push(this.dataRows);
