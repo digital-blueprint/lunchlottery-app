@@ -541,8 +541,11 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                 organizationId,
                 this.auth.token,
             );
+
             if (orgUnitCode !== null) {
-                submission['orgUnitCodes'].push(orgUnitCode);
+                submission['orgUnitCodes'].push('orgUnitCode-' + orgUnitCode);
+            } else {
+                submission['orgUnitCodes'].push('organizationId-' + organizationId);
             }
         }
 
