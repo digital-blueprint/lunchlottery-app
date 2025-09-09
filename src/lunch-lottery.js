@@ -1,5 +1,6 @@
 export class LunchLotteryEvent {
     constructor() {
+        /** @type {LunchLotteryDate[]} */
         this.dates = [];
         this.unassigned = [];
     }
@@ -36,6 +37,7 @@ export class LunchLotteryEvent {
 export class LunchLotteryDate {
     constructor(identifier) {
         this.identifier = identifier;
+        /** @type {LunchLotteryTable[]} */
         this.tables = [];
     }
 
