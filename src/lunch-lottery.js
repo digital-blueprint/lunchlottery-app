@@ -101,29 +101,18 @@ export class LunchLotteryTable {
             console.log('getShortestDistance seat', seat);
             console.log('getShortestDistance submission', submission);
 
-            // Ignores the last character of the orgUnitCode
+            // Do the matching with the orgUnitCodes, that are prepared for that usage
+            // in LunchLotteryAssignSeats.injectOrgUnitCodesIntoSubmission
             submission['orgUnitCodes'].forEach((orgUnitCode) => {
                 console.log('getShortestDistance orgUnitCode', orgUnitCode);
 
-                // Only trim the last character of the orgUnitCode if the code starts with "orgUnitCode"
-                const orgUnitCodeTrimmed = orgUnitCode.startsWith('orgUnitCode')
-                    ? orgUnitCode.slice(0, -1)
-                    : orgUnitCode;
-
-                console.log('getShortestDistance orgUnitCodeTrimmed', orgUnitCodeTrimmed);
-
-                if (
-                    seat['orgUnitCodes'].some(
-                        (orgUnitCode) =>
-                            (orgUnitCode.startsWith('orgUnitCode')
-                                ? orgUnitCode.slice(0, -1)
-                                : orgUnitCode) === orgUnitCodeTrimmed,
-                    )
-                ) {
+                if (seat['orgUnitCodes'].includes(orgUnitCode)) {
                     distance += 9999;
                 }
             });
         });
+
+        console.log('getShortestDistance distance', distance);
 
         return [distance];
     }
