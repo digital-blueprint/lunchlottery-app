@@ -543,7 +543,8 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             );
 
             if (orgUnitCode !== null) {
-                submission['orgUnitCodes'].push('orgUnitCode-' + orgUnitCode);
+                // Ignore the last character of the orgUnitCode for matching
+                submission['orgUnitCodes'].push('orgUnitCode-' + orgUnitCode.slice(0, -1));
             } else {
                 submission['orgUnitCodes'].push('organizationId-' + organizationId);
             }
