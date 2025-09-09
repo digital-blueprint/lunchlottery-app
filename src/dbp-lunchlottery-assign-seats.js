@@ -150,7 +150,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                 responsive: 9,
                 width: 120,
                 visible: 0,
-                xlsx: 0,
                 formatter: function (cell, formatterParams, onRendered) {
                     return cell.getValue().join(', ');
                 }.bind(this),
@@ -163,13 +162,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                 widthShrink: 0,
                 responsive: 1,
                 formatter: this.dateFormatter.bind(this),
-                xlsxFormatter: function (cell, formatterParams, onRendered) {
-                    let value = cell.getValue();
-                    if (value) {
-                        value = new Date(value);
-                    }
-                    return value;
-                }.bind(this),
             },
             {title: this._i18n.t('results.table'), field: 'table', responsive: 1},
         ];
