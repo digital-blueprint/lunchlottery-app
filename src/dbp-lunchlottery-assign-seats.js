@@ -515,7 +515,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         return lunchLotteryEvent;
     }
 
-    async injectOrgUnitCodeIntoSubmission(submission) {
+    async injectOrgUnitCodesIntoSubmission(submission) {
         const organizationIds = submission['organizationIds'];
 
         if (organizationIds === null || organizationIds.length === 0) {
@@ -585,7 +585,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         while (submissions.length) {
             let distances = {};
             for (let submission of submissions) {
-                submission = await this.injectOrgUnitCodeIntoSubmission(submission);
+                submission = await this.injectOrgUnitCodesIntoSubmission(submission);
                 console.log('calculateDistances submission', submission);
                 const [distance, table, date] = lunchLotteryEvent.getShortestDistance(submission);
                 // we need integer keys for shortest distance; float numbers are casted to string, then it's not working
