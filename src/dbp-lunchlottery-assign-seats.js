@@ -398,9 +398,8 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         const tabulatorTable = /** @type {TabulatorTable} */ (
             this._('#tabulator-table-submissions')
         );
-        // tabulatorTable.options = this.dataOptions;
+        tabulatorTable.options.data = this.dataRows;
         tabulatorTable.buildTable();
-        tabulatorTable.setData(this.dataRows);
     }
 
     downloadSubmissions() {
@@ -602,9 +601,8 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         this.requestUpdate();
 
         const tabulatorTable = this._('#tabulator-table-results');
-        // tabulatorTable.options = this.dataOptions;
+        tabulatorTable.options.data = this.dataRows;
         tabulatorTable.buildTable();
-        tabulatorTable.setData(this.dataRows);
     }
 
     static get styles() {
