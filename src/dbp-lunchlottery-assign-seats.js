@@ -878,10 +878,10 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                     <button
                         type="button"
                         class="button"
-                        title="${i18n.t('process.run')}"
-                        @click="${() => this.process()}">
-                        <dbp-icon title="${i18n.t('process.run')}" name="dinner"></dbp-icon>
-                        <span>${i18n.t('process.run')}</span>
+                        title="${i18n.t('process.settings')}"
+                        @click="${() => this.showSettings()}">
+                        <dbp-icon title="${i18n.t('process.settings')}" name="dinner"></dbp-icon>
+                        <span>${i18n.t('process.settings')}</span>
                     </button>
                     <button
                         type="button"
