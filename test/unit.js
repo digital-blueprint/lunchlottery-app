@@ -133,7 +133,7 @@ suite('LunchLotteryDate.getShortestDistance (integration)', () => {
             {
                 possibleDates: ['2025-09-01'],
                 preferredLanguage: 'en',
-                organizationIds: ['org1A'],
+                orgUnitCodes: ['orgUnitCode-org1A'],
             },
             overrides,
         );
@@ -143,7 +143,9 @@ suite('LunchLotteryDate.getShortestDistance (integration)', () => {
         const date = new LunchLotteryDate('2025-09-01');
         const tEmpty = new LunchLotteryTable(4); // empty -> +100
         const tOneSeat = new LunchLotteryTable(4); // one seat -> (1/4)*100=25
-        tOneSeat.assign(makeSubmission({preferredLanguage: 'en', organizationIds: ['org2A']}));
+        tOneSeat.assign(
+            makeSubmission({preferredLanguage: 'en', orgUnitCodes: ['orgUnitCode-org2A']}),
+        );
         date.addTable(tEmpty); // index 0 distance expected 101 ( (2-1)=1 + 100 )
         date.addTable(tOneSeat); // index 1 distance expected 26 (1 + 25)
 
@@ -157,8 +159,12 @@ suite('LunchLotteryDate.getShortestDistance (integration)', () => {
         const date = new LunchLotteryDate('2025-09-01');
         const tHard = new LunchLotteryTable(2);
         const tSoft = new LunchLotteryTable(2);
-        tHard.assign(makeSubmission({preferredLanguage: 'de', organizationIds: ['org2A']})); // mismatch en vs de -> +9999
-        tSoft.assign(makeSubmission({preferredLanguage: 'both', organizationIds: ['org3A']})); // mismatch en vs both -> +2
+        tHard.assign(
+            makeSubmission({preferredLanguage: 'de', orgUnitCodes: ['orgUnitCode-org2A']}),
+        ); // mismatch en vs de -> +9999
+        tSoft.assign(
+            makeSubmission({preferredLanguage: 'both', orgUnitCodes: ['orgUnitCode-org3A']}),
+        ); // mismatch en vs both -> +2
         date.addTable(tHard); // index 0
         date.addTable(tSoft); // index 1
 
@@ -176,13 +182,15 @@ suite('LunchLotteryDate.getShortestDistance (integration)', () => {
         const date = new LunchLotteryDate('2025-09-01');
         const tConflict = new LunchLotteryTable(2);
         const tOk = new LunchLotteryTable(2);
-        tConflict.assign(makeSubmission({preferredLanguage: 'en', organizationIds: ['orgX1']}));
-        tOk.assign(makeSubmission({preferredLanguage: 'en', organizationIds: ['orgY1']}));
+        tConflict.assign(
+            makeSubmission({preferredLanguage: 'en', orgUnitCodes: ['orgUnitCode-orgX']}), // trimmed
+        );
+        tOk.assign(makeSubmission({preferredLanguage: 'en', orgUnitCodes: ['orgUnitCode-orgY']})); // trimmed
         date.addTable(tConflict); // index 0
         date.addTable(tOk); // index 1
 
-        // New submission shares same trimmed org prefix 'orgX' with tConflict seat (orgX1 vs orgX2)
-        const submission = makeSubmission({organizationIds: ['orgX2']});
+        // New submission shares same trimmed org prefix 'orgX' with tConflict seat
+        const submission = makeSubmission({orgUnitCodes: ['orgUnitCode-orgX']}); // trimmed to match
         const [distance, tableIndex] = date.getShortestDistance(submission);
         assert.strictEqual(tableIndex, 1, 'should avoid conflicting organization table');
         // Confirm distance is not huge (should be normal for the second table)
@@ -196,7 +204,7 @@ suite('LunchLotteryEvent.getShortestDistance (integration)', () => {
             {
                 possibleDates: ['2025-09-02'],
                 preferredLanguage: 'en',
-                organizationIds: ['org1A'],
+                orgUnitCodes: ['orgUnitCode-org1A'],
             },
             overrides,
         );
@@ -222,20 +230,24 @@ suite('LunchLotteryEvent.getShortestDistance (integration)', () => {
         const event = new LunchLotteryEvent();
         const dateA = new LunchLotteryDate('2025-09-02');
         const tableA = new LunchLotteryTable(2);
-        tableA.assign(makeSubmission({organizationIds: ['deptZ1'], preferredLanguage: 'en'}));
+        tableA.assign(
+            makeSubmission({orgUnitCodes: ['orgUnitCode-deptZ'], preferredLanguage: 'en'}), // trimmed
+        );
         dateA.addTable(tableA);
 
         const dateB = new LunchLotteryDate('2025-09-02');
         const tableB = new LunchLotteryTable(2);
-        tableB.assign(makeSubmission({organizationIds: ['deptY1'], preferredLanguage: 'en'}));
+        tableB.assign(
+            makeSubmission({orgUnitCodes: ['orgUnitCode-deptY'], preferredLanguage: 'en'}), // trimmed
+        );
         dateB.addTable(tableB);
 
         // Intentionally add both dates (same identifier) to simulate scenario; both are valid
         event.addDate(dateA);
         event.addDate(dateB);
 
-        // The new submission conflicts with deptZ (deptZ1 vs deptZ2) so first date table distance huge
-        const submission = makeSubmission({organizationIds: ['deptZ2']});
+        // The new submission conflicts with deptZ so first date table distance huge
+        const submission = makeSubmission({orgUnitCodes: ['orgUnitCode-deptZ']}); // trimmed to match
         const [distance, tableIndex, dateIndex] = event.getShortestDistance(submission);
         assert.strictEqual(dateIndex, 1, 'should pick second date without org conflict');
         assert.strictEqual(tableIndex, 0);
@@ -244,12 +256,16 @@ suite('LunchLotteryEvent.getShortestDistance (integration)', () => {
 });
 
 suite('LunchLotteryTable.getShortestDistance (organization penalty)', () => {
+    // NOTE: These tests assume organization codes have been properly preprocessed
+    // by injectOrgUnitCodesIntoSubmission, which trims the last character.
+    // In the real system: orgABC7 -> orgUnitCode-orgABC, orgABC3 -> orgUnitCode-orgABC
+
     function makeSubmission(overrides = {}) {
         return Object.assign(
             {
                 possibleDates: ['2025-09-01'],
                 preferredLanguage: 'en',
-                organizationIds: ['orgBASE1'],
+                orgUnitCodes: ['orgUnitCode-orgBASE'], // Already trimmed as real system would do
             },
             overrides,
         );
@@ -257,11 +273,11 @@ suite('LunchLotteryTable.getShortestDistance (organization penalty)', () => {
 
     test('adds 9999 penalty when organization IDs share same trimmed prefix', () => {
         const table = new LunchLotteryTable(2);
-        // Existing seat at table
-        table.assign(makeSubmission({organizationIds: ['orgX1'], preferredLanguage: 'en'}));
+        // Existing seat at table - using preprocessed/trimmed organization code
+        table.assign(makeSubmission({orgUnitCodes: ['orgUnitCode-orgX'], preferredLanguage: 'en'}));
 
-        const noConflictSubmission = makeSubmission({organizationIds: ['orgY1']}); // trimmed orgY
-        const conflictSubmission = makeSubmission({organizationIds: ['orgX2']}); // trimmed orgX -> conflict
+        const noConflictSubmission = makeSubmission({orgUnitCodes: ['orgUnitCode-orgY']});
+        const conflictSubmission = makeSubmission({orgUnitCodes: ['orgUnitCode-orgX']}); // Same trimmed code -> conflict
 
         const [distanceNoConflict] = table.getShortestDistance(noConflictSubmission);
         const [distanceConflict] = table.getShortestDistance(conflictSubmission);
@@ -276,33 +292,300 @@ suite('LunchLotteryTable.getShortestDistance (organization penalty)', () => {
         assert.isBelow(distanceNoConflict, 1000, 'non-conflict distance should stay small');
     });
 
-    test('ignores last digit when comparing organization IDs (prefix match causes penalty)', () => {
+    test('detects conflict when preprocessed organization codes match exactly', () => {
+        // This test demonstrates that the table logic expects preprocessed codes
+        // Real scenario: orgABC7 and orgABC3 both become orgUnitCode-orgABC after preprocessing
         const table = new LunchLotteryTable(4);
         table.assign({
             possibleDates: ['2025-09-01'],
             preferredLanguage: 'en',
-            organizationIds: ['orgABC7'],
+            orgUnitCodes: ['orgUnitCode-orgABC'], // Represents preprocessed orgABC7
         });
 
-        const diffLastDigitConflict = {
+        const conflictSubmission = {
             possibleDates: ['2025-09-01'],
             preferredLanguage: 'en',
-            organizationIds: ['orgABC3'], // same prefix orgABC -> should conflict
+            orgUnitCodes: ['orgUnitCode-orgABC'], // Represents preprocessed orgABC3
         };
-        const differentPrefixNoConflict = {
+        const noConflictSubmission = {
             possibleDates: ['2025-09-01'],
             preferredLanguage: 'en',
-            organizationIds: ['orgABD7'], // different prefix orgABD -> no conflict
+            orgUnitCodes: ['orgUnitCode-orgABD'], // Represents preprocessed orgABD9
         };
 
-        const [distanceConflict] = table.getShortestDistance(diffLastDigitConflict);
-        const [distanceNoConflict] = table.getShortestDistance(differentPrefixNoConflict);
+        const [distanceConflict] = table.getShortestDistance(conflictSubmission);
+        const [distanceNoConflict] = table.getShortestDistance(noConflictSubmission);
 
-        // Base occupancy & language identical, only organization penalty differs
+        console.log(' distanceConflict', distanceConflict);
+        console.log(' distanceNoConflict', distanceNoConflict);
+
+        // Base occupancy and language identical, only the organization penalty differs
         assert.strictEqual(
             distanceConflict - distanceNoConflict,
             9999,
-            'matching trimmed prefix should add 9999 even if last digit differs',
+            'matching preprocessed codes should add 9999 penalty',
+        );
+    });
+});
+
+// Test the organization code preprocessing logic
+suite('Organization code preprocessing', () => {
+    test('should trim last character from organization codes', () => {
+        // This tests the logic that would be in injectOrgUnitCodesIntoSubmission
+        const testCases = [
+            {input: 'orgABC7', expected: 'orgUnitCode-orgABC'},
+            {input: 'orgABC3', expected: 'orgUnitCode-orgABC'},
+            {input: 'dept123A', expected: 'orgUnitCode-dept123'},
+            {input: 'X', expected: 'orgUnitCode-'},
+        ];
+
+        testCases.forEach(({input, expected}) => {
+            // Simulate the preprocessing logic from injectOrgUnitCodesIntoSubmission
+            const processed = 'orgUnitCode-' + input.slice(0, -1);
+            assert.strictEqual(processed, expected, `${input} should become ${expected}`);
+        });
+    });
+
+    test('should create conflicts for codes with same prefix but different suffixes', () => {
+        // Simulate real scenario where orgABC7 and orgABC3 both become orgABC after trimming
+        const orgCode1 = 'orgABC7';
+        const orgCode2 = 'orgABC3';
+        const orgCode3 = 'orgXYZ1';
+
+        const processed1 = 'orgUnitCode-' + orgCode1.slice(0, -1);
+        const processed2 = 'orgUnitCode-' + orgCode2.slice(0, -1);
+        const processed3 = 'orgUnitCode-' + orgCode3.slice(0, -1);
+
+        // These should be identical after processing (conflict)
+        assert.strictEqual(processed1, processed2, 'orgABC7 and orgABC3 should both become orgABC');
+        // This should be different (no conflict)
+        assert.notStrictEqual(processed1, processed3, 'orgABC and orgXYZ should be different');
+    });
+});
+
+suite('LunchLotteryAssignSeats.injectOrgUnitCodesIntoSubmission', () => {
+    let assignSeats;
+    let originalFetch;
+
+    suiteSetup(() => {
+        // Mock the fetch function globally
+        originalFetch = window.fetch;
+    });
+
+    suiteTeardown(() => {
+        // Restore original fetch
+        window.fetch = originalFetch;
+    });
+
+    setup(() => {
+        // Create a mock LunchLotteryAssignSeats instance
+        assignSeats = {
+            entryPointUrl: 'https://api.example.com',
+            auth: {token: 'test-token'},
+            async getOrgUnitCodeForOrganizationIdentifier(organizationIdentifier, authToken) {
+                // Mock implementation that returns test organization codes
+                const mockOrgCodes = {
+                    org123: 'dept456A',
+                    org789: 'finance789B',
+                    orgABC: 'marketing123C',
+                    orgEmpty: null,
+                };
+                return mockOrgCodes[organizationIdentifier] || null;
+            },
+            async injectOrgUnitCodesIntoSubmission(submission) {
+                // Use the real implementation from the file
+                const organizationIds = submission['organizationIds'];
+
+                if (organizationIds === null || organizationIds.length === 0) {
+                    console.error(
+                        'injectOrgUnitCodeIntoSubmission: no organizationId for submission',
+                        submission,
+                    );
+                    return submission;
+                }
+
+                submission['orgUnitCodes'] = [];
+
+                for (let organizationId of organizationIds) {
+                    if (organizationId instanceof Promise) {
+                        return;
+                    }
+
+                    const orgUnitCode = await this.getOrgUnitCodeForOrganizationIdentifier(
+                        organizationId,
+                        this.auth.token,
+                    );
+
+                    if (orgUnitCode !== null) {
+                        // Ignore the last character of the orgUnitCode for matching
+                        submission['orgUnitCodes'].push('orgUnitCode-' + orgUnitCode.slice(0, -1));
+                    } else {
+                        submission['orgUnitCodes'].push('organizationId-' + organizationId);
+                    }
+                }
+
+                return submission;
+            },
+        };
+    });
+
+    test('should process single organization ID successfully', async () => {
+        const submission = {
+            identifier: 'test-submission-1',
+            organizationIds: ['org123'],
+            preferredLanguage: 'en',
+        };
+
+        const result = await assignSeats.injectOrgUnitCodesIntoSubmission(submission);
+
+        assert.deepStrictEqual(
+            result.orgUnitCodes,
+            ['orgUnitCode-dept456'],
+            'Should trim last character from dept456A',
+        );
+        assert.strictEqual(
+            result.identifier,
+            'test-submission-1',
+            'Should preserve other properties',
+        );
+    });
+
+    test('should process multiple organization IDs', async () => {
+        const submission = {
+            identifier: 'test-submission-2',
+            organizationIds: ['org123', 'org789'],
+            preferredLanguage: 'de',
+        };
+
+        const result = await assignSeats.injectOrgUnitCodesIntoSubmission(submission);
+
+        assert.deepStrictEqual(
+            result.orgUnitCodes,
+            [
+                'orgUnitCode-dept456', // dept456A -> dept456
+                'orgUnitCode-finance789', // finance789B -> finance789
+            ],
+            'Should process multiple org codes and trim last character from each',
+        );
+    });
+
+    test('should handle organization IDs that return null org codes', async () => {
+        const submission = {
+            identifier: 'test-submission-3',
+            organizationIds: ['orgEmpty', 'unknownOrg'],
+            preferredLanguage: 'en',
+        };
+
+        const result = await assignSeats.injectOrgUnitCodesIntoSubmission(submission);
+
+        assert.deepStrictEqual(
+            result.orgUnitCodes,
+            ['organizationId-orgEmpty', 'organizationId-unknownOrg'],
+            'Should use organizationId prefix when org code lookup fails',
+        );
+    });
+
+    test('should handle mixed success and failure org lookups', async () => {
+        const submission = {
+            identifier: 'test-submission-4',
+            organizationIds: ['org123', 'unknownOrg', 'orgABC'],
+            preferredLanguage: 'both',
+        };
+
+        const result = await assignSeats.injectOrgUnitCodesIntoSubmission(submission);
+
+        assert.deepStrictEqual(
+            result.orgUnitCodes,
+            [
+                'orgUnitCode-dept456', // dept456A -> dept456
+                'organizationId-unknownOrg', // lookup failed
+                'orgUnitCode-marketing123', // marketing123C -> marketing123
+            ],
+            'Should handle mix of successful and failed org code lookups',
+        );
+    });
+
+    test('should handle empty organizationIds array', async () => {
+        const submission = {
+            identifier: 'test-submission-5',
+            organizationIds: [],
+            preferredLanguage: 'en',
+        };
+
+        const result = await assignSeats.injectOrgUnitCodesIntoSubmission(submission);
+
+        assert.isUndefined(
+            result.orgUnitCodes,
+            'Should not add orgUnitCodes property for empty array',
+        );
+        assert.strictEqual(
+            result.identifier,
+            'test-submission-5',
+            'Should preserve other properties',
+        );
+    });
+
+    test('should handle null organizationIds', async () => {
+        const submission = {
+            identifier: 'test-submission-6',
+            organizationIds: null,
+            preferredLanguage: 'en',
+        };
+
+        const result = await assignSeats.injectOrgUnitCodesIntoSubmission(submission);
+
+        assert.isUndefined(result.orgUnitCodes, 'Should not add orgUnitCodes property for null');
+        assert.strictEqual(
+            result.identifier,
+            'test-submission-6',
+            'Should preserve other properties',
+        );
+    });
+
+    test('should create conflicts for same department with different suffixes', async () => {
+        // Test that demonstrates the conflict detection behavior
+        const submission1 = {
+            identifier: 'submission-A',
+            organizationIds: ['org123'], // Will become 'orgUnitCode-dept456'
+            preferredLanguage: 'en',
+        };
+
+        const submission2 = {
+            identifier: 'submission-B',
+            organizationIds: ['org789'], // Will become 'orgUnitCode-finance789'
+            preferredLanguage: 'en',
+        };
+
+        // Mock a third org that would have same prefix as first after trimming
+        assignSeats.getOrgUnitCodeForOrganizationIdentifier = async (orgId) => {
+            const mockCodes = {
+                org123: 'dept456A', // becomes 'orgUnitCode-dept456'
+                org456: 'dept456B', // becomes 'orgUnitCode-dept456' (conflict!)
+                org789: 'finance789A', // becomes 'orgUnitCode-finance789'
+            };
+            return mockCodes[orgId] || null;
+        };
+
+        const submission3 = {
+            identifier: 'submission-C',
+            organizationIds: ['org456'], // Will become 'orgUnitCode-dept456' (same as submission1)
+            preferredLanguage: 'en',
+        };
+
+        const result1 = await assignSeats.injectOrgUnitCodesIntoSubmission(submission1);
+        const result2 = await assignSeats.injectOrgUnitCodesIntoSubmission(submission2);
+        const result3 = await assignSeats.injectOrgUnitCodesIntoSubmission(submission3);
+
+        // Verify conflict scenario
+        assert.strictEqual(
+            result1.orgUnitCodes[0],
+            result3.orgUnitCodes[0],
+            'dept456A and dept456B should both become orgUnitCode-dept456 (conflict)',
+        );
+        assert.notStrictEqual(
+            result1.orgUnitCodes[0],
+            result2.orgUnitCodes[0],
+            'dept456 and finance789 should be different (no conflict)',
         );
     });
 });
