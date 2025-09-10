@@ -42,6 +42,9 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         this.expandedDates = [];
         this.expandedSubmissions = [];
 
+        // Cache for organization unit codes to avoid repeated API calls
+        this.orgUnitCodeCache = new Map();
+
         let langs = {
             en: {
                 columns: {
@@ -555,6 +558,20 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
     }
 
     async getOrgUnitCodeForOrganizationIdentifier(organizationIdentifier, authToken) {
+        // Check the cache first to avoid repeated API calls
+        if (this.orgUnitCodeCache.has(organizationIdentifier)) {
+            console.log(
+                'getOrgUnitCodeForOrganizationIdentifier cache hit for',
+                organizationIdentifier,
+            );
+            return this.orgUnitCodeCache.get(organizationIdentifier);
+        }
+
+        console.log(
+            'getOrgUnitCodeForOrganizationIdentifier cache miss, fetching for',
+            organizationIdentifier,
+        );
+
         const response = await fetch(
             this.entryPointUrl +
                 '/base/organizations/' +
@@ -568,15 +585,24 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             },
         );
 
+        let orgUnitCode = null;
         if (!response.ok) {
             console.error('getOrgUnitCodeForOrganizationIdentifier error', response);
-
-            return null;
         } else {
             const data = await response.json();
-
-            return data['localData']['code'] || null;
+            orgUnitCode = data['localData']['code'] || null;
         }
+
+        // Cache the result (including null values to avoid retrying failed lookups)
+        this.orgUnitCodeCache.set(organizationIdentifier, orgUnitCode);
+        console.log(
+            'getOrgUnitCodeForOrganizationIdentifier cached result for',
+            organizationIdentifier,
+            ':',
+            orgUnitCode,
+        );
+
+        return orgUnitCode;
     }
 
     async calculateDistances() {
