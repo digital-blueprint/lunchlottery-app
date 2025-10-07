@@ -42,6 +42,7 @@
         "playwright": "^1.34.0",
         "playwright-core": "^1.21.1",
         "prettier": "^3.0.0",
+        "rolldown": "^1.0.0-beta.42",
         "rollup": "^4.0.0",
         "rollup-plugin-copy": "^3.3.0",
         "rollup-plugin-delete": "^3.0.0",
@@ -65,8 +66,8 @@
         "lit": "^2.7.0 || ^3.0.0"
     },
     "scripts": {
-        "build": "rollup -c",
-        "build-local": "rollup -c --environment APP_ENV:localCustom",
+        "build": "rolldown -c rollup.config.js",
+        "build-local": "rolldown -c rollup.config.js --environment APP_ENV:localCustom",
         "fix": "npm run eslint:fix && npm run prettier:fix && npm run i18next:fix",
         "check": "npm run eslint && npm run prettier && npm run i18next",
         "eslint:fix": "eslint \"**/*.{js,ts}\" --fix",
@@ -75,11 +76,11 @@
         "prettier": "prettier \"**/*.{js,json,ts,md,yaml,yml}\" --check",
         "i18next:fix": "i18next-cli extract",
         "i18next": "i18next-cli extract --ci --dry-run",
-        "watch": "rollup -c --watch",
-        "watch-local": "rollup -c --watch --environment APP_ENV:localCustom",
-        "watch-custom": "rollup -c --watch --environment APP_ENV:localCustom",
-        "watch-full": "rollup -c --watch --environment FORCE_FULL",
-        "test": "rollup -c --environment APP_ENV:test && karma start karma.conf.cjs --singleRun",
-        "test-full": "rollup -c --environment FORCE_FULL,APP_ENV:test && karma start karma.conf.cjs --singleRun"
+        "watch": "rolldown -c rollup.config.js --watch",
+        "watch-local": "rolldown -c rollup.config.js --watch --environment APP_ENV:localCustom",
+        "watch-custom": "rolldown -c rollup.config.js --watch --environment APP_ENV:localCustom",
+        "watch-full": "rolldown -c rollup.config.js --watch --environment FORCE_FULL",
+        "test": "rolldown -c rollup.config.js --environment APP_ENV:test && karma start karma.conf.cjs --singleRun",
+        "test-full": "rolldown -c rollup.config.js --environment FORCE_FULL,APP_ENV:test && karma start karma.conf.cjs --singleRun"
     }
 }
