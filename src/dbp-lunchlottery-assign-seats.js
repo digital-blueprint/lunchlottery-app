@@ -520,6 +520,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
 
     async injectOrgUnitCodesIntoSubmission(submission) {
         const organizationIds = submission['organizationIds'];
+        submission['orgUnitCodes'] = [];
 
         if (organizationIds === null || organizationIds.length === 0) {
             console.error(
@@ -531,7 +532,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         }
 
         console.log('injectOrgUnitCodeIntoSubmission organizationIds', organizationIds);
-        submission['orgUnitCodes'] = [];
 
         for (let organizationId of organizationIds) {
             console.log('injectOrgUnitCodeIntoSubmission organizationId', organizationId);
