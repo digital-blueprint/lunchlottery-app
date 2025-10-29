@@ -1,7 +1,8 @@
 # Use `just <recipe>` to run a recipe
 # https://just.systems/man/en/
 
-import "vendor/toolkit/shared/justfile"
+import ".shared/common.just"
+import ".shared/dbp-app.just"
 
 # By default, run the `--list` command
 default:
@@ -9,4 +10,4 @@ default:
 
 # Variables
 
-zellijSession := "lunchlottery-app"
+zellijSession := "esign-app"
