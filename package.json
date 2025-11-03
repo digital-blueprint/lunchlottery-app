@@ -10,6 +10,10 @@
         "registry": "https://registry.npmjs.org",
         "access": "public"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/digital-blueprint/lunchlottery-app.git"
+    },
     "workspaces": [
         "vendor/toolkit/packages/*"
     ],
