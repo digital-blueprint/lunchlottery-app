@@ -1,13 +1,8 @@
 import url from 'node:url';
 import process from 'node:process';
 import {globSync} from 'node:fs';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import terser from '@rollup/plugin-terser';
-import json from '@rollup/plugin-json';
 import serve from 'rollup-plugin-serve';
 import license from 'rollup-plugin-license';
-import del from 'rollup-plugin-delete';
 import emitEJS from 'rollup-plugin-emit-ejs';
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
 import {
@@ -29,7 +24,6 @@ let httpHost =
     process.env.ROLLUP_WATCH_HOST !== undefined ? process.env.ROLLUP_WATCH_HOST : '127.0.0.1';
 let httpPort =
     process.env.ROLLUP_WATCH_PORT !== undefined ? parseInt(process.env.ROLLUP_WATCH_PORT) : 8001;
-let isRolldown = process.argv.some((arg) => arg.includes('rolldown'));
 
 // if true, app assets and configs are whitelabel
 let whitelabel;
@@ -143,15 +137,14 @@ export default (async () => {
             chunkFileNames: 'shared/[name].[hash].js',
             format: 'esm',
             sourcemap: true,
+            minify: prodBuild,
+            cleanDir: true,
         },
         treeshake: prodBuild,
         moduleTypes: {
             '.css': 'js', // work around rolldown handling the CSS import before the URL plugin can
         },
         plugins: [
-            del({
-                targets: 'dist/*',
-            }),
             whitelabel &&
                 emitEJS({
                     src: 'assets',
@@ -200,12 +193,6 @@ export default (async () => {
                         appDomain: config.appDomain,
                     },
                 }),
-            !isRolldown &&
-                resolve({
-                    browser: true,
-                    preferBuiltins: true,
-                    exportConditions: !prodBuild ? ['development'] : [],
-                }),
             prodBuild &&
                 license({
                     banner: {
@@ -240,11 +227,6 @@ export default (async () => {
                         },
                     },
                 }),
-            !isRolldown &&
-                commonjs({
-                    include: 'node_modules/**',
-                }),
-            !isRolldown && json(),
             whitelabel &&
                 (await assetPlugin(pkg.name, 'dist', {
                     copyTargets: [
@@ -346,7 +328,6 @@ export default (async () => {
                         ],
                     ],
                 }),
-            prodBuild ? terser() : false,
             watch
                 ? serve({
                       contentBase: '.',
