@@ -152,7 +152,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                 field: 'possibleDates',
                 responsive: 9,
                 width: 120,
-                visible: 0,
+                visible: false,
                 formatter: function (cell, formatterParams, onRendered) {
                     return cell.getValue().join(', ');
                 }.bind(this),
