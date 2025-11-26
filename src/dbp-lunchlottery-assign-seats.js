@@ -277,15 +277,29 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
 
     dateFormatter(cell, formatterParams, onRendered) {
         let value = cell.getValue();
-        if (value) {
+        if (value && typeof value === 'string' && !isNaN(Date.parse(value))) {
             const date = new Date(value);
             let dateString = '';
             dateString += ('0' + date.getDate()).slice(-2) + '.';
             dateString += ('0' + (date.getMonth() + 1)).slice(-2) + '.';
             dateString += date.getFullYear();
             value = dateString;
+            return value;
         }
-        return value;
+    }
+
+    dateTitleFormatter(cell, formatterParams, onRendered) {
+        const definition = cell.getColumn().getDefinition();
+        let value = definition.title;
+        if (value && typeof value === 'string' && !isNaN(Date.parse(value))) {
+            const date = new Date(value);
+            let dateString = '';
+            dateString += ('0' + date.getDate()).slice(-2) + '.';
+            dateString += ('0' + (date.getMonth() + 1)).slice(-2) + '.';
+            dateString += date.getFullYear();
+            value = dateString;
+            return value;
+        }
     }
 
     async fetchSubmissionsCollection() {
@@ -366,7 +380,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             dataOptionsColumns.push({
                 title: title,
                 field: identifier,
-                titleFormatter: this.dateFormatter.bind(this),
+                titleFormatter: this.dateTitleFormatter.bind(this),
                 formatter: function (cell, formatterParams, onRendered) {
                     if (cell.getValue()) {
                         return this._i18n.t('results.availableDate-true');
