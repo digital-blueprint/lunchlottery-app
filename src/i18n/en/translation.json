@@ -1,6 +1,7 @@
 {
     "agreement": {
-        "label": "*I agree that photos will be taken in order to promote and document the event. The photos will be published on presentations or websites of TU Graz. Detailed information on Privacy Policy can be found",
+        "label": "*I agree that photos will be taken in order to promote and document the event. The photos will be published on presentations or websites of TU Graz. Detailed information on Privacy Policy can be found {{link}}.",
+        "link-text": "here",
         "no": "No",
         "privacy-policy": "https://tu4u.tugraz.at/fileadmin/user_upload/redaktion/Information/Serviceeinrichtungen/Personal-_und_Kompetenzentwicklung/Lunch_Lottery/Datenschutzerklaerung_Lunch_Lottery_ENG.pdf",
         "yes": "Yes"
@@ -65,7 +66,8 @@
         "settings": "Table settings"
     },
     "register": {
-        "description-text": "Information on the conditions of participation and data protection for initiatives of The Human Resource Development Department can be found",
+        "description-link-text": "here",
+        "description-text": "Information on the conditions of participation and data protection for initiatives of The Human Resource Development Department can be found {{link}}.",
         "registration-success-text": "Thank you for registering for the Lunch Lottery!"
     },
     "results": {

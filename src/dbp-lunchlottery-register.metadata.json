@@ -14,9 +14,5 @@
         "de": "Ermöglicht die Anmeldung zum nächsten Lunch Lottery Event",
         "en": "Register for The Lunch Lottery"
     },
-    "subscribe": "lang,auth,entry-point-url",
-    "here": {
-        "de": "hier",
-        "en": "here"
-    }
+    "subscribe": "lang,auth,entry-point-url"
 }

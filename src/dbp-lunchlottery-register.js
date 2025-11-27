@@ -3,11 +3,10 @@ import {ScopedElementsMixin} from '@dbp-toolkit/common';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import {Icon, Button} from '@dbp-toolkit/common';
 import * as commonStyles from '@dbp-toolkit/common/styles';
-import metadata from './dbp-lunchlottery-register.metadata.json';
-import {Activity} from './activity.js';
 import {FORM_IDENTIFIER} from './constants.js';
 import DBPLunchlotteryLitElement from './dbp-lunchlottery-lit-element';
 import {classMap} from 'lit/directives/class-map.js';
+import {replacePlaceholders} from './utils.js';
 
 const FORM_AVAILABILITY_INIT = 'i';
 const FORM_AVAILABILITY_AVAILABLE = 'a';
@@ -17,7 +16,6 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
     constructor() {
         super();
         this.entryPointUrl = null;
-        this.activity = new Activity(metadata);
         this.identifier = null;
         this.firstName = null;
         this.lastName = null;
@@ -427,11 +425,6 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         const showSuccessText = this.isLoggedIn() && this.wasSubmissionSuccessful;
 
         return html`
-            <h2>${this.activity.getName(this.lang)}</h2>
-            <p class="subheadline">
-                <slot name="description">${this.activity.getDescription(this.lang)}</slot>
-            </p>
-
             <div class="control full-size-spinner ${classMap({hidden: !showSpinner})}">
                 <span class="loading">
                     <dbp-mini-spinner text=${i18n.t('loading')}></dbp-mini-spinner>
@@ -441,11 +434,16 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             <div class="${classMap({hidden: !showForm})}">
                 <slot name="activity-description">
                     <p>
-                        ${i18n.t('register.description-text')}
-                        <a target="_blank" rel="noopener" href=${i18n.t('further-information')}>
-                            ${this.activity.getHere(this.lang)}
-                        </a>
-                        .
+                        ${replacePlaceholders(i18n.t('register.description-text'), {
+                            link: html`
+                                <a
+                                    target="_blank"
+                                    rel="noopener"
+                                    href=${i18n.t('further-information')}>
+                                    ${i18n.t('register.description-link-text')}
+                                </a>
+                            `,
+                        })}
                     </p>
                     <br />
                 </slot>
@@ -551,14 +549,16 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
                     <div class="field field--agreement">
                         <label class="label">
-                            ${i18n.t('agreement.label')}
-                            <a
-                                target="_blank"
-                                rel="noopener"
-                                href=${i18n.t('agreement.privacy-policy')}>
-                                ${this.activity.getHere(this.lang)}
-                            </a>
-                            .
+                            ${replacePlaceholders(i18n.t('agreement.label'), {
+                                link: html`
+                                    <a
+                                        target="_blank"
+                                        rel="noopener"
+                                        href=${i18n.t('agreement.privacy-policy')}>
+                                        ${i18n.t('agreement.link-text')}
+                                    </a>
+                                `,
+                            })}
                         </label>
                         <div class="control">
                             <div>

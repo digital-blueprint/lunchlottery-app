@@ -5,8 +5,6 @@ import {send} from '@dbp-toolkit/common/notification';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import {Icon, MiniSpinner} from '@dbp-toolkit/common';
 import * as commonStyles from '@dbp-toolkit/common/styles';
-import metadata from './dbp-lunchlottery-manage.metadata.json';
-import {Activity} from './activity.js';
 import {FORM_IDENTIFIER} from './constants';
 import DBPLunchlotteryLitElement from './dbp-lunchlottery-lit-element';
 
@@ -16,7 +14,6 @@ const VIEW_SETTINGS = 'settings';
 class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) {
     constructor() {
         super();
-        this.activity = new Activity(metadata);
         this.name = null;
         this.entryPointUrl = null;
 
@@ -303,11 +300,6 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
         let i18n = this._i18n;
 
         return html`
-            <h2>${this.activity.getName(this.lang)}</h2>
-            <p class="subheadline">
-                <slot name="description">${this.activity.getDescription(this.lang)}</slot>
-            </p>
-
             <div class="control full-size-spinner ${classMap({hidden: !this.loading})}">
                 <span class="loading">
                     <dbp-mini-spinner text=${i18n.t('loading')}></dbp-mini-spinner>
