@@ -100,13 +100,13 @@ export class LunchLotteryTable {
                 }
             }
 
-            console.log('getShortestDistance seat', seat);
-            console.log('getShortestDistance submission', submission);
+            // console.log('getShortestDistance seat', seat);
+            // console.log('getShortestDistance submission', submission);
 
             // Do the matching with the orgUnitCodes, that are prepared for that usage
             // in LunchLotteryAssignSeats.injectOrgUnitCodesIntoSubmission
             submission['orgUnitCodes'].forEach((orgUnitCode) => {
-                console.log('getShortestDistance orgUnitCode', orgUnitCode);
+                // console.log('getShortestDistance orgUnitCode', orgUnitCode);
 
                 if (seat['orgUnitCodes'].includes(orgUnitCode)) {
                     distance += 9999;
@@ -114,7 +114,7 @@ export class LunchLotteryTable {
             });
         });
 
-        console.log('getShortestDistance distance', distance);
+        // console.log('getShortestDistance distance', distance);
 
         return [distance];
     }

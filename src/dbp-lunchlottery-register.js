@@ -21,8 +21,8 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         this.lastName = null;
         this.dates = null;
         this.email = null;
+        this.organizations = [];
         this.organizationIds = [];
-        this.organizationNames = [];
         this.preferredLanguage = null;
         this.formAvailability = FORM_AVAILABILITY_INIT;
         this.possibleDates = [];
@@ -52,7 +52,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             dates: {type: Array, attribute: false},
             email: {type: String, attribute: false},
             organizationIds: {type: Array, attribute: false},
-            organizationNames: {type: Array, attribute: false},
+            organizations: {type: Array, attribute: false},
             formAvailability: {type: String, attribute: false},
             language: {type: String, attribute: false},
             container: {type: Object},
@@ -130,12 +130,15 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
     async fetchOrganizations() {
         try {
             this.loadingOrganizations = true;
-            this.organizationNames = [];
+            this.organizations = [];
 
             let organizations = [];
             for (let orgId of this.organizationIds) {
                 let response = await fetch(
-                    this.entryPointUrl + '/base/organizations/' + encodeURIComponent(orgId),
+                    this.entryPointUrl +
+                        '/base/organizations/' +
+                        encodeURIComponent(orgId) +
+                        '?includeLocal=code',
                     {
                         headers: {
                             'Content-Type': 'application/ld+json',
@@ -146,17 +149,23 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                 );
                 if (!response.ok) {
                     if (response.status === 404) {
-                        organizations.push(this._i18n.t('unknown-org', {id: orgId}));
+                        organizations.push({
+                            code: orgId,
+                            name: this._i18n.t('unknown-org', {id: orgId}),
+                        });
                     } else {
                         this.disableForm = true;
                         this.handleErrorResponse(response);
                     }
                 } else {
                     const data = await response.json();
-                    organizations.push(data.name);
+                    organizations.push({
+                        code: data.localData.code ?? orgId,
+                        name: data.name,
+                    });
                 }
             }
-            this.organizationNames = organizations;
+            this.organizations = organizations;
         } finally {
             this.loadingOrganizations = false;
         }
@@ -301,8 +310,8 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                 givenName: this.firstName,
                 familyName: this.lastName,
                 email: this.email,
-                organizationIds: this.organizationIds,
-                organizationNames: this.organizationNames,
+                organizationIds: this.organizations.map((org) => org.code),
+                organizationNames: this.organizations.map((org) => org.name),
                 preferredLanguage: language,
                 possibleDates: dates,
                 privacyConsent: agreement,
@@ -482,7 +491,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                                 id="reg-organization"
                                 type="text"
                                 class="textField"
-                                value="${this.organizationNames.join(', ')}"
+                                value="${this.organizations.map((org) => org.name).join(', ')}"
                                 disabled />
                         </div>
                     </div>

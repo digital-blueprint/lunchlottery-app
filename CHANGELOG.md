@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Get organization code during registration (where we already fetch the organization) and replace the organization ids in
+  the submission data by the organization codes for better performance during table assignment
+
 ## v1.2.0
 
 - Avoid matching users that are part of the same toplevel organization when assigning seats.

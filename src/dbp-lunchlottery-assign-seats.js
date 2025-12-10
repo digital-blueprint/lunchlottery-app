@@ -529,102 +529,27 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         return lunchLotteryEvent;
     }
 
-    async injectOrgUnitCodesIntoSubmission(submission) {
-        const organizationIds = submission['organizationIds'];
-        submission['orgUnitCodes'] = [];
+    injectOrgUnitCodesIntoSubmission(submission) {
+        // remove the last character from each org unit code to prevent people under the same parent
+        // org unit from being seated together
+        submission.orgUnitCodes = (submission.organizationIds ?? [])
+            .map((orgUnitId) => String(orgUnitId ?? ''))
+            .filter((orgUnitId) => orgUnitId.length > 0)
+            .map((orgUnitId) => (orgUnitId.length > 1 ? orgUnitId.slice(0, -1) : orgUnitId));
 
-        if (organizationIds === null || organizationIds.length === 0) {
-            console.error(
-                'injectOrgUnitCodeIntoSubmission: no organizationId for submission',
-                submission,
-            );
-
-            return submission;
-        }
-
-        console.log('injectOrgUnitCodeIntoSubmission organizationIds', organizationIds);
-
-        for (let organizationId of organizationIds) {
-            console.log('injectOrgUnitCodeIntoSubmission organizationId', organizationId);
-            // Check if organizationId is a promise and skip if it is
-            if (organizationId instanceof Promise) {
-                return;
-            }
-
-            const orgUnitCode = await this.getOrgUnitCodeForOrganizationIdentifier(
-                organizationId,
-                this.auth.token,
-            );
-
-            if (orgUnitCode !== null) {
-                // Ignore the last character of the orgUnitCode for matching
-                submission['orgUnitCodes'].push('orgUnitCode-' + orgUnitCode.slice(0, -1));
-            } else {
-                submission['orgUnitCodes'].push('organizationId-' + organizationId);
-            }
-        }
-
-        console.log('injectOrgUnitCodeIntoSubmission submission', submission);
         return submission;
-    }
-
-    async getOrgUnitCodeForOrganizationIdentifier(organizationIdentifier, authToken) {
-        // Check the cache first to avoid repeated API calls
-        if (this.orgUnitCodeCache.has(organizationIdentifier)) {
-            console.log(
-                'getOrgUnitCodeForOrganizationIdentifier cache hit for',
-                organizationIdentifier,
-            );
-            return this.orgUnitCodeCache.get(organizationIdentifier);
-        }
-
-        console.log(
-            'getOrgUnitCodeForOrganizationIdentifier cache miss, fetching for',
-            organizationIdentifier,
-        );
-
-        const response = await fetch(
-            this.entryPointUrl +
-                '/base/organizations/' +
-                encodeURIComponent(organizationIdentifier) +
-                '?includeLocal=code',
-            {
-                headers: {
-                    'Content-Type': 'application/ld+json',
-                    Authorization: 'Bearer ' + authToken,
-                },
-            },
-        );
-
-        let orgUnitCode = null;
-        if (!response.ok) {
-            console.error('getOrgUnitCodeForOrganizationIdentifier error', response);
-        } else {
-            const data = await response.json();
-            orgUnitCode = data['localData']['code'] || null;
-        }
-
-        // Cache the result (including null values to avoid retrying failed lookups)
-        this.orgUnitCodeCache.set(organizationIdentifier, orgUnitCode);
-        console.log(
-            'getOrgUnitCodeForOrganizationIdentifier cached result for',
-            organizationIdentifier,
-            ':',
-            orgUnitCode,
-        );
-
-        return orgUnitCode;
     }
 
     async calculateDistances() {
         let lunchLotteryEvent = this.createLunchLotteryEvent();
         let submissions = this.expandedSubmissions;
 
+        console.log('calculateDistances submissions', submissions);
         while (submissions.length) {
             let distances = {};
             for (let submission of submissions) {
-                submission = await this.injectOrgUnitCodesIntoSubmission(submission);
-                console.log('calculateDistances submission', submission);
+                submission = this.injectOrgUnitCodesIntoSubmission(submission);
+                // console.log('calculateDistances submission', submission);
                 const [distance, table, date] = lunchLotteryEvent.getShortestDistance(submission);
                 // we need integer keys for shortest distance; float numbers are casted to string, then it's not working
                 const distanceKey = Math.floor(distance);
