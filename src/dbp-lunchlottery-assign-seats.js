@@ -137,7 +137,8 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             {
                 title: this._i18n.t('results.organizationNames'),
                 field: 'organizationNames',
-                minWidth: 300,
+                minWidth: 250,
+                maxWidth: 350,
                 responsive: 1,
                 formatter: function (cell, formatterParams, onRendered) {
                     return cell.getValue().join(', ');

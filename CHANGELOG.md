@@ -4,6 +4,7 @@
 
 - Get organization code during registration (where we already fetch the organization) and replace the organization ids in
   the submission data by the organization codes for better performance during table assignment
+- Limit the width of organization names column in the seat assignment table to avoid layout issues with long names
 
 ## v1.2.0
 
