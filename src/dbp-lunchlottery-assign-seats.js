@@ -184,6 +184,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
 
         // settings
         this.processButtonDisabled = true;
+        this.processButtonDisabledReason = null;
         this.tables = {};
 
         // results
@@ -207,6 +208,8 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
             loading: {type: Boolean, attribute: false},
             allExpanded: {type: Boolean, attribute: false},
+            processButtonDisabled: {type: Boolean, attribute: false},
+            processButtonDisabledReason: {type: String, attribute: false},
         };
     }
 
@@ -445,26 +448,34 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
     validateSettings() {
         if (this.expandedDates.length) {
             this.processButtonDisabled = false;
+            this.processButtonDisabledReason = null;
             this.expandedDates.forEach((expandedDate, index) => {
+                let dateSeats = 0;
                 if (index in this.tables && this.tables[index].length) {
-                    let dateSeats = 0;
                     this.tables[index].forEach((table) => {
                         const tableSeats = table['number'] * table['seats'];
-                        if (tableSeats < 0) {
-                            this.processButtonDisabled = true;
-                        }
                         dateSeats += tableSeats;
                     });
-                    if (dateSeats <= 0) {
-                        this.processButtonDisabled = true;
-                    }
-                } else {
+                }
+                if (dateSeats <= 0) {
                     this.processButtonDisabled = true;
+                    this.processButtonDisabledReason = this._i18n.t('process.no-seats');
                 }
             });
         } else {
             this.processButtonDisabled = true;
+            this.processButtonDisabledReason = this._i18n.t('process.no-dates');
         }
+    }
+
+    update(changedProperties) {
+        super.update(changedProperties);
+
+        changedProperties.forEach((oldValue, propName) => {
+            if (propName === 'lang') {
+                this.validateSettings();
+            }
+        });
     }
 
     saveTables() {
@@ -792,7 +803,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                                                     class="textField"
                                                     size="4"
                                                     maxlength="2"
-                                                    min="1"
+                                                    min="0"
                                                     max="99"
                                                     .value=${table.number}
                                                     @change=${(e) =>
@@ -809,7 +820,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                                                     class="textField"
                                                     size="2"
                                                     maxlength="1"
-                                                    min="1"
+                                                    min="0"
                                                     max="9"
                                                     .value=${table.seats}
                                                     @change=${(e) =>
@@ -848,6 +859,13 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                     `,
                 )}
                 <div>
+                    ${this.processButtonDisabledReason
+                        ? html`
+                              <p>
+                                  <em>${this.processButtonDisabledReason}</em>
+                              </p>
+                          `
+                        : ''}
                     <dbp-loading-button
                         title="${i18n.t('process.run')}"
                         ?disabled=${this.processButtonDisabled}

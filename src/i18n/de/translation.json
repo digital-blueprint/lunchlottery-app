@@ -62,6 +62,8 @@
     "organization": "*Organisationseinheit",
     "process": {
         "download": "Excel-Datei herunterladen",
+        "no-dates": "Es wurden keine Veranstaltungstermine festgelegt",
+        "no-seats": "Ein oder mehrere Termine haben keine Sitzplätze zugewiesen",
         "run": "Plätze zuweisen",
         "settings": "Tischkonfiguration"
     },

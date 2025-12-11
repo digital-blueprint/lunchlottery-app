@@ -62,6 +62,8 @@
     "organization": "*Organisational unit",
     "process": {
         "download": "Download Excel file",
+        "no-dates": "No event dates have been set",
+        "no-seats": "One or more dates have no seats assigned",
         "run": "Assign seats",
         "settings": "Table settings"
     },
