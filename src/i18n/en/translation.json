@@ -64,6 +64,7 @@
         "download": "Download Excel file",
         "no-dates": "No event dates have been set",
         "no-seats": "One or more dates have no seats assigned",
+        "note": "Note: Seat assignments are not saved and will be lost when the page is closed or reloaded",
         "run": "Assign seats",
         "settings": "Table settings"
     },

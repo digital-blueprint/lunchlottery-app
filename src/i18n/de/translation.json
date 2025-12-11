@@ -64,6 +64,7 @@
         "download": "Excel-Datei herunterladen",
         "no-dates": "Es wurden keine Veranstaltungstermine festgelegt",
         "no-seats": "Ein oder mehrere Termine haben keine Sitzplätze zugewiesen",
+        "note": "Hinweis: Sitzplatzzuweisungen werden nicht gespeichert und gehen beim Schließen oder Neuladen der Seite verloren",
         "run": "Plätze zuweisen",
         "settings": "Tischkonfiguration"
     },

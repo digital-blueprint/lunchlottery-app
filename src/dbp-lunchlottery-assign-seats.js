@@ -859,13 +859,15 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                     `,
                 )}
                 <div>
-                    ${this.processButtonDisabledReason
-                        ? html`
-                              <p>
-                                  <em>${this.processButtonDisabledReason}</em>
-                              </p>
-                          `
-                        : ''}
+                    ${
+                        this.processButtonDisabledReason
+                            ? html`
+                                  <p>
+                                      <em>${this.processButtonDisabledReason}</em>
+                                  </p>
+                              `
+                            : ''
+                    }
                     <dbp-loading-button
                         title="${i18n.t('process.run')}"
                         ?disabled=${this.processButtonDisabled}
@@ -881,6 +883,8 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                         <dbp-icon title="${i18n.t('process.run')}" name="dinner"></dbp-icon>
                         <span>${i18n.t('process.run')}</span>
                     </dbp-loading-button>
+
+                    <br><br><p><em>${i18n.t('process.note')}</em></p></em></p>
                 </div>
             </div>
 
