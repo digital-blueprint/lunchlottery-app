@@ -45,6 +45,8 @@
         "deleteDialogCancel": "Abbrechen",
         "deleteDialogConfirm": "Ja, alle Anmeldungen löschen",
         "deleteDialogText": "Sind Sie sicher, dass Sie alle Anmeldungen löschen möchten?",
+        "error-body": "Es gibt bereits Anmeldungen mit den aktuellen Veranstaltungsterminen. Bitte passen Sie die Termine an oder löschen Sie zuerst alle Anmeldungen.",
+        "error-summary": "Fehler beim Speichern der Einstellungen.",
         "remove": "Löschen",
         "save": "Speichern",
         "settings": "Einstellungen"

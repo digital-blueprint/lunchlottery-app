@@ -122,6 +122,45 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
         }
     }
 
+    async fetchSubmissionsCollection() {
+        const response = await this.httpGetAsync(
+            this.entryPointUrl +
+                '/formalize/submissions?formIdentifier=' +
+                encodeURIComponent(FORM_IDENTIFIER) +
+                '&perPage=99999',
+            {
+                headers: {
+                    'Content-Type': 'application/ld+json',
+                    Authorization: 'Bearer ' + this.auth.token,
+                },
+            },
+        );
+
+        if (!response.ok) {
+            this.handleErrorResponse(response);
+        }
+        return response;
+    }
+
+    async getSubmissions() {
+        let response = await this.fetchSubmissionsCollection();
+        const responseBody = await response.json();
+        let submissions = {};
+        let submissionsCreated = {};
+        for (let i = 0; i < responseBody['hydra:member'].length; ++i) {
+            const item = JSON.parse(responseBody['hydra:member'][i]['dataFeedElement']);
+            const created = new Date(responseBody['hydra:member'][i]['dateCreated']);
+            if (
+                !(item['identifier'] in submissions) ||
+                created > submissionsCreated[item['identifier']]
+            ) {
+                submissions[item['identifier']] = item;
+                submissionsCreated[item['identifier']] = created;
+            }
+        }
+        return Object.values(submissions);
+    }
+
     async clearFormSubmissions() {
         const response = await this.httpGetAsync(
             this.entryPointUrl +
@@ -182,22 +221,47 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
 
     async save() {
         this.loading = true;
-        this.formData['availabilityStarts'] = this.availabilityStarts.toISOString();
-        this.formData['availabilityEnds'] = this.availabilityEnds.toISOString();
-        let formSchema = JSON.parse(this.formData['dataFeedSchema']);
-        if (this.dates.length) {
-            formSchema['properties']['possibleDates']['items']['enum'] = [];
-            for (let i = 0; i < this.dates.length; ++i) {
-                // we need the timezone offset to get the time right on the server for the registration confirmation email
-                const date = this.dateToISOStringWithTimezoneOffset(this.dates[i]);
-                formSchema['properties']['possibleDates']['items']['enum'].push(date);
+        try {
+            this.formData['availabilityStarts'] = this.availabilityStarts.toISOString();
+            this.formData['availabilityEnds'] = this.availabilityEnds.toISOString();
+            let formSchema = JSON.parse(this.formData['dataFeedSchema']);
+            if (this.dates.length) {
+                formSchema['properties']['possibleDates']['items']['enum'] = [];
+                for (let i = 0; i < this.dates.length; ++i) {
+                    // we need the timezone offset to get the time right on the server for the registration confirmation email
+                    const date = this.dateToISOStringWithTimezoneOffset(this.dates[i]);
+                    formSchema['properties']['possibleDates']['items']['enum'].push(date);
+                }
+            } else {
+                delete formSchema['properties']['possibleDates']['items']['enum'];
             }
-        } else {
-            delete formSchema['properties']['possibleDates']['items']['enum'];
+
+            // check that all used possible dates are still present, otherwise reject the save
+            let usedPossibleDate = new Set();
+            let submissions = await this.getSubmissions();
+            for (let submission of submissions) {
+                for (let date of submission['possibleDates']) {
+                    usedPossibleDate.add(date);
+                }
+            }
+            let newDatesToSave = formSchema['properties']['possibleDates']['items']['enum'] ?? [];
+            for (let usedDate of usedPossibleDate) {
+                if (!newDatesToSave.includes(usedDate)) {
+                    send({
+                        summary: this._i18n.t('manage.error-summary'),
+                        body: this._i18n.t('manage.error-body'),
+                        type: 'danger',
+                        timeout: 5,
+                    });
+                    return;
+                }
+            }
+
+            this.formData['dataFeedSchema'] = JSON.stringify(formSchema);
+            await this.updateFormData();
+        } finally {
+            this.loading = false;
         }
-        this.formData['dataFeedSchema'] = JSON.stringify(formSchema);
-        await this.updateFormData();
-        this.loading = false;
     }
 
     showDialog() {

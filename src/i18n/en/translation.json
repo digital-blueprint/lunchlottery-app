@@ -45,6 +45,8 @@
         "deleteDialogCancel": "Cancel",
         "deleteDialogConfirm": "Yes, delete all registrations",
         "deleteDialogText": "Are you sure you want to delete all registrations?",
+        "error-body": "There exist registrations with the current event dates. Please adjust the dates or delete all registrations first.",
+        "error-summary": "Error saving settings.",
         "remove": "Remove",
         "save": "Save settings",
         "settings": "Settings"
