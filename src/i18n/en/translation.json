@@ -7,7 +7,6 @@
         "yes": "Yes"
     },
     "availability": "Registration for the Lunch Lottery is currently closed.",
-    "collapse-all": "Collapse all",
     "date": {
         "label": "*Preferred day (Please select all possible options.)"
     },
@@ -27,7 +26,6 @@
         "unprocessable_entity-body": "The registration data is invalid oder incomplete.",
         "unprocessable_entity-title": "Registration data invalid"
     },
-    "expand-all": "Expand all",
     "further-information": "https://tu4u.tugraz.at/fileadmin/user_upload/redaktion/Information/Serviceeinrichtungen/Personal-_und_Kompetenzentwicklung/Conditions_of_Participation_Human_Resource_Development_Department_TU_Graz.pdf",
     "languages": {
         "both": "Both possible",

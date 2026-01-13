@@ -19,7 +19,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         super();
         this.name = null;
         this.entryPointUrl = null;
-        this.allExpanded = false;
 
         // activity
         this.view = VIEW_INIT;
@@ -75,38 +74,12 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         this.dataOptions = {
             langs: langs,
             layout: 'fitDataFill',
-            // layout: 'fitColumns',
-            responsiveLayout: 'collapse',
-            responsiveLayoutCollapseStartOpen: false,
+            responsiveLayout: false,
             columns: [],
             columnDefaults: {
                 vertAlign: 'middle',
                 hozAlign: 'left',
                 resizable: false,
-            },
-            responsiveLayoutCollapseFormatter: function (data) {
-                //data - an array of objects containing the column title and value for each cell
-                let table = document.createElement('table');
-                data.forEach(function (row) {
-                    let tableRow = document.createElement('tr');
-                    // format date title
-                    if (!isNaN(Date.parse(row.title))) {
-                        const date = new Date(row.title);
-                        let dateString = '';
-                        dateString += ('0' + date.getDate()).slice(-2) + '.';
-                        dateString += ('0' + (date.getMonth() + 1)).slice(-2) + '.';
-                        dateString += date.getFullYear();
-                        row.title = dateString;
-                    }
-                    if (row.value === undefined) {
-                        row.value = '';
-                    }
-                    tableRow.innerHTML =
-                        '<td><strong>' + row.title + '</strong></td><td>' + row.value + '</td>';
-                    table.appendChild(tableRow);
-                });
-
-                return Object.keys(data).length ? table : '';
             },
         };
         this.dataOptionsColumnsPrepend = [
@@ -115,23 +88,19 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                 field: 'details',
                 hozAlign: 'center',
                 width: 65,
-                formatter: 'responsiveCollapse',
                 headerHozAlign: 'center',
                 sorter: 'string',
                 headerSort: false,
-                responsive: 0,
             },
             {
                 title: this._i18n.t('results.givenName'),
                 field: 'givenName',
                 minWidth: 120,
-                responsive: 0,
             },
             {
                 title: this._i18n.t('results.familyName'),
                 field: 'familyName',
                 minWidth: 120,
-                responsive: 0,
             },
             {title: this._i18n.t('results.email'), field: 'email', visible: 0},
             {
@@ -139,7 +108,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                 field: 'organizationNames',
                 minWidth: 250,
                 maxWidth: 350,
-                responsive: 1,
                 formatter: function (cell, formatterParams, onRendered) {
                     return cell.getValue().join(', ');
                 }.bind(this),
@@ -148,7 +116,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             {
                 title: this._i18n.t('results.possibleDates'),
                 field: 'possibleDates',
-                responsive: 9,
                 width: 120,
                 visible: false,
                 formatter: function (cell, formatterParams, onRendered) {
@@ -161,16 +128,14 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                 width: 120,
                 minWidth: 120,
                 widthShrink: 0,
-                responsive: 1,
                 formatter: this.dateFormatter.bind(this),
             },
-            {title: this._i18n.t('results.table'), field: 'table', responsive: 1},
+            {title: this._i18n.t('results.table'), field: 'table'},
         ];
         this.dataOptionsColumnsAppend = [
             {
                 title: this._i18n.t('results.privacyConsent'),
                 field: 'privacyConsent',
-                responsive: 9,
                 formatter: function (cell, formatterParams, onRendered) {
                     if (cell.getValue()) {
                         return this._i18n.t('results.privacyConsent-true');
@@ -207,7 +172,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             name: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
             loading: {type: Boolean, attribute: false},
-            allExpanded: {type: Boolean, attribute: false},
             processButtonDisabled: {type: Boolean, attribute: false},
             processButtonDisabledReason: {type: String, attribute: false},
         };
@@ -725,35 +689,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             <div class="${classMap({hidden: this.loading || this.view !== VIEW_SUBMISSIONS})}">
                 <p>${i18n.t('submissions.total')} ${this.submissions.length}</p>
                 <div class="control-button-container">
-                    <dbp-loading-button
-                        id="expand-all-btn"
-                        class="${classMap({hidden: this.allExpanded})}"
-                        value="${i18n.t('expand-all')}"
-                        @click="${() => {
-                            this.allExpanded = true;
-                            const table = /** @type {TabulatorTable} */ (
-                                this._('#tabulator-table-submissions')
-                            );
-                            table.expandAll();
-                        }}"
-                        title="${i18n.t('expand-all')}">
-                        ${i18n.t('expand-all')}
-                    </dbp-loading-button>
-
-                    <dbp-loading-button
-                        id="collapse-all-btn"
-                        class="${classMap({hidden: !this.allExpanded})}"
-                        value="${i18n.t('collapse-all')}"
-                        @click="${() => {
-                            this.allExpanded = false;
-                            const table = /** @type {TabulatorTable} */ (
-                                this._('#tabulator-table-submissions')
-                            );
-                            table.collapseAll();
-                        }}"
-                        title="${i18n.t('collapse-all')}">
-                        ${i18n.t('collapse-all')}
-                    </dbp-loading-button>
                     <button
                         type="button"
                         class="button"
@@ -890,35 +825,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
 
             <div class="${classMap({hidden: this.loading || this.view !== VIEW_RESULTS})}">
                 <div class="control-button-container">
-                    <dbp-loading-button
-                        id="expand-all-btn"
-                        class="${classMap({hidden: this.allExpanded})}"
-                        value="${i18n.t('expand-all')}"
-                        @click="${() => {
-                            this.allExpanded = true;
-                            const table = /** @type {TabulatorTable} */ (
-                                this._('#tabulator-table-results')
-                            );
-                            table.expandAll();
-                        }}"
-                        title="${i18n.t('expand-all')}">
-                        ${i18n.t('expand-all')}
-                    </dbp-loading-button>
-
-                    <dbp-loading-button
-                        id="collapse-all-btn"
-                        class="${classMap({hidden: !this.allExpanded})}"
-                        value="${i18n.t('collapse-all')}"
-                        @click="${() => {
-                            this.allExpanded = false;
-                            const table = /** @type {TabulatorTable} */ (
-                                this._('#tabulator-table-results')
-                            );
-                            table.collapseAll();
-                        }}"
-                        title="${i18n.t('collapse-all')}">
-                        ${i18n.t('collapse-all')}
-                    </dbp-loading-button>
                     <button
                         type="button"
                         class="button"

@@ -7,7 +7,6 @@
         "yes": "Ja"
     },
     "availability": "Die Anmeldung zur Lunch Lottery ist derzeit geschlossen.",
-    "collapse-all": "Alles zuklappen",
     "date": {
         "label": "*Gewünschter Tag (Bitte geben Sie alle für Sie möglichen Optionen an.)"
     },
@@ -27,7 +26,6 @@
         "unprocessable_entity-body": "Die Anmeldedaten sind ungültig oder unvollständig.",
         "unprocessable_entity-title": "Anmeldedaten ungültig"
     },
-    "expand-all": "Alles aufklappen",
     "further-information": "https://tu4u.tugraz.at/fileadmin/user_upload/redaktion/Information/Serviceeinrichtungen/Personal-_und_Kompetenzentwicklung/Teilnahmebedingungen_Personal-Kompetenzentwicklung_TU_Graz.pdf ",
     "languages": {
         "both": "Beides möglich",
