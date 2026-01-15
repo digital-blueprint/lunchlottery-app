@@ -83,6 +83,18 @@
         "shortName": "TU Graz",
         "appDomain": "https://lunch-lottery.tugraz.at/"
     },
+    "staging": {
+        "basePath": "/",
+        "entryPointURL": "https://api-test.tugraz.at",
+        "keyCloakBaseURL": "https://auth-test.tugraz.at/auth",
+        "keyCloakRealm": "tugraz",
+        "keyCloakClientId": "lunchlottery-test_tugraz_at",
+        "matomoUrl": "https://analytics.tugraz.at/",
+        "matomoSiteId": 131,
+        "hiddenActivities": [],
+        "shortName": "TU Graz",
+        "appDomain": "https://lunch-lottery-test.tugraz.at/"
+    },
     "production": {
         "basePath": "/",
         "entryPointURL": "https://api.tugraz.at",
