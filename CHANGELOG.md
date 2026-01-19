@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.1
+
+- App menu accessibility improvements
+
 ## v1.3.0
 
 - Get organization code during registration (where we already fetch the organization) and replace the organization ids in
