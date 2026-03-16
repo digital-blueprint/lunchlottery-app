@@ -84,15 +84,6 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         };
         this.dataOptionsColumnsPrepend = [
             {
-                title: 'details',
-                field: 'details',
-                hozAlign: 'center',
-                width: 65,
-                headerHozAlign: 'center',
-                sorter: 'string',
-                headerSort: false,
-            },
-            {
                 title: this._i18n.t('results.givenName'),
                 field: 'givenName',
                 minWidth: 120,
