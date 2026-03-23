@@ -557,9 +557,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                     </div>
 
                     <div class="field field--agreement">
-                        <label class="label">
-                            ${i18n.t('agreement.terms')}
-                        </label>
+                        <label class="label">${i18n.t('agreement.terms')}</label>
                         <div class="control">
                             <div>
                                 <input
@@ -587,13 +585,13 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                             <label class="label">
                                 ${replacePlaceholders(i18n.t('agreement.details'), {
                                     link: html`
-                                    <a
-                                        target="_blank"
-                                        rel="noopener"
-                                        href=${i18n.t('agreement.privacy-policy')}>
-                                        ${i18n.t('agreement.link-text')}
-                                    </a>
-                                `,
+                                        <a
+                                            target="_blank"
+                                            rel="noopener"
+                                            href=${i18n.t('agreement.privacy-policy')}>
+                                            ${i18n.t('agreement.link-text')}
+                                        </a>
+                                    `,
                                 })}
                             </label>
                         </div>

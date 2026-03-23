@@ -198,7 +198,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
     }
 
     addDate() {
-        let date = new Date();
+        let date;
         if (this.dates.length) {
             date = new Date(this.dates[this.dates.length - 1].getTime());
             date.setDate(date.getDate() + 1);
