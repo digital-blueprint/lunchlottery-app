@@ -701,6 +701,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                     lang="${this.lang}"
                     class="tabulator-table"
                     .options="${this.dataOptions}"
+                    pagination-enabled="true"
                     id="tabulator-table-submissions"></dbp-tabulator-table>
             </div>
 
@@ -836,6 +837,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                 <dbp-tabulator-table
                     lang="${this.lang}"
                     class="tabulator-table"
+                    pagination-enabled="true"
                     .options="${this.dataOptions}"
                     id="tabulator-table-results"></dbp-tabulator-table>
             </div>
