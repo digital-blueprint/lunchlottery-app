@@ -1,11 +1,17 @@
 {
     "extends": ["config:base", "group:allNonMajor", "schedule:weekends", ":automergePatch"],
-    "ignorePresets": [":prHourlyLimit2"],
     "rangeStrategy": "update-lockfile",
     "postUpdateOptions": ["npmDedupe"],
     "lockFileMaintenance": {
         "enabled": true
     },
+    "internalChecksFilter": "strict",
+    "minimumReleaseAge": "5 days",
     "cloneSubmodules": true,
-    "packageRules": []
+    "packageRules": [
+        {
+            "matchUpdateTypes": ["lockFileMaintenance"],
+            "minimumReleaseAge": null
+        }
+    ]
 }
