@@ -376,6 +376,11 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                     color: blue;
                 }
 
+                .label a {
+                    display: inline;
+                    margin-right: -0.25em; /* Adjust this value until the dot sits perfectly */
+                }
+
                 textarea {
                     width: 100%;
                     resize: none;
