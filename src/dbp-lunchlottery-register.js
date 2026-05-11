@@ -607,6 +607,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                             @click="${this.buttonClickHandler}"
                             type="is-primary"
                             class="${classMap({disabled: isPostingSubmission})}">
+                            <dbp-icon name="send-diagonal" aria-hidden="true"></dbp-icon>
                             ${i18n.t('submit')}
                         </dbp-button>
                     </div>
