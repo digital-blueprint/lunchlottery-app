@@ -100,7 +100,7 @@
         "entryPointURL": "https://api.tugraz.at",
         "keyCloakBaseURL": "https://auth.tugraz.at/auth",
         "keyCloakRealm": "tugraz",
-        "keyCloakClientId": "lunchlottery_tugraz_at",
+        "keyCloakClientId": "lunch-lottery_tugraz_at",
         "matomoUrl": "https://analytics.tugraz.at/",
         "matomoSiteId": 206,
         "hiddenActivities": [],
