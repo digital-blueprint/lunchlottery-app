@@ -251,7 +251,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                         summary: this._i18n.t('manage.error-summary'),
                         body: this._i18n.t('manage.error-body'),
                         type: 'danger',
-                        timeout: 5,
+                        timeout: 0,
                     });
                     return;
                 }
