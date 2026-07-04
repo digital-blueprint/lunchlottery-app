@@ -1,4 +1,4 @@
-FROM debian:trixie-20260610
+FROM debian:trixie-20260623
 
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
