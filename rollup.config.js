@@ -8,9 +8,10 @@ import {getBabelOutputPlugin} from '@rollup/plugin-babel';
 import {
     getPackagePath,
     getBuildInfo,
-    generateTLSConfig,
     getDistPath,
     assetPlugin,
+    getPort,
+    getResolveModules,
 } from '@dbp-toolkit/dev-utils';
 import {createRequire} from 'module';
 
@@ -22,8 +23,6 @@ const watch = process.env.ROLLUP_WATCH === 'true';
 const prodBuild = (!watch && appEnv !== 'test') || process.env.FORCE_FULL !== undefined;
 let httpHost =
     process.env.ROLLUP_WATCH_HOST !== undefined ? process.env.ROLLUP_WATCH_HOST : '127.0.0.1';
-let httpPort =
-    process.env.ROLLUP_WATCH_PORT !== undefined ? parseInt(process.env.ROLLUP_WATCH_PORT) : 8001;
 
 // if true, app assets and configs are whitelabel
 let whitelabel;
@@ -140,6 +139,9 @@ export default (async () => {
             sourcemap: true,
             minify: prodBuild,
             cleanDir: true,
+        },
+        resolve: {
+            modules: getResolveModules(),
         },
         treeshake: prodBuild,
         moduleTypes: {
@@ -331,9 +333,8 @@ export default (async () => {
                 ? serve({
                       contentBase: '.',
                       host: httpHost,
-                      port: httpPort,
+                      port: await getPort(httpHost, [8001, 8004]),
                       historyApiFallback: config.basePath + appName + '.html',
-                      https: await generateTLSConfig(),
                       headers: {
                           'Content-Security-Policy': config.CSP,
                       },
