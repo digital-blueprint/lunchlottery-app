@@ -382,7 +382,7 @@ suite('LunchLotteryAssignSeats.injectOrgUnitCodesIntoSubmission', () => {
         assignSeats = {
             entryPointUrl: 'https://api.example.com',
             auth: {token: 'test-token'},
-            async getOrgUnitCodeForOrganizationIdentifier(organizationIdentifier, authToken) {
+            getOrgUnitCodeForOrganizationIdentifier(organizationIdentifier, authToken) {
                 // Mock implementation that returns test organization codes
                 const mockOrgCodes = {
                     org123: 'dept456A',
@@ -390,7 +390,7 @@ suite('LunchLotteryAssignSeats.injectOrgUnitCodesIntoSubmission', () => {
                     orgABC: 'marketing123C',
                     orgEmpty: null,
                 };
-                return mockOrgCodes[organizationIdentifier] || null;
+                return Promise.resolve(mockOrgCodes[organizationIdentifier] || null);
             },
             async injectOrgUnitCodesIntoSubmission(submission) {
                 // Use the real implementation from the file
@@ -557,13 +557,13 @@ suite('LunchLotteryAssignSeats.injectOrgUnitCodesIntoSubmission', () => {
         };
 
         // Mock a third org that would have same prefix as first after trimming
-        assignSeats.getOrgUnitCodeForOrganizationIdentifier = async (orgId) => {
+        assignSeats.getOrgUnitCodeForOrganizationIdentifier = (orgId) => {
             const mockCodes = {
                 org123: 'dept456A', // becomes 'orgUnitCode-dept456'
                 org456: 'dept456B', // becomes 'orgUnitCode-dept456' (conflict!)
                 org789: 'finance789A', // becomes 'orgUnitCode-finance789'
             };
-            return mockCodes[orgId] || null;
+            return Promise.resolve(mockCodes[orgId] || null);
         };
 
         const submission3 = {

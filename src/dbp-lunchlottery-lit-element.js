@@ -67,15 +67,10 @@ export default class DBPLunchlotteryLitElement extends LangMixin(
     }
 
     async httpGetAsync(url, options) {
-        let response = await fetch(url, options)
-            .then((result) => {
-                if (!result.ok) throw result;
-                return result;
-            })
-            .catch((error) => {
-                return error;
-            });
-
-        return response;
+        try {
+            return await fetch(url, options);
+        } catch (error) {
+            return error;
+        }
     }
 }

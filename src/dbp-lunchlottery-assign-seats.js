@@ -170,7 +170,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
 
     initialize() {
         super.initialize();
-        this.loadData();
+        void this.loadData();
     }
 
     async loadData() {
@@ -507,7 +507,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         return submission;
     }
 
-    async calculateDistances() {
+    calculateDistances() {
         let lunchLotteryEvent = this.createLunchLotteryEvent();
         let submissions = this.expandedSubmissions;
 
@@ -577,8 +577,8 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         return rows;
     }
 
-    async process() {
-        const lunchLotteryEvent = await this.calculateDistances();
+    process() {
+        const lunchLotteryEvent = this.calculateDistances();
         this.dataRows = this.flattenResults(lunchLotteryEvent);
 
         this.variants.push(this.dataRows);
@@ -798,11 +798,11 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                     <dbp-loading-button
                         title="${i18n.t('process.run')}"
                         ?disabled=${this.processButtonDisabled}
-                        @click="${async (e) => {
+                        @click="${(e) => {
                             let button = e.currentTarget;
                             button.start();
                             try {
-                                await this.process();
+                                this.process();
                             } finally {
                                 button.stop();
                             }

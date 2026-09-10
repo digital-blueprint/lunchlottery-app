@@ -69,8 +69,8 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
     initialize() {
         super.initialize();
-        this.fetchPerson();
-        this.fetchForm();
+        void this.fetchPerson();
+        void this.fetchForm();
     }
 
     update(changedProperties) {
@@ -79,7 +79,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         changedProperties.forEach((oldValue, propName) => {
             switch (propName) {
                 case 'lang':
-                    this.fetchOrganizations();
+                    void this.fetchOrganizations();
                     break;
             }
         });

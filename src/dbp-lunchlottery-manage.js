@@ -48,7 +48,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
     initialize() {
         super.initialize();
 
-        this.loadData();
+        void this.loadData();
         this.view = VIEW_SETTINGS;
     }
 
