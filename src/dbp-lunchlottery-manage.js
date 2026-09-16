@@ -64,7 +64,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
             {
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    Authorization: 'Bearer ' + this.auth.token,
+                    Authorization: 'Bearer ' + (this.auth?.token ?? ''),
                 },
             },
         );
@@ -104,7 +104,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/merge-patch+json',
-                    Authorization: 'Bearer ' + this.auth.token,
+                    Authorization: 'Bearer ' + (this.auth?.token ?? ''),
                 },
                 body: JSON.stringify(this.formData),
             },
@@ -131,7 +131,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
             {
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    Authorization: 'Bearer ' + this.auth.token,
+                    Authorization: 'Bearer ' + (this.auth?.token ?? ''),
                 },
             },
         );
@@ -170,7 +170,7 @@ class LunchLotteryManage extends ScopedElementsMixin(DBPLunchlotteryLitElement) 
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    Authorization: 'Bearer ' + this.auth.token,
+                    Authorization: 'Bearer ' + (this.auth?.token ?? ''),
                 },
             },
         );

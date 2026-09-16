@@ -19,6 +19,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
         this.identifier = null;
         this.firstName = null;
         this.lastName = null;
+        /** @type {string[] | null} */
         this.dates = null;
         this.email = null;
         this.organizations = [];
@@ -96,12 +97,12 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
             const response = await fetch(
                 this.entryPointUrl +
                     '/base/people/' +
-                    encodeURIComponent(this.auth['user-id']) +
+                    encodeURIComponent(this.auth?.['user-id'] ?? '') +
                     '?includeLocal=email,staffAt',
                 {
                     headers: {
                         'Content-Type': 'application/ld+json',
-                        Authorization: 'Bearer ' + this.auth.token,
+                        Authorization: 'Bearer ' + (this.auth?.token ?? ''),
                     },
                 },
             );
@@ -142,7 +143,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                     {
                         headers: {
                             'Content-Type': 'application/ld+json',
-                            Authorization: 'Bearer ' + this.auth.token,
+                            Authorization: 'Bearer ' + (this.auth?.token ?? ''),
                             'Accept-Language': this.lang,
                         },
                     },
@@ -182,7 +183,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                 {
                     headers: {
                         'Content-Type': 'application/ld+json',
-                        Authorization: 'Bearer ' + this.auth.token,
+                        Authorization: 'Bearer ' + (this.auth?.token ?? ''),
                     },
                 },
             );
@@ -263,26 +264,34 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                 return;
             }
 
+            /** @type {string | null} */
             let language = null;
-            this.shadowRoot.querySelectorAll('.language').forEach((element) => {
-                if (element.checked) {
-                    language = element.value;
-                }
-            });
+            this.renderRoot
+                .querySelectorAll('.language')
+                .forEach((/** @type {HTMLInputElement} */ element) => {
+                    if (element.checked) {
+                        language = element.value;
+                    }
+                });
 
             const dates = [];
-            this.shadowRoot.querySelectorAll('.date').forEach((element) => {
-                if (element.checked) {
-                    dates.push(element.value);
-                }
-            });
+            this.renderRoot
+                .querySelectorAll('.date')
+                .forEach((/** @type {HTMLInputElement} */ element) => {
+                    if (element.checked) {
+                        dates.push(element.value);
+                    }
+                });
             this.dates = dates;
+            /** @type {boolean | null} */
             let agreement = null;
-            this.shadowRoot.querySelectorAll('.agreement').forEach((element) => {
-                if (element.checked) {
-                    agreement = element.value === 'true';
-                }
-            });
+            this.renderRoot
+                .querySelectorAll('.agreement')
+                .forEach((/** @type {HTMLInputElement} */ element) => {
+                    if (element.checked) {
+                        agreement = element.value === 'true';
+                    }
+                });
             //Check language field
             if (!language) {
                 this._('#lang-error').hidden = false;
@@ -325,7 +334,7 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    Authorization: 'Bearer ' + this.auth.token,
+                    Authorization: 'Bearer ' + (this.auth?.token ?? ''),
                 },
                 body: JSON.stringify(body),
             };
@@ -349,16 +358,20 @@ class LunchLotteryRegister extends ScopedElementsMixin(DBPLunchlotteryLitElement
 
     async buttonClickHandler() {
         setTimeout(() => {
-            this.shadowRoot.querySelectorAll('dbp-button').forEach((element) => {
-                element.stop();
-            });
+            this.renderRoot
+                .querySelectorAll('dbp-button')
+                .forEach((/** @type {HTMLElement & {stop: () => void}} */ element) => {
+                    element.stop();
+                });
         }, 1000);
 
         await this.submitRegistration();
 
-        this.shadowRoot.querySelectorAll('.date').forEach((element) => {
-            if (this.dates.includes(element.value)) element.checked = true;
-        });
+        this.renderRoot
+            .querySelectorAll('.date')
+            .forEach((/** @type {HTMLInputElement} */ element) => {
+                if (this.dates?.includes(element.value)) element.checked = true;
+            });
     }
 
     static get styles() {

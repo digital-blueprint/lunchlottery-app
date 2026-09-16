@@ -23,12 +23,12 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         // activity
         this.view = VIEW_INIT;
         this.loading = false;
-        this.dateOptions = {
+        this.dateOptions = /** @type {Intl.DateTimeFormatOptions} */ ({
             weekday: 'long',
             day: 'numeric',
             month: 'long',
             year: 'numeric',
-        };
+        });
 
         // formalize data
         this.dates = [];
@@ -75,7 +75,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             langs: langs,
             layout: 'fitDataFill',
             responsiveLayout: false,
-            columns: [],
+            columns: /** @type {object[]} */ ([]),
             columnDefaults: {
                 vertAlign: 'middle',
                 hozAlign: 'left',
@@ -127,13 +127,13 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             {
                 title: this._i18n.t('results.privacyConsent'),
                 field: 'privacyConsent',
-                formatter: function (cell, formatterParams, onRendered) {
+                formatter: (cell, formatterParams, onRendered) => {
                     if (cell.getValue()) {
                         return this._i18n.t('results.privacyConsent-true');
                     } else {
                         return this._i18n.t('results.privacyConsent-false');
                     }
-                }.bind(this),
+                },
             },
         ];
         this.dataRows = [];
@@ -190,7 +190,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             {
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    Authorization: 'Bearer ' + this.auth.token,
+                    Authorization: 'Bearer ' + (this.auth?.token ?? ''),
                 },
             },
         );
@@ -267,7 +267,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             {
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    Authorization: 'Bearer ' + this.auth.token,
+                    Authorization: 'Bearer ' + (this.auth?.token ?? ''),
                 },
             },
         );
@@ -337,13 +337,13 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                 title: title,
                 field: identifier,
                 titleFormatter: this.dateTitleFormatter.bind(this),
-                formatter: function (cell, formatterParams, onRendered) {
+                formatter: (cell, formatterParams, onRendered) => {
                     if (cell.getValue()) {
                         return this._i18n.t('results.availableDate-true');
                     } else {
                         return this._i18n.t('results.availableDate-false');
                     }
-                }.bind(this),
+                },
             });
         });
 
@@ -371,12 +371,9 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         let table = this._('#tabulator-table-submissions');
         let fileFormat = 'xlsx';
         const today = new Date();
-        let month = today.getMonth() + 1;
-        month = month.toString();
-        let day = today.getDate();
-        day = day.toString();
-        let year = today.getFullYear();
-        year = year.toString();
+        const month = (today.getMonth() + 1).toString();
+        const day = today.getDate().toString();
+        const year = today.getFullYear().toString();
         let dataName = 'LLRegistrations' + day + month + year;
         table.download(fileFormat, dataName);
     }
@@ -385,12 +382,9 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
         let table = this._('#tabulator-table-results');
         let fileFormat = 'xlsx';
         const today = new Date();
-        let month = today.getMonth() + 1;
-        month = month.toString();
-        let day = today.getDate();
-        day = day.toString();
-        let year = today.getFullYear();
-        year = year.toString();
+        const month = (today.getMonth() + 1).toString();
+        const day = today.getDate().toString();
+        const year = today.getFullYear().toString();
         let dataName = 'LLSubmissions' + day + month + year;
         table.download(fileFormat, dataName);
     }
@@ -519,7 +513,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
                 // console.log('calculateDistances submission', submission);
                 const [distance, table, date] = lunchLotteryEvent.getShortestDistance(submission);
                 // we need integer keys for shortest distance; float numbers are casted to string, then it's not working
-                const distanceKey = Math.floor(distance);
+                const distanceKey = Math.floor(distance ?? 0);
 
                 if (!(distanceKey in distances)) {
                     distances[distanceKey] = [];
@@ -533,7 +527,7 @@ class LunchLotteryAssignSeats extends ScopedElementsMixin(DBPLunchlotteryLitElem
             }
 
             const shortestDistance = Object.keys(distances)[0];
-            if (shortestDistance >= 9999) {
+            if (Number(shortestDistance) >= 9999) {
                 break;
             }
 

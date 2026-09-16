@@ -10,13 +10,16 @@ export class LunchLotteryEvent {
     }
 
     getShortestDistance(submission) {
+        /** @type {number | null} */
         let distance = null;
+        /** @type {number | null} */
         let selectedTable = null;
+        /** @type {number | null} */
         let selectedDate = null;
 
         this.dates.forEach((date, index) => {
             const [dateDistance, dateSelectedTable] = date.getShortestDistance(submission);
-            if (distance === null || dateDistance < distance) {
+            if (dateDistance !== null && (distance === null || dateDistance < distance)) {
                 distance = dateDistance;
                 selectedTable = dateSelectedTable;
                 selectedDate = index;
@@ -46,7 +49,9 @@ export class LunchLotteryDate {
     }
 
     getShortestDistance(submission) {
+        /** @type {number | null} */
         let distance = null;
+        /** @type {number | null} */
         let selectedTable = null;
 
         if (submission['possibleDates'].includes(this.identifier)) {
